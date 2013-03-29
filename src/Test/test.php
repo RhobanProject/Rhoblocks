@@ -24,7 +24,7 @@ $jsonData = '{
 
 $jsonBlocks = Compiler::generateJSON('C');
 var_dump($jsonBlocks);
-$codeFiles = Compiler::generateCode('C', $jsonData);
+$codeFiles = Compiler::generateCode($jsonData, 'C');
 foreach ($codeFiles as $file => $code) {
     echo "\n".$file.":\n\n";
     echo $code;

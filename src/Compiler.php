@@ -16,9 +16,9 @@ class Compiler
      *
      * @return array of json blocks definition
      */
-    public static function generateJSON($family)
+    public static function generateJSON($family = 'C')
     {
-        $factory = new Factory('C');
+        $factory = new Factory($family);
 
         return $factory->generateBlocksJSON();
     }
@@ -30,9 +30,9 @@ class Compiler
      *
      * @return array of string code
      */
-    public static function generateCode($family, $jsonData)
+    public static function generateCode($jsonData, $family = 'C')
     {
-        $factory = new Factory('C');
+        $factory = new Factory($family);
         $graph = new Graph($jsonData, $factory);
         $initCode = $graph->generateInitCode();
         $transitionCode = $graph->generateTransitionCode();
@@ -52,9 +52,9 @@ class Compiler
      * @param $family : the implementation family (string)
      * @return array of string code
      */
-    public static function generateMain($family)
+    public static function generateMain($family = 'C')
     {
-        $factory = new Factory('C');
+        $factory = new Factory($family);
 
         return $factory->getGenerator()->generateMain();
     }
