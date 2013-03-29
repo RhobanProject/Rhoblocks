@@ -2,7 +2,7 @@
 
 namespace Rhoban\Blocks;
 
-use Rhoban\Blocks\Factory;
+use Rhoban\Blocks\FactoryInterface;
 use Rhoban\Blocks\Graph;
 
 /**
@@ -11,36 +11,57 @@ use Rhoban\Blocks\Graph;
 class Compiler
 {
     /**
+     * @var FactoryInterface
+     */
+    protected $factory;
+
+    /**
+     *@var string
+     */
+    protected $jsonData;
+
+    /**
+     * Instanciates a compiler
+     */
+    public function __construct(FactoryInterface $factory, $jsonData = null)
+    {
+        $this->factory = $factory;
+        $this->jsonData = $jsonData;
+    }
+
+    /**
+     * Seets
+     */
+    public function setJSONData($jsonData = null)
+    {
+        $this->jsonData = $jsonData;
+    }
+
+    /**
      * Generate JSON block definitions for blocks.js
-     * @param $family : the implementation family (string)
      *
      * @return array of json blocks definition
      */
-    public static function generateJSON($family = 'C')
+    public  function generateJSON($family = 'C')
     {
-        $factory = new Factory($family);
-
-        return $factory->generateBlocksJSON();
+        return $this->factory->generateBlocksJSON();
     }
 
     /**
      * Generate the Blocks code files
-     * @param $family : the implementation family (string)
-     * @param $jsonData : the json string from blocks.js to compile
      *
      * @return array of string code
      */
-    public static function generateCode($jsonData, $family = 'C')
+    public  function generateCode()
     {
-        $factory = new Factory($family);
-        $graph = new Graph($jsonData, $factory);
+        $graph = new Graph($this->jsonData, $this->factory);
         $initCode = $graph->generateInitCode();
         $transitionCode = $graph->generateTransitionCode();
-        $initTransitionCode = $factory->getVariableHolder()
+        $initTransitionCode = $this->factory->getVariableHolder()
             ->generateInitTransitionCode();
-        $structCode = $factory->getVariableHolder()->generateStructCode();
+        $structCode = $this->factory->getVariableHolder()->generateStructCode();
 
-        return $factory->getGenerator()->generateCode(
+        return $this->factory->getGenerator()->generateCode(
             $structCode, 
             $initCode, 
             $initTransitionCode, 
@@ -49,13 +70,10 @@ class Compiler
 
     /**
      * Generate main code files
-     * @param $family : the implementation family (string)
      * @return array of string code
      */
-    public static function generateMain($family = 'C')
+    public  function generateMain()
     {
-        $factory = new Factory($family);
-
-        return $factory->getGenerator()->generateMain();
+        return $this->factory->getGenerator()->generateMain();
     }
 }

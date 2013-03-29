@@ -1,14 +1,17 @@
 <?php
 
 use Rhoban\Blocks\Compiler;
+use Rhoban\Blocks\Factory;
 
 /**
  * Dummy class autoload
  */
 function __autoload($className) {
-    $className = str_replace('Rhoban\\Blocks\\', '../', $className);
-    $className = str_replace('\\', '/', $className);
-    require($className.'.php');
+    $className = str_replace('Rhoban\\Blocks', '../', $className);
+    $fileName = __DIR__ . '/' . str_replace('\\', '/', $className) . '.php';
+    if (file_exists($fileName)) {
+        require($fileName);
+    }
 }
 
 $jsonData = '{
@@ -22,11 +25,18 @@ $jsonData = '{
         {"id":12,"x":-395.74504852676955,"y":-34.48929566763786,"type":"Constant","parameters":{"Value":0}}
 ]}';
 
-$jsonBlocks = Compiler::generateJSON('C');
+$compiler = new Compiler(new Factory('C'), $jsonData);
+
+// Generation of the blocks
+$jsonBlocks = $compiler->generateJSON();
 var_dump($jsonBlocks);
-$codeFiles = Compiler::generateCode($jsonData, 'C');
+
+// Generation of the code files
+$codeFiles = $compiler->generateCode();
 foreach ($codeFiles as $file => $code) {
     echo "\n".$file.":\n\n";
     echo $code;
 }
-//var_dump(Compiler::generateMain('C'));
+
+// Generation of the main
+//var_dump($compiler->generateMain());
