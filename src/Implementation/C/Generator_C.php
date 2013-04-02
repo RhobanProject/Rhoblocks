@@ -87,10 +87,11 @@ class Generator_C extends Generator
             while(1) {
                 // Ticking the structure
                 ".$prefix."Tick(&data);
-                usleep(1000000/".$environment->getFrequency().");
 
                 // You can do some display or code here
                 $outputs        
+                    
+                usleep(1000000/".$environment->getFrequency().");
             }
         }\n";
 
