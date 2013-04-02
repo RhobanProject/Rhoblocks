@@ -18,13 +18,24 @@ abstract class Environment implements EnvironmentInterface
     protected $stack = array();
 
     /**
-     * The frequency of the system
+     * Options
      */
     protected $frequency;
 
-    public function __construct($frequency = 50)
+    /**
+     * The options specific to the compilation
+     */
+    public function getDefaultOptions()
     {
-        $this->frequency = $frequency;
+        return array(
+            'frequency' => 50
+        );
+    }
+
+    public function __construct(array $options)
+    {
+        $options = array_merge($this->getDefaultOptions(), $options);
+        $this->frequency = $options['frequency'];
     }
 
     /**

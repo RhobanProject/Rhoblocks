@@ -39,19 +39,19 @@ class Factory implements FactoryInterface
     private $environmentInstance = null;
 
     /**
-     * The frequency of the machine
+     * The specific options to use
      */
-    protected $frequency;
+    protected $options;
 
     /**
      * Initialize the Factory
      * @param $family : the implementation
      * family
      */
-    public function __construct($family, $frequency = 50)
+    public function __construct($family, array $options = array())
     {
         $this->family = $family;
-        $this->frequency = $frequency;
+        $this->options = $options;
     }
 
     /**
@@ -72,7 +72,7 @@ class Factory implements FactoryInterface
     public function getEnvironment()
     {
         if (!$this->environmentInstance) {
-            $this->environmentInstance = $this->newObject('ENVIRONMENT', $this->frequency);
+            $this->environmentInstance = $this->newObject('ENVIRONMENT', $this->options);
         }
 
         return $this->environmentInstance;
