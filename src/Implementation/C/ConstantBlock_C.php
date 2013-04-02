@@ -11,21 +11,8 @@ class ConstantBlock_C extends ConstantBlock
     /**
      * @inherit
      */
-    public function implementTransitionCode(
-        array $parameters, 
-        array $inputs, 
-        EnvironmentInterface $environment)
+    public function implementTransitionCode()
     {
-        $environment->registerState(
-            $this->getId(), 
-            0, 
-            $parameters['Value'][0]['type']);
-        $code = '    ';
-        $code .= $environment->stateName($this->getId(), 0);
-        $code .= ' = ';
-        $code .= $parameters['Value'][0]['identifier'];
-        $code .= ";\n";
-
-        return $code;
+        return $this->getOutputIdentifier('Value') . ' = ' . $this->getParameterIdentifier('Value') . ";\n";
     }
 }

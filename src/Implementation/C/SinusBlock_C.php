@@ -11,26 +11,17 @@ class SinusBlock_C extends SinusBlock
     /**
      * @inherit
      */
-    public function implementTransitionCode(
-        array $parameters, 
-        array $inputs, 
-        EnvironmentInterface $environment)
+    public function implementTransitionCode()
     {
-        $environment->registerState(
-            $this->getId(), 
-            0, 
-            VariableType::Scalar);
-        $code = '    ';
-        $code .= $environment->stateName($this->getId(), 0);
-        $code .= ' = ';
-        $code .= 'sin(';
-        $code .= $inputs['T'][0]['identifier'];
-        $code .= '*2.0*3.14*';
-        $code .= $parameters['Frequency'][0]['identifier'];
-        $code .= '+';
-        $code .= $parameters['Phase'][0]['identifier'];
+
+        $code = $this->getOutputIdentifier('Wave');
+        $code .= ' = sin(';
+        $code .= $this->getInputIdentifier('T');
+        $code .= '*2.0*M_PI*';
+        $code .= $this->getParameterIdentifier('Frequency');
+        $code .= '+' . $this->getParameterIdentifier('Phase');
         $code .= ')*';
-        $code .= $parameters['Amplitude'][0]['identifier'];
+        $code .= $this->getParameterIdentifier('Amplitude');
         $code .= ";\n";
 
         return $code;
