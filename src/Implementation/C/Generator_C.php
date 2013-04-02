@@ -3,15 +3,19 @@
 namespace Rhoban\Blocks\Implementation\C;
 
 use Rhoban\Blocks\Generator;
+use Rhoban\Blocks\EnvironmentInterface;
 
 class Generator_C extends Generator
 {
     /**
      * @inherit
      */
-    public function generateCode(
-        $structCode, $initCode, $initTransitionCode, $transitionCode)
+    public function generateCode(EnvironmentInterface $environment, $initCode, $transitionCode)
     {
+        if (!$environment instanceof Environment_C) {
+            throw new \RuntimeException('The environment should be a C environment');
+        }
+
         $codeHeader = "";
         $codeHeader .= "#ifndef BLOCKS_H\n";
         $codeHeader .= "#define BLOCKS_H\n";
@@ -19,7 +23,7 @@ class Generator_C extends Generator
         $codeHeader .= "typedef int integer;\n";
         $codeHeader .= "typedef float scalar;\n";
         $codeHeader .= "\n";
-        $codeHeader .= $structCode;
+        $codeHeader .= $environment->generateStructCode();
         $codeHeader .= "\n";
         $codeHeader .= "void blocksInit();\n";
         $codeHeader .= "void blocksTick();\n";
@@ -27,7 +31,9 @@ class Generator_C extends Generator
         $codeHeader .= "#endif\n";
         
         $codeC = "";
-        $codeC .= "#include <math.h>\n";
+        foreach ($environment->getHeaders() as $header) {
+            $codeC .= '#include <'.$header.">\n";
+        }
         $codeC .= "#include \"Blocks.h\"\n";
         $codeC .= "\n";
         $codeC .= "void blocksInit()\n";
@@ -37,7 +43,7 @@ class Generator_C extends Generator
         $codeC .= "\n";
         $codeC .= "void blocksTick()\n";
         $codeC .= "{\n";
-        $codeC .= $initTransitionCode;
+        $codeC .= $environment->generateInitTransitionCode();
         $codeC .= "\n";
         $codeC .= $transitionCode;
         $codeC .= "}\n";

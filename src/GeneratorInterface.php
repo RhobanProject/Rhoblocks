@@ -21,8 +21,7 @@ interface GeneratorInterface
      *
      * @return array of string code
      */
-    public function generateCode(
-        $structCode, $initCode, $initTransitionCode, $transitionCode);
+    public function generateCode(EnvironmentInterface $environment, $initCode, $transitionCode);
 
     /**
      * Return 

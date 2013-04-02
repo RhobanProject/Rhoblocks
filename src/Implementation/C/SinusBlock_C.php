@@ -11,9 +11,16 @@ class SinusBlock_C extends SinusBlock
     /**
      * @inherit
      */
+    public function implementInitCode()
+    {
+        $this->environment->addHeader('math.h');
+    }
+
+    /**
+     * @inherit
+     */
     public function implementTransitionCode()
     {
-
         $code = $this->getOutputIdentifier('Wave');
         $code .= ' = sin(';
         $code .= $this->getInputIdentifier('T');

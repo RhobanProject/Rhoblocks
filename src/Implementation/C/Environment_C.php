@@ -11,6 +11,29 @@ use Rhoban\Blocks\VariableType;
 class Environment_C extends Environment
 {
     /**
+     * Headers to add
+     */
+    protected $headers = array();
+
+    /**
+     * Adds an header (.h) to the includes
+     *
+     * @param $header the header file name
+     */
+    public function addHeader($header)
+    {
+        $this->headers[$header] = true;
+    }
+
+    /**
+     * Get the header files
+     */
+    public function getHeaders()
+    {
+        return array_keys($this->headers);
+    }
+
+    /**
      * @inherit
      */
     public function generateStructCode()

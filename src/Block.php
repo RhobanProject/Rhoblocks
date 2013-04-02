@@ -10,22 +10,22 @@ abstract class Block implements BlockInterface
     /**
      * The meta information array of the block
      */
-    private static $META;
+    protected static $META;
 
     /**
      * The parameter values of the block
      */
-    private $parameterValues = array();
+    protected $parameterValues = array();
 
     /**
      * Compiler Environment (Rhoban\Blocks\EnvironmentInterface)
      */
-    private $environment;
+    protected $environment;
 
     /**
      * The block id
      */
-    private $id;
+    protected $id;
 
     /**
      * Edges concerning this block
@@ -298,7 +298,7 @@ abstract class Block implements BlockInterface
      * Check parsed parameters against meta informations
      * Throw Exception if error
      */
-    private function checkParameters()
+    protected function checkParameters()
     {
         $meta = $this->getMeta();
 

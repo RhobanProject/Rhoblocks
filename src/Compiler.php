@@ -52,20 +52,17 @@ class Compiler
      *
      * @return array of string code
      */
-    public  function generateCode()
+    public function generateCode()
     {
         $graph = new Graph($this->jsonData, $this->factory);
         $initCode = $graph->generateInitCode();
         $transitionCode = $graph->generateTransitionCode();
-        $initTransitionCode = $this->factory->getEnvironment()
-            ->generateInitTransitionCode();
-        $structCode = $this->factory->getEnvironment()->generateStructCode();
 
         return $this->factory->getGenerator()->generateCode(
-            $structCode, 
+            $this->factory->getEnvironment(),
             $initCode, 
-            $initTransitionCode, 
-            $transitionCode);
+            $transitionCode
+        );
     }
 
     /**
