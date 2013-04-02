@@ -22,11 +22,11 @@ abstract class Environment implements EnvironmentInterface
      */
     public function registerInput($index, $type)
     {
-        return $this->register($this->global, 'input', $type, $index);
+        return $this->register($this->global, 'input', $type, $index, true);
     }
     public function registerOutput($index, $type)
     {
-        return $this->register($this->global, 'output', $type, $index);
+        return $this->register($this->global, 'output', $type, $index, true);
     }
     public function registerState($blockId, $index, $type)
     {
@@ -34,7 +34,7 @@ abstract class Environment implements EnvironmentInterface
     }
     public function registerVariable($blockId, $index, $type)
     {
-        return $this->register($this->global, 'variable', $type, $blockId, $index);
+        return $this->register($this->global, 'variable', $type, $blockId, $index, true);
     }
     
     /**
@@ -154,12 +154,12 @@ abstract class Environment implements EnvironmentInterface
      * @param $index
      */
     private function register(array &$array, $name, $type, 
-        $blockId = null, $index)
+        $blockId = null, $index, $global = false)
     {
         $identifier = $this->getIdentifier($name, $blockId, $index);
         $this->checkRegistered($array, $identifier, true);
         $array[$identifier] = $type;
 
-        return new Identifier($this, $identifier, $type);
+        return new Identifier($this, $identifier, $type, $global);
     }
 }

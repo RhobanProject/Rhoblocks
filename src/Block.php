@@ -148,10 +148,14 @@ abstract class Block implements BlockInterface
     /**
      * Register a state or get its identifier from the cache
      */
-    public function getVariableIdentifier($name, $type)
+    public function getVariableIdentifier($name, $type, $global = false)
     {
         if (!isset($this->cache[$name])) {
-            $this->cache[$name] = $this->environment->registerState($this->getId(), $name, $type);
+            if ($global) {
+                $this->cache[$name] = $this->environment->registerVariable($this->getId(), $name, $type);
+            } else {
+                $this->cache[$name] = $this->environment->registerState($this->getId(), $name, $type);
+            }
         }
 
         return $this->cache[$name];

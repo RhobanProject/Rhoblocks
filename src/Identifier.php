@@ -20,11 +20,31 @@ class Identifier
      */
     protected $type;
 
-    public function __construct(EnvironmentInterface $environment, $value, $type)
+    /**
+     * Is the identifier in the strut ?
+     */
+    protected $struct;
+
+    public function __construct(EnvironmentInterface $environment, $value, $type, $struct = false)
     {
         $this->environment = $environment;
         $this->value = $value;
         $this->type = $type;
+        $this->struct = $struct;
+    }
+
+    /**
+     * Get the value of the identifier
+     */
+    public function getValue($noPrefix = false)
+    {
+        $value = $this->value;
+
+        if ($this->struct && !$noPrefix) {
+            $value = "data->$value";
+        }
+
+        return $value;
     }
 
     /**
@@ -33,10 +53,10 @@ class Identifier
     public function get($type)
     {
         if ($type != $this->type) {
-            return $this->environment->cast($this->value, $this->type, $type);
+            return $this->environment->cast($this->getValue(), $this->type, $type);
         }
 
-        return $this->value;
+        return $this->getValue();
     }
 
     public function asInteger()
@@ -64,6 +84,6 @@ class Identifier
      */
     public function lValue()
     {
-        return $this->value;
+        return $this->getValue();
     }
 }
