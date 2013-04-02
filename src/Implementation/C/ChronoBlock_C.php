@@ -25,7 +25,7 @@ class ChronoBlock_C extends ChronoBlock
     {
         $t = $this->getVariableIdentifier('T', VariableType::Scalar, true);
 
-        $code = '$t += '.(1/$this->environment->getFrequency()).";\n";
+        $code = $t .' += '.(1/$this->environment->getFrequency()).";\n";
         $code .= $this->getOutputLIdentifier('T') . ' = ' . $t . ";\n";
 
         return $code;
