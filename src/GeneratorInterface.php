@@ -30,5 +30,5 @@ interface GeneratorInterface
      * Return 
      * @return array of string code
      */
-    public function generateMain();
+    public function generateMain(EnvironmentInterface $environment);
 }

@@ -19,6 +19,11 @@ class Identifier
      * The type of the identifier
      */
     protected $type;
+    
+    /**
+     * Is the identifier in the strut ?
+     */
+    protected $struct;
 
     /**
      * Initialize the identifier
@@ -27,11 +32,26 @@ class Identifier
      * @param $type Rhoban\Blocks\VariableType
      */
     public function __construct
-        (EnvironmentInterface $environment, $value, $type)
+        (EnvironmentInterface $environment, $value, $type, $struct = false)
     {
         $this->environment = $environment;
         $this->value = $value;
         $this->type = $type;
+        $this->struct = $struct;
+    }
+
+    /**
+     * Get the value of the identifier
+     */
+    public function getValue($noPrefix = false)
+    {
+        $value = $this->value;
+
+        if ($this->struct && !$noPrefix) {
+            $value = "data->$value";
+        }
+
+        return $value;
     }
 
     /**
@@ -43,10 +63,10 @@ class Identifier
     public function get($type)
     {
         if ($type != $this->type) {
-            return $this->environment->cast($this->value, $this->type, $type);
+            return $this->environment->cast($this->getValue(), $this->type, $type);
         }
 
-        return $this->value;
+        return $this->getValue();
     }
 
     /**
@@ -75,6 +95,6 @@ class Identifier
      */
     public function lValue()
     {
-        return $this->value;
+        return $this->getValue();
     }
 }

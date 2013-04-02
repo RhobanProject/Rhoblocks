@@ -16,6 +16,16 @@ class Environment_C extends Environment
     protected $headers = array();
 
     /**
+     * Adding specific options
+     */
+    public function getDefaultOptions()
+    {
+        return array_merge(parent::getDefaultOptions(), array(
+            'watchOutputs' => false
+        ));
+    }
+
+    /**
      * Adds an header (.h) to the includes
      *
      * @param $header the header file name
@@ -52,13 +62,22 @@ class Environment_C extends Environment
      */
     public function generateStructCode()
     {
-        $code = "struct BlocksData_t {\n";
+        $code = 'struct '.$this->getStructName()." {\n";
         foreach ($this->global as $identifier => $type) {
             $code .= '    '.$this->typeToName($type).' '.$identifier.";\n";
         }
         $code .= "};\n";
 
         return $code;
+    }
+
+    /**
+     * @inherit
+     */
+    public function getStructName()
+    {
+        $prefix = $this->getPrefix();
+        return $prefix . '_data';
     }
 
     /**

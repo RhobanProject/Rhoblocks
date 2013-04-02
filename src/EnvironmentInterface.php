@@ -58,6 +58,11 @@ interface EnvironmentInterface
     public function generateStructCode();
 
     /**
+     * Gets the struct name
+     */
+    public function getStructName();
+
+    /**
      * Return the generated code for initializing
      * stack variable for transition function
      *
@@ -73,4 +78,11 @@ interface EnvironmentInterface
      * @param $toType Rhoban\Blocks\VariableType target type
      */
     public function cast($value, $fromType, $toType);
+
+    /**
+     * Gets the frequency of the machine
+     *
+     * @return the scheduling frequency in hertz
+     */
+    public function getFrequency();
 }

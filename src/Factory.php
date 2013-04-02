@@ -19,6 +19,9 @@ class Factory implements FactoryInterface
             'Constant' => 'Rhoban\\Blocks\\Implementation\\C\\ConstantBlock_C',
             'Sinus' => 'Rhoban\\Blocks\\Implementation\\C\\SinusBlock_C',
             'Smaller' => 'Rhoban\\Blocks\\Implementation\\C\\SmallerBlock_C',
+            'Chrono' => 'Rhoban\\Blocks\\Implementation\\C\\ChronoBlock_C',
+            'Output' => 'Rhoban\\Blocks\\Implementation\\C\\OutputBlock_C',
+
             'ENVIRONMENT' => 'Rhoban\\Blocks\\Implementation\\C\\Environment_C',
             'GENERATOR' => 'Rhoban\\Blocks\Implementation\\C\\Generator_C',
         ),
@@ -36,13 +39,19 @@ class Factory implements FactoryInterface
     private $environmentInstance = null;
 
     /**
+     * The specific options to use
+     */
+    protected $options;
+
+    /**
      * Initialize the Factory
      * @param $family : the implementation
      * family
      */
-    public function __construct($family)
+    public function __construct($family, array $options = array())
     {
         $this->family = $family;
+        $this->options = $options;
     }
 
     /**
@@ -63,7 +72,7 @@ class Factory implements FactoryInterface
     public function getEnvironment()
     {
         if (!$this->environmentInstance) {
-            $this->environmentInstance = $this->newObject('ENVIRONMENT');
+            $this->environmentInstance = $this->newObject('ENVIRONMENT', $this->options);
         }
 
         return $this->environmentInstance;

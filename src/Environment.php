@@ -18,15 +18,64 @@ abstract class Environment implements EnvironmentInterface
     protected $stack = array();
 
     /**
+     * The options specific to the compilation
+     */
+    public function getDefaultOptions()
+    {
+        return array(
+            'frequency' => 50,
+            'prefix' => 'blocks'
+        );
+    }
+
+    /**
+     * Options
+     */
+    protected $options;
+
+    public function __construct(array $options)
+    {
+        $this->options = array_merge($this->getDefaultOptions(), $options);
+    }
+
+    /**
+     * Shortcut to get the frequency
+     */
+    public function getFrequency()
+    {
+        return $this->getOption('frequency');
+    }
+
+    /**
+     * Shortcut to get the prefix
+     */
+    public function getPrefix()
+    {
+        return $this->getOption('prefix');
+    }
+
+    /**
+     * Getting an option value
+     */
+    public function getOption($option)
+    {
+        if (isset($this->options[$option])) {
+            return $this->options[$option];
+        }
+
+        throw new \RuntimeException('Asking for non-existing option "'.$option.'"');
+    }
+
+    /**
      * @inherit
      */
     public function registerInput($index, $type)
     {
-        return $this->register($this->global, 'input', $type, $index);
+        return $this->register($this->global, 'input', $type, null, $index, true);
     }
     public function registerOutput($index, $type)
     {
-        return $this->register($this->global, 'output', $type, $index);
+        return $this->register($this->global, 'output', $type, null, $index, true);
     }
     public function registerState($blockId, $index, $type)
     {
@@ -34,7 +83,7 @@ abstract class Environment implements EnvironmentInterface
     }
     public function registerVariable($blockId, $index, $type)
     {
-        return $this->register($this->global, 'variable', $type, $blockId, $index);
+        return $this->register($this->global, 'variable', $type, $blockId, $index, true);
     }
     
     /**
@@ -156,12 +205,12 @@ abstract class Environment implements EnvironmentInterface
      * @param $index
      */
     private function register(array &$array, $name, $type, 
-        $blockId = null, $index)
+        $blockId = null, $index, $global = false)
     {
         $identifier = $this->getIdentifier($name, $blockId, $index);
         $this->checkRegistered($array, $identifier, true);
         $array[$identifier] = $type;
 
-        return new Identifier($this, $identifier, $type);
+        return new Identifier($this, $identifier, $type, $global);
     }
 }
