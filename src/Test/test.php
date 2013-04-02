@@ -14,22 +14,18 @@ function __autoload($className) {
     }
 }
 
-$jsonData = '{
-    "edges":[
-        {"block1":11,"io1":"output_0","block2":4,"io2":"param_1"},
-        {"block1":12,"io1":"output_0","block2":4,"io2":"input_0"},
-        {"block1":12,"io1":"output_0","block2":4,"io2":"param_2"}
-    ],"blocks":[
-        {"id":11,"x":-399.29937283654135,"y":-155.48195167050062,"type":"Constant","parameters":{"Value":"2"}},
-        {"id":4,"x":-55.604849866396876,"y":-101.20299460902797,"type":"Sinus","parameters":{"Amplitude":1,"Frequency":10,"Phase":0,"Invert":false}},
-        {"id":12,"x":-395.74504852676955,"y":-34.48929566763786,"type":"Constant","parameters":{"Value":0}}
-]}';
+$jsonData = '
+    {"edges":[{"block1":1,"io1":"output_0","block2":2,"io2":"input_0"},{"block1":2,"io1":"output_0","block2":3,"io2":"input_0"},{"block1":4,"io1":"output_0","block2":3,"io2":"input_1"},{"block1":3,"io1":"output_0","block2":5,"io2":"param_0"}],"blocks":[{"id":1,"x":-482,"y":-90,"type":"Constant","parameters":{"Value":"10"}},{"id":2,"x":-216,"y":-118,"type":"Sinus","parameters":{"Amplitude":1,"Frequency":1,"Phase":0}},{"id":3,"x":24,"y":-5,"type":"Smaller","parameters":{}},{"id":4,"x":-234,"y":30,"type":"Constant","parameters":{"Value":"5"}},{"id":5,"x":229,"y":-5,"type":"Constant","parameters":{"Value":0}}]}
+    ';
 
 $compiler = new Compiler(new Factory('C'), $jsonData);
 
 // Generation of the blocks
 $jsonBlocks = $compiler->generateJSON();
-var_dump($jsonBlocks);
+foreach ($jsonBlocks as $name => $js) {
+    echo "blocks.register($js);\n";
+}
+//var_dump($jsonBlocks);
 
 // Generation of the code files
 $codeFiles = $compiler->generateCode();

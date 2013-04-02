@@ -34,19 +34,27 @@ class Environment_C extends Environment
     }
 
     /**
+     * Returns the name of a certain type
+     */
+    public function typeToName($type)
+    {
+        if ($type == VariableType::Integer) {
+            return 'integer';
+        } else if ($type == VariableType::Scalar) {
+            return 'scalar';
+        } else {
+            throw new \RuntimeException('Unsupported type '.$type);
+        }
+    }
+
+    /**
      * @inherit
      */
     public function generateStructCode()
     {
         $code = "struct BlocksData_t {\n";
         foreach ($this->global as $identifier => $type) {
-            if ($type == VariableType::Integer) {
-                $code .= '    integer '.$identifier.";\n";
-            } else if ($type == VariableType::Scalar) {
-                $code .= '    scalar '.$identifier.";\n";
-            } else {
-                throw new \RuntimeException('Unsupported type '.$type);
-            }
+            $code .= '    '.$this->typeToName($type).' '.$identifier.";\n";
         }
         $code .= "};\n";
 
@@ -60,16 +68,18 @@ class Environment_C extends Environment
     {
         $code = '';
         foreach ($this->stack as $identifier => $type) {
-            if ($type == VariableType::Integer) {
-                $code .= '    integer '.$identifier.";\n";
-            } else if ($type == VariableType::Scalar) {
-                $code .= '    scalar '.$identifier.";\n";
-            } else {
-                throw new \RuntimeException('Unsupported type '.$type);
-            }
+            $code .= '    '.$this->typeToName($type).' '.$identifier.";\n";
         }
 
         return $code;
+    }
+
+    /**
+     * @inherit
+     */
+    public function cast($value, $fromType, $toType)
+    {
+        return '('.$this->typeToName($toType).')('.$value.')';
     }
 }
 

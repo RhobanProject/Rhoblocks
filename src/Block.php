@@ -98,6 +98,20 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Adds the type information to an entry
+     */
+    public function addType(array $entry)
+    {
+        if (isset($entry['type']) && $entry['type'] == 'integer') {
+            $entry['variableType'] = VariableType::Integer;
+        } else {
+            $entry['variableType'] = VariableType::Scalar;
+        }
+
+        return $entry;
+    }
+
+    /**
      * Gets an entry by name or id
      *
      * @param $section the section of the meta
@@ -113,12 +127,16 @@ abstract class Block implements BlockInterface
         if (isset($meta[$section])) {
             if ($id) {
                 if (isset($meta[$section][$name])) {
-                    return $meta[$section][$name];
+                    $entry = $meta[$section][$name];
+                    $entry['id'] = $id;
+                    return $this->addType($entry);
                 }
             } else {
                 foreach ($meta[$section] as $id => $entry) {
                     if (isset($entry['name']) && $entry['name'] == $name) {
-                        return array($id, $entry);
+                        $entry['id'] = $id;
+                        
+                        return $this->addType($entry);
                     }
                 }
             }
@@ -126,7 +144,19 @@ abstract class Block implements BlockInterface
 
         throw new \RuntimeException('No entry "'.$name.'" in section "'.$section.'"');
     }
-    
+
+    /**
+     * Register a state or get its identifier from the cache
+     */
+    public function getVariableIdentifier($name, $type)
+    {
+        if (!isset($this->cache[$name])) {
+            $this->cache[$name] = $this->environment->registerState($this->getId(), $name, $type);
+        }
+
+        return $this->cache[$name];
+    }
+ 
     /**
      * Gets the identifier for the given output
      */
@@ -134,23 +164,19 @@ abstract class Block implements BlockInterface
     {
         if (!$id) {
             $entry = $this->getEntry('outputs', $name);
-            $ioName = 'output_' . $entry[0];
+            $ioName = 'output_' . $entry['id'];
         } else {
             $ioName = 'output_' . $id;
             $entry = $this->getEntry('outputs', $name, true);
         }
 
-        if (!isset($this->cache[$ioName])) {
-            $this->cache[$ioName] = $this->environment->registerState($this->getId(), $ioName, VariableType::Scalar);
-        }
-
-        return $this->cache[$ioName];
+        return $this->getVariableIdentifier($ioName, $entry['variableType']);
     }
     
     public function getIdentifier($section, $prefix, $name, $multiple = false, $default = null)
     {
         $entry = $this->getEntry($section, $name);
-        $ioName = $prefix . '_' . $entry[0];
+        $ioName = $prefix . '_' . $entry['id'];
         $card = $this->getCardinality($ioName);
 
         if ($card) {
@@ -170,7 +196,7 @@ abstract class Block implements BlockInterface
             }
         } else {
             if ($default !== null) {
-                return $default;
+                return new Identifier($this->environment, $default, $entry['variableType']);
             } else {
                 throw new \RuntimeException('Cannot access identifier for input "'.$name.'" because it\'s not linked');
             }
@@ -236,7 +262,7 @@ abstract class Block implements BlockInterface
         $card = explode('-', $cardString);
 
         if (count($card) == 1) {
-            $card = array(0, $cardString);
+            $card = array($cardString, $cardString);
         }
 
         if (count($card) > 2) {

@@ -4,6 +4,7 @@ namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
+use Rhoban\Blocks\Identifier;
 
 /**
  * Environment
@@ -159,6 +160,6 @@ abstract class Environment implements EnvironmentInterface
         $this->checkRegistered($array, $identifier, true);
         $array[$identifier] = $type;
 
-        return $identifier;
+        return new Identifier($this, $identifier, $type);
     }
 }

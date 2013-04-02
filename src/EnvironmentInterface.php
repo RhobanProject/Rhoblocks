@@ -63,4 +63,10 @@ interface EnvironmentInterface
      * @return string code
      */
     public function generateInitTransitionCode();
+
+    /**
+     * Generates the piece of code needed to cast a value from a certain 
+     * type to another
+     */
+    public function cast($value, $fromType, $toType);
 }
