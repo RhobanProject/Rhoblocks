@@ -3,7 +3,7 @@
 namespace Rhoban\Blocks\Implementation\C;
 
 use Rhoban\Blocks\Blocks\SinusBlock;
-use Rhoban\Blocks\VariableHolderInterface;
+use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class SinusBlock_C extends SinusBlock
@@ -14,14 +14,14 @@ class SinusBlock_C extends SinusBlock
     public function implementTransitionCode(
         array $parameters, 
         array $inputs, 
-        VariableHolderInterface $variableHolder)
+        EnvironmentInterface $environment)
     {
-        $variableHolder->registerState(
+        $environment->registerState(
             $this->getId(), 
             0, 
             VariableType::Scalar);
         $code = '    ';
-        $code .= $variableHolder->stateName($this->getId(), 0);
+        $code .= $environment->stateName($this->getId(), 0);
         $code .= ' = ';
         $code .= 'sin(';
         $code .= $inputs['T'][0]['identifier'];

@@ -3,7 +3,7 @@
 namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\BlockInterface;
-use Rhoban\Blocks\VariableHolderInterface;
+use Rhoban\Blocks\EnvironmentInterface;
 
 abstract class Block implements BlockInterface
 {
@@ -18,9 +18,9 @@ abstract class Block implements BlockInterface
     private $parameterValues = array();
 
     /**
-     * Compiler Variable Holder (Rhoban\Blocks\VariableHolderInterface)
+     * Compiler Environment (Rhoban\Blocks\EnvironmentInterface)
      */
-    private $variableHolder;
+    private $environment;
 
     /**
      * The block id
@@ -31,9 +31,9 @@ abstract class Block implements BlockInterface
      * Initialize the block fron json representation
      * @param $data : json array representation from blocks.js
      */
-    public function __construct(array $data, VariableHolderInterface $holder)
+    public function __construct(array $data, EnvironmentInterface $environment)
     {
-        $this->variableHolder = $holder;
+        $this->environment = $environment;
         $this->id = $data['id'];
         $this->parameterValues = $data['parameters'];
         $this->checkParameters();
@@ -71,9 +71,9 @@ abstract class Block implements BlockInterface
                 $srcId = $link['blockId'];
                 $srcIndex = substr($link['index'], 7);
                 $inputsContainer[$name][] = array(
-                    'identifier' => $this->variableHolder
+                    'identifier' => $this->environment
                         ->stateName($srcId, $srcIndex),
-                    'type' => $this->variableHolder
+                    'type' => $this->environment
                         ->stateType($srcId, $srcIndex),
                 );
             }
@@ -86,9 +86,9 @@ abstract class Block implements BlockInterface
                 $srcId = $link['blockId'];
                 $srcIndex = substr($link['index'], 7);
                 $parametersContainer[$name][] = array(
-                    'identifier' => $this->variableHolder
+                    'identifier' => $this->environment
                         ->stateName($srcId, $srcIndex),
-                    'type' => $this->variableHolder
+                    'type' => $this->environment
                         ->stateType($srcId, $srcIndex),
                 );
             }
@@ -98,7 +98,7 @@ abstract class Block implements BlockInterface
                 $value = $this->parameterValues[$name];
                 $parametersContainer[$name][] = array(
                     'identifier' => $value,
-                    'type' => $this->variableHolder
+                    'type' => $this->environment
                         ->guestVariableType($value),
                 );
             }
@@ -108,13 +108,13 @@ abstract class Block implements BlockInterface
         $code = $this->implementTransitionCode(
             $parametersContainer, 
             $inputsContainer, 
-            $this->variableHolder);
+            $this->environment);
 
         //Check that all block output states have been register
         //by the implementation
         foreach ($meta['outputs'] as $index => $output) {
             try {
-                $this->variableHolder->stateName($this->getId(), $index);
+                $this->environment->stateName($this->getId(), $index);
             } catch (\InvalidArgumentException $e) {
                 throw new \LogicException(
                     'State not registered for block '.$this->getId());
@@ -138,7 +138,7 @@ abstract class Block implements BlockInterface
     abstract protected function implementTransitionCode(
         array $parameters, 
         array $inputs, 
-        VariableHolderInterface $variableHolder);
+        EnvironmentInterface $environment);
 
     /**
      * @inherit

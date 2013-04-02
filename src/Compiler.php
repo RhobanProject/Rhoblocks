@@ -57,9 +57,9 @@ class Compiler
         $graph = new Graph($this->jsonData, $this->factory);
         $initCode = $graph->generateInitCode();
         $transitionCode = $graph->generateTransitionCode();
-        $initTransitionCode = $this->factory->getVariableHolder()
+        $initTransitionCode = $this->factory->getEnvironment()
             ->generateInitTransitionCode();
-        $structCode = $this->factory->getVariableHolder()->generateStructCode();
+        $structCode = $this->factory->getEnvironment()->generateStructCode();
 
         return $this->factory->getGenerator()->generateCode(
             $structCode, 

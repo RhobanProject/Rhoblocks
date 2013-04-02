@@ -3,9 +3,9 @@
 namespace Rhoban\Blocks;
 
 /**
- * VariableHolderInterface
+ * EnvironmentInterface
  */
-interface VariableHolderInterface
+interface EnvironmentInterface
 {
     /**
      * Register a global input/output/variable or a

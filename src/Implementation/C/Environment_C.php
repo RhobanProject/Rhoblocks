@@ -2,13 +2,13 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\VariableHolder;
+use Rhoban\Blocks\Environment;
 use Rhoban\Blocks\VariableType;
 
 /**
- * VariableHolder_C
+ * Environment_C
  */
-class VariableHolder_C extends VariableHolder
+class Environment_C extends Environment
 {
     /**
      * @inherit

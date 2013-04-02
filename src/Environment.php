@@ -2,13 +2,13 @@
 
 namespace Rhoban\Blocks;
 
-use Rhoban\Blocks\VariableHolderInterface;
+use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 /**
- * VariableHolder
+ * Environment
  */
-abstract class VariableHolder implements VariableHolderInterface
+abstract class Environment implements EnvironmentInterface
 {
     /**
      * Global and stack variable containers
