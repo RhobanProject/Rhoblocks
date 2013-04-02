@@ -19,8 +19,9 @@ $jsonData = '
     ';
 
 $options = array(
-    'frequency' => 10,
-    'watchOutputs' => array(0)
+    'frequency' => 30,
+    'watchOutputs' => array(0),
+    'prefix' => 'test'
 );
 $compiler = new Compiler(new Factory('C', $options), $jsonData);
 
@@ -32,7 +33,7 @@ foreach ($jsonBlocks as $name => $js) {
 //var_dump($jsonBlocks);
 
 // Generation of the code files
-$codeFiles = $compiler->generateCode('test');
+$codeFiles = $compiler->generateCode();
 foreach ($codeFiles as $file => $code) {
     echo "\n".$file.":\n\n";
     echo $code;

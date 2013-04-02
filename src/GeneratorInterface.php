@@ -10,7 +10,6 @@ interface GeneratorInterface
     /**
      * Return an array of generated code
      * files for transition computation
-     * @param $prefix : the prefix to be used
      * @param $structCode : implementation of structure
      * declaration code
      * @param $initCode : implementation code of 
@@ -22,11 +21,11 @@ interface GeneratorInterface
      *
      * @return array of string code
      */
-    public function generateCode($prefix, EnvironmentInterface $environment, $initCode, $transitionCode);
+    public function generateCode(EnvironmentInterface $environment, $initCode, $transitionCode);
 
     /**
      * Return 
      * @return array of string code
      */
-    public function generateMain($prefix, EnvironmentInterface $environment);
+    public function generateMain(EnvironmentInterface $environment);
 }

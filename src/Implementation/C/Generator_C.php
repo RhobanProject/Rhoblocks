@@ -10,12 +10,13 @@ class Generator_C extends Generator
     /**
      * @inherit
      */
-    public function generateCode($prefix, EnvironmentInterface $environment, $initCode, $transitionCode)
+    public function generateCode(EnvironmentInterface $environment, $initCode, $transitionCode)
     {
         if (!$environment instanceof Environment_C) {
             throw new \RuntimeException('The environment should be a C environment');
         }
 
+        $prefix = $environment->getPrefix();
         $prefixUpper = strtoupper($prefix);
         $structName = $environment->getStructName($prefix);
 
@@ -54,15 +55,16 @@ class Generator_C extends Generator
         return array(
             $prefix.'.h' => $codeHeader,
             $prefix.'.c' => $codeC,
-            'main.c' => $this->generateMain($prefix, $environment)
+            'main.c' => $this->generateMain($environment)
         );
     }
 
     /**
      * @inherit
      */
-    public function generateMain($prefix, EnvironmentInterface $environment)
+    public function generateMain(EnvironmentInterface $environment)
     {
+        $prefix = $environment->getPrefix();
         $outputs = '';
 
         $watch = $environment->getOption('watchOutputs');

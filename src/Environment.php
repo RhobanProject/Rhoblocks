@@ -23,7 +23,8 @@ abstract class Environment implements EnvironmentInterface
     public function getDefaultOptions()
     {
         return array(
-            'frequency' => 50
+            'frequency' => 50,
+            'prefix' => 'blocks'
         );
     }
 
@@ -38,11 +39,19 @@ abstract class Environment implements EnvironmentInterface
     }
 
     /**
-     * @inherit
+     * Shortcut to get the frequency
      */
     public function getFrequency()
     {
         return $this->getOption('frequency');
+    }
+
+    /**
+     * Shortcut to get the prefix
+     */
+    public function getPrefix()
+    {
+        return $this->getOption('prefix');
     }
 
     /**

@@ -60,9 +60,9 @@ class Environment_C extends Environment
     /**
      * @inherit
      */
-    public function generateStructCode($prefix)
+    public function generateStructCode()
     {
-        $code = 'struct '.$this->getStructName($prefix)." {\n";
+        $code = 'struct '.$this->getStructName()." {\n";
         foreach ($this->global as $identifier => $type) {
             $code .= '    '.$this->typeToName($type).' '.$identifier.";\n";
         }
@@ -74,8 +74,9 @@ class Environment_C extends Environment
     /**
      * @inherit
      */
-    public function getStructName($prefix)
+    public function getStructName()
     {
+        $prefix = $this->getPrefix();
         return $prefix . '_data';
     }
 
