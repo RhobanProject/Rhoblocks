@@ -146,6 +146,20 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Gets the output identifier for given index
+     */
+    public function getGlobalOutputIdentifier($index, $type)
+    {
+        $name = 'global_output_'.$index;
+
+        if (!isset($this->cache[$name])) {
+            $this->cache[$name] = $this->environment->registerOutput($index, $type);
+        }
+
+        return $this->cache[$name];
+    }
+
+    /**
      * Register a state or get its identifier from the cache
      */
     public function getVariableIdentifier($name, $type, $global = false)
@@ -170,7 +184,7 @@ abstract class Block implements BlockInterface
             $entry = $this->getEntry('outputs', $name);
             $ioName = 'output_' . $entry['id'];
         } else {
-            $ioName = 'output_' . $id;
+            $ioName = 'output_' . $name;
             $entry = $this->getEntry('outputs', $name, true);
         }
 
@@ -341,9 +355,13 @@ abstract class Block implements BlockInterface
         $meta = $this->getMeta();
 
         foreach ($meta['parameters'] as $param) {
-            if (!array_key_exists($param['name'], $this->parameterValues)) {
+            $name = $param['name'];
+
+            if (!array_key_exists($name, $this->parameterValues)) {
                 throw new \RuntimeException(
                     'Missing block parameters '.$param['name']);
+            } else {
+                $this->parameterValues[$name] = str_replace(',', '.', $this->parameterValues[$name]);
             }
         }
     }

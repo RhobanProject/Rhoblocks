@@ -54,6 +54,35 @@ class Generator_C extends Generator
         return array(
             $prefix.'.h' => $codeHeader,
             $prefix.'.c' => $codeC,
+            'main.c' => $this->generateMain($prefix, $environment)
         );
+    }
+
+    /**
+     * @inherit
+     */
+    public function generateMain($prefix, EnvironmentInterface $environment)
+    {
+        $code = "#include <stdlib.h>
+        #include <stdio.h>
+        #include \"$prefix.h\"
+
+        int main()
+        {
+            struct ".$environment->getStructName($prefix)." data;
+
+            // Initializing the structure
+            ".$prefix."Init(&data);
+
+            while(1) {
+                // Ticking the structure
+                ".$prefix."Tick(&data);
+                usleep(1000000/".$environment->getFrequency().");
+
+                // You can do some display or code here
+            }
+        }\n";
+
+        return $code;
     }
 }

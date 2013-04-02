@@ -24,7 +24,6 @@ abstract class Environment implements EnvironmentInterface
 
     public function __construct($frequency = 50)
     {
-        var_dump($frequency);
         $this->frequency = $frequency;
     }
 
@@ -41,11 +40,11 @@ abstract class Environment implements EnvironmentInterface
      */
     public function registerInput($index, $type)
     {
-        return $this->register($this->global, 'input', $type, $index, true);
+        return $this->register($this->global, 'input', $type, null, $index, true);
     }
     public function registerOutput($index, $type)
     {
-        return $this->register($this->global, 'output', $type, $index, true);
+        return $this->register($this->global, 'output', $type, null, $index, true);
     }
     public function registerState($blockId, $index, $type)
     {
