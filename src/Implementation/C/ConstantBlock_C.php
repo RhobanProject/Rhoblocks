@@ -13,6 +13,6 @@ class ConstantBlock_C extends ConstantBlock
      */
     public function implementTransitionCode()
     {
-        return $this->getOutputIdentifier('Value') . ' = ' . $this->getParameterIdentifier('Value') . ";\n";
+        return $this->getOutputLIdentifier('Value') . ' = ' . $this->getParameterIdentifier('Value') . ";\n";
     }
 }

@@ -172,6 +172,14 @@ abstract class Block implements BlockInterface
 
         return $this->getVariableIdentifier($ioName, $entry['variableType']);
     }
+
+    /**
+     * Gets the output as an L value
+     */
+    public function getOutputLIdentifier($name)
+    {
+        return $this->getOutputIdentifier($name)->lValue();
+    }
     
     public function getIdentifier($section, $prefix, $name, $multiple = false, $default = null)
     {

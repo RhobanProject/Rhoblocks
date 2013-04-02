@@ -21,7 +21,7 @@ class SinusBlock_C extends SinusBlock
      */
     public function implementTransitionCode()
     {
-        $code = $this->getOutputIdentifier('Wave');
+        $code = $this->getOutputLIdentifier('Wave');
         $code .= ' = sin(';
         $code .= $this->getInputIdentifier('T');
         $code .= '*2.0*M_PI*';

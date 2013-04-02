@@ -58,4 +58,12 @@ class Identifier
         $s = $this->get(VariableType::Scalar);
         return "$s";
     }
+
+    /**
+     * Gets the lValue (without any cast) of the identifier
+     */
+    public function lValue()
+    {
+        return $this->value;
+    }
 }

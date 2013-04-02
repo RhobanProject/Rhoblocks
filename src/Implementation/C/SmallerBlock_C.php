@@ -13,7 +13,7 @@ class SmallerBlock_C extends SmallerBlock
      */
     public function implementTransitionCode()
     {
-        $code = $this->getOutputIdentifier('A<B')->asInteger();
+        $code = $this->getOutputLIdentifier('A<B');
         $code .= ' = ';
         $code .= $this->getInputIdentifier('A');
         $code .= ' < ';
