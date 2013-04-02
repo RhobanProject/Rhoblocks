@@ -16,6 +16,16 @@ class Environment_C extends Environment
     protected $headers = array();
 
     /**
+     * Adding specific options
+     */
+    public function getDefaultOptions()
+    {
+        return array_merge(parent::getDefaultOptions(), array(
+            'watchOutputs' => false
+        ));
+    }
+
+    /**
      * Adds an header (.h) to the includes
      *
      * @param $header the header file name

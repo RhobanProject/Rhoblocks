@@ -63,6 +63,16 @@ class Generator_C extends Generator
      */
     public function generateMain($prefix, EnvironmentInterface $environment)
     {
+        $outputs = '';
+
+        $watch = $environment->getOption('watchOutputs');
+        if ($watch) {
+            $outputs .= "printf(\"\\n\");\n";
+            foreach ($watch as $index) {
+                $outputs .= "printf(\"Output $index: %f\\n\", data.output_$index);\n";
+            }
+        }
+
         $code = "#include <stdlib.h>
         #include <stdio.h>
         #include \"$prefix.h\"
@@ -80,6 +90,7 @@ class Generator_C extends Generator
                 usleep(1000000/".$environment->getFrequency().");
 
                 // You can do some display or code here
+                $outputs        
             }
         }\n";
 

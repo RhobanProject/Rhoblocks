@@ -15,5 +15,8 @@
                 usleep(1000000/30);
 
                 // You can do some display or code here
+                printf("\n");
+printf("Output 0: %f\n", data.output_0);
+        
             }
         }

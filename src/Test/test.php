@@ -19,7 +19,8 @@ $jsonData = '
     ';
 
 $options = array(
-    'frequency' => 30
+    'frequency' => 30,
+    'watchOutputs' => array(0)
 );
 $compiler = new Compiler(new Factory('C', $options), $jsonData);
 

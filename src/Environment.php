@@ -18,11 +18,6 @@ abstract class Environment implements EnvironmentInterface
     protected $stack = array();
 
     /**
-     * Options
-     */
-    protected $frequency;
-
-    /**
      * The options specific to the compilation
      */
     public function getDefaultOptions()
@@ -32,10 +27,14 @@ abstract class Environment implements EnvironmentInterface
         );
     }
 
+    /**
+     * Options
+     */
+    protected $options;
+
     public function __construct(array $options)
     {
-        $options = array_merge($this->getDefaultOptions(), $options);
-        $this->frequency = $options['frequency'];
+        $this->options = array_merge($this->getDefaultOptions(), $options);
     }
 
     /**
@@ -43,7 +42,19 @@ abstract class Environment implements EnvironmentInterface
      */
     public function getFrequency()
     {
-        return $this->frequency;
+        return $this->getOption('frequency');
+    }
+
+    /**
+     * Getting an option value
+     */
+    public function getOption($option)
+    {
+        if (isset($this->options[$option])) {
+            return $this->options[$option];
+        }
+
+        throw new \RuntimeException('Asking for non-existing option "'.$option.'"');
     }
 
     /**
