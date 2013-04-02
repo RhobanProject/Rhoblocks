@@ -37,7 +37,7 @@ class Generator_C extends Generator
         foreach ($environment->getHeaders() as $header) {
             $codeC .= '#include <'.$header.">\n";
         }
-        $codeC .= '#include \"'.$prefix.".h\"\n";
+        $codeC .= '#include "'.$prefix.".h\"\n";
         $codeC .= "\n";
         $codeC .= 'void '.$prefix.'Init(struct '.$structName." *data)\n";
         $codeC .= "{\n";
