@@ -18,6 +18,24 @@ abstract class Environment implements EnvironmentInterface
     protected $stack = array();
 
     /**
+     * The frequency of the system
+     */
+    protected $frequency;
+
+    public function __construct($frequency = 50)
+    {
+        $this->frequency = $frequency;
+    }
+
+    /**
+     * @inherit
+     */
+    public function getFrequency()
+    {
+        return $this->frequency;
+    }
+
+    /**
      * @inherit
      */
     public function registerInput($index, $type)

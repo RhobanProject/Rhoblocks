@@ -74,4 +74,11 @@ interface EnvironmentInterface
      * type to another
      */
     public function cast($value, $fromType, $toType);
+
+    /**
+     * Gets the frequency of the machine
+     *
+     * @return the scheduling frequency in hertz
+     */
+    public function getFrequency();
 }
