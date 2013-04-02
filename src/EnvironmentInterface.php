@@ -54,7 +54,12 @@ interface EnvironmentInterface
      *
      * @return string code
      */
-    public function generateStructCode();
+    public function generateStructCode($prefix);
+
+    /**
+     * Gets the struct name for a certain prefix
+     */
+    public function getStructName($prefix);
 
     /**
      * Return the generated code for initializing

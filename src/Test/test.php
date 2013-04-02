@@ -28,7 +28,7 @@ foreach ($jsonBlocks as $name => $js) {
 //var_dump($jsonBlocks);
 
 // Generation of the code files
-$codeFiles = $compiler->generateCode();
+$codeFiles = $compiler->generateCode('test');
 foreach ($codeFiles as $file => $code) {
     echo "\n".$file.":\n\n";
     echo $code;

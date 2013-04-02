@@ -50,15 +50,23 @@ class Environment_C extends Environment
     /**
      * @inherit
      */
-    public function generateStructCode()
+    public function generateStructCode($prefix)
     {
-        $code = "struct BlocksData_t {\n";
+        $code = 'struct '.$this->getStructName($prefix)." {\n";
         foreach ($this->global as $identifier => $type) {
             $code .= '    '.$this->typeToName($type).' '.$identifier.";\n";
         }
         $code .= "};\n";
 
         return $code;
+    }
+
+    /**
+     * @inherit
+     */
+    public function getStructName($prefix)
+    {
+        return $prefix . '_data';
     }
 
     /**

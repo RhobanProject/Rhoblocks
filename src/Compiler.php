@@ -52,13 +52,14 @@ class Compiler
      *
      * @return array of string code
      */
-    public function generateCode()
+    public function generateCode($prefix = 'blocks')
     {
         $graph = new Graph($this->jsonData, $this->factory);
         $initCode = $graph->generateInitCode();
         $transitionCode = $graph->generateTransitionCode();
 
         return $this->factory->getGenerator()->generateCode(
+            $prefix,
             $this->factory->getEnvironment(),
             $initCode, 
             $transitionCode
