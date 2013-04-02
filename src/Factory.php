@@ -50,6 +50,7 @@ class Factory implements FactoryInterface
     public function __construct($family, $frequency = 50)
     {
         $this->family = $family;
+        $this->frequency = $frequency;
     }
 
     /**

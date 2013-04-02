@@ -24,6 +24,7 @@ abstract class Environment implements EnvironmentInterface
 
     public function __construct($frequency = 50)
     {
+        var_dump($frequency);
         $this->frequency = $frequency;
     }
 
