@@ -67,16 +67,17 @@ class Graph implements GraphInterface
     {
         $code = '';
         foreach ($this->topologicalSort as $id) {
-            $code .= $this->blocks[$id]->generateInitCode();
+            $code .= $this->getBlock($id)->generateInitCode();
         }
 
         return $code;
     }
+
     public function generateTransitionCode()
     {
         $code = '';
         foreach ($this->topologicalSort as $id) {
-            $code .= $this->blocks[$id]->generateTransitionCode();
+            $code .= $this->getBlock($id)->generateTransitionCode();
         }
 
         return $code;
