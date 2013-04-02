@@ -48,7 +48,26 @@ class Edge
         throw new \RuntimeException('The io "'.$io.'" is not correct');
     }
 
-    public function __construct(BlockInterface $blockFrom, $ioFrom, BlockInterface $blockTo, $ioTo)
+    /**
+     * Apply the inversed transformation convertIo
+     * @param $ioArray formated as array('input', 12)
+     *
+     * @return string io name 'input_12'
+     */
+    public static function reverseIo($ioArray)
+    {
+        return implode('_', $ioArray);
+    }
+
+    /**
+     * Initialize the edge
+     * @param $blockFrom Rhoban\Blocks\BlockInterface source block
+     * @param $ioFrom string source io label
+     * @param $blockTo Rhoban\Blocks\BlockInterface destination block
+     * @param $ioTo string destination io label
+     */
+    public function __construct
+        (BlockInterface $blockFrom, $ioFrom, BlockInterface $blockTo, $ioTo)
     {
         $this->blockFrom = $blockFrom;
         $this->ioFrom = static::convertIo($ioFrom);
@@ -56,11 +75,13 @@ class Edge
         $this->ioTo = static::convertIo($ioTo);
     }
 
+    /**
+     * Getters
+     */
     public function fromId()
     {
         return (int)$this->blockFrom->getId();
     }
-
     public function toId()
     {
         return (int)$this->blockTo->getId();
@@ -71,7 +92,7 @@ class Edge
      */
     public function outputName()
     {
-        return implode('_', $this->ioTo);
+        return static::reverseIo($this->ioTo);
     }
 
     /**
@@ -79,11 +100,12 @@ class Edge
      */
     public function inputName()
     {
-        return implode('_', $this->ioFrom);
+        return static::reverseIo($this->ioFrom);
     }
 
     /**
      * The I/O name for the given block
+     * @param Rhoban\Blocks\BlockInterface
      */
     public function ioName(BlockInterface $block)
     {
@@ -94,8 +116,12 @@ class Edge
         }
     }
 
+    /**
+     *
+     */
     public function inputIdentifier()
     {
-        return $this->blockFrom->getOutputIdentifier($this->ioFrom[1], true);
+        return $this->blockFrom
+            ->getOutputIdentifier($this->ioFrom[1], true);
     }
 }

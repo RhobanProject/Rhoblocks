@@ -34,7 +34,7 @@ class Graph implements GraphInterface
      * Initialize the block graph
      * @param $json : json string representation
      * of the scene from blocks.js
-     * @param $factory : FactoryInterface
+     * @param $factory : Rhoban\Blocks\FactoryInterface
      */
     public function __construct($json, FactoryInterface $factory)
     {
@@ -48,7 +48,7 @@ class Graph implements GraphInterface
      * Gets a block by its id
      * @param $id the block id
      *
-     * @return BlockInterface if the block is found, null elese
+     * @return BlockInterface if the block is found, null else
      */
     public function getBlock($id)
     {
@@ -57,7 +57,7 @@ class Graph implements GraphInterface
             return $this->blocks[$id];
         }
 
-        return null;
+        throw new \InvalidArgumentException('Unknown block Id '.$id);
     }
 
     /**

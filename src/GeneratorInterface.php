@@ -2,6 +2,8 @@
 
 namespace Rhoban\Blocks;
 
+use Rhoban\Blocks\EnvironmentInterface;
+
 /**
  * GeneratorInterface
  */
@@ -10,8 +12,8 @@ interface GeneratorInterface
     /**
      * Return an array of generated code
      * files for transition computation
-     * @param $structCode : implementation of structure
-     * declaration code
+     * @param $environment : Rhoban\Blocks\EnvironmentInterface
+     * variables environment
      * @param $initCode : implementation code of 
      * initialisation function
      * @param $initTransitionCode : implementation code 
@@ -21,7 +23,8 @@ interface GeneratorInterface
      *
      * @return array of string code
      */
-    public function generateCode(EnvironmentInterface $environment, $initCode, $transitionCode);
+    public function generateCode
+        (EnvironmentInterface $environment, $initCode, $transitionCode);
 
     /**
      * Return 
