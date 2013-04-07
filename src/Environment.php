@@ -143,7 +143,9 @@ abstract class Environment implements EnvironmentInterface
     }
 
     /**
+     * Try to guess the type of the given numeric variable
      *
+     * @return Rhoban\Blocks\VariableType
      */
     public function guestVariableType($value)
     {

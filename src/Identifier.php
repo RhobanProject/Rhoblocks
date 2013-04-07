@@ -19,7 +19,7 @@ class Identifier
      * The type of the identifier
      */
     protected $type;
-
+    
     /**
      * Is the identifier in the strut ?
      */
@@ -40,7 +40,14 @@ class Identifier
         return array($variable, $type);
     }
 
-    public function __construct(EnvironmentInterface $environment, $value, $type, $struct = false)
+    /**
+     * Initialize the identifier
+     * @param Rhoban\Blocks\EnvironmentInterface
+     * @param $value string
+     * @param $type Rhoban\Blocks\VariableType
+     */
+    public function __construct
+        (EnvironmentInterface $environment, $value, $type, $struct = false)
     {
         $this->environment = $environment;
         $this->value = $value;
@@ -64,6 +71,9 @@ class Identifier
 
     /**
      * Gets the identifier, which may be casted in the target type
+     * @param $type the Rhoban\Blocks\VariableType target type
+     *
+     * @return string identifier
      */
     public function get($type)
     {
@@ -74,19 +84,20 @@ class Identifier
         return $this->getValue();
     }
 
+    /**
+     * Return the identifier string cast as Integer and Scalar
+     */
     public function asInteger()
     {
         return $this->get(VariableType::Integer);
     }
-
     public function asScalar()
     {
         return $this->get(VariableType::Scalar);
     }
 
-
     /**
-     * Converts the idntifier to a string
+     * Converts the identifier to a string
      */
     public function __toString()
     {

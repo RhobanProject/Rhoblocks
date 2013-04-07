@@ -2,6 +2,7 @@
 
 namespace Rhoban\Blocks;
 
+
 /**
  * EnvironmentInterface
  */
@@ -72,6 +73,9 @@ interface EnvironmentInterface
     /**
      * Generates the piece of code needed to cast a value from a certain 
      * type to another
+     * @param $value string identifier
+     * @param $fromType Rhoban\Blocks\VariableType source type
+     * @param $toType Rhoban\Blocks\VariableType target type
      */
     public function cast($value, $fromType, $toType);
 

@@ -4,6 +4,7 @@ namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\BlockInterface;
 use Rhoban\Blocks\EnvironmentInterface;
+use Rhoban\Blocks\Edge;
 
 abstract class Block implements BlockInterface
 {
@@ -29,6 +30,7 @@ abstract class Block implements BlockInterface
 
     /**
      * Edges concerning this block
+     * Array of Rhoban\Blocks\Edge
      */
     protected $edges = array();
 
@@ -38,7 +40,20 @@ abstract class Block implements BlockInterface
     protected $cache = array();
 
     /**
+     * Initialize the block fron json representation
+     * @param $data : json array representation from blocks.js
+     */
+    public function __construct(array $data, EnvironmentInterface $environment)
+    {
+        $this->environment = $environment;
+        $this->id = $data['id'];
+        $this->parameterValues = $data['parameters'];
+        $this->checkParameters();
+    }
+
+    /**
      * Adding an edge that enter in this block
+     * @param $edge Rhoban\Blocks\Edge
      */
     public function addEdge(Edge $edge)
     {
@@ -64,18 +79,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Initialize the block fron json representation
-     * @param $data : json array representation from blocks.js
-     */
-    public function __construct(array $data, EnvironmentInterface $environment)
-    {
-        $this->environment = $environment;
-        $this->id = $data['id'];
-        $this->parameterValues = $data['parameters'];
-        $this->checkParameters();
-    }
-
-    /**
      * @inherit
      */
     public static function generateJSON()
@@ -93,7 +96,6 @@ abstract class Block implements BlockInterface
 
     public function generateTransitionCode()
     {
-        // Call code implementation
         return $this->implementTransitionCode();
     }
 
@@ -236,7 +238,7 @@ abstract class Block implements BlockInterface
 
         if ($card) {
             if ($multiple && $card > 1) {
-                throw new \RuntimeException('Querying single input idnetifier for "'.$name.'", but there is multiple edges arriving in it');
+                throw new \RuntimeException('Querying single input identifier for "'.$name.'", but there is multiple edges arriving in it');
             }
 
             $identifiers = array();
@@ -330,7 +332,8 @@ abstract class Block implements BlockInterface
             $card[1] = (int)$card[1];
 
             if ($card[0] > $card[1]) {
-                throw new \RuntimeException('Misformed cardilanity, min must be lower than max "'.$cardString.'"');
+                throw new \RuntimeException
+                    ('Misformed cardilanity, min must be lower than max "'.$cardString.'"');
             }
         }
 

@@ -42,7 +42,7 @@ class Compiler
      *
      * @return array of json blocks definition
      */
-    public  function generateJSON($family = 'C')
+    public  function generateJSON()
     {
         return $this->factory->generateBlocksJSON();
     }
