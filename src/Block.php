@@ -197,9 +197,8 @@ abstract class Block implements BlockInterface
         // Watching the parameters
         $meta = $this->getMeta();
         foreach ($meta['parameters'] as $parameter) {
-            var_dump($parameter);
-            $entry = $this->addType($parameter);
-            $type = max($entry['variableType'], $type);
+            $parameter = $this->getParameterIdentifier($parameter['name']);
+            $type = max($parameter->getType(), $type);
         }
 
         return $type;

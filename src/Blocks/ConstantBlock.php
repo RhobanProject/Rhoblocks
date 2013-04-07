@@ -16,7 +16,6 @@ abstract class ConstantBlock extends Block
         'parameters' => array(
             array(
                 'name' => 'Value',
-                'type' => 'number',
                 'default' => 0,
             ),
         ),
