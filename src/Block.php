@@ -184,15 +184,22 @@ abstract class Block implements BlockInterface
     {
         $type = VariableType::getWeakest();
 
+        // Watching the inputing edges
         foreach ($this->edges as $ioName => $edges) {
             foreach ($edges as $edge) {
                 if ($edge->isEnteringIn($this)) {
                     $current = $edge->inputIdentifier()->getType();
-                    if ($current > $type) {
-                        $type = $current;
-                    }
+                    $type = max($current, $type);
                 }
             }
+        }
+
+        // Watching the parameters
+        $meta = $this->getMeta();
+        foreach ($meta['parameters'] as $parameter) {
+            var_dump($parameter);
+            $entry = $this->addType($parameter);
+            $type = max($entry['variableType'], $type);
         }
 
         return $type;
