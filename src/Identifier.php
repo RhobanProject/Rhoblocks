@@ -25,6 +25,21 @@ class Identifier
      */
     protected $struct;
 
+    public static function guessType($variable, $type)
+    {
+        if ($type == VariableType::Unknown) {
+            if (preg_match('#^([0-9]+)$#uSi', $variable)) {
+                $variable = (int)$variable;
+                $type = VariableType::Integer;
+            } else {
+                $variable = (double)$variable;
+                $type = VariableType::Scalar;
+            }
+        }
+
+        return array($variable, $type);
+    }
+
     public function __construct(EnvironmentInterface $environment, $value, $type, $struct = false)
     {
         $this->environment = $environment;
@@ -85,5 +100,13 @@ class Identifier
     public function lValue()
     {
         return $this->getValue();
+    }
+
+    /**
+     * Getting the type of the identifier
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

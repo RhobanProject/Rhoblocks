@@ -15,7 +15,7 @@ function __autoload($className) {
 }
 
 $jsonData = '
-    {"edges":[{"block1":2,"io1":"output_0","block2":6,"io2":"input_0"},{"block1":7,"io1":"output_0","block2":2,"io2":"input_0"},{"block1":8,"io1":"output_0","block2":2,"io2":"param_1"}],"blocks":[{"id":6,"x":161.30181818181816,"y":-62.365454545454526,"type":"Output","parameters":{"Index":"0"}},{"id":2,"x":-216,"y":-118,"type":"Sinus","parameters":{"Amplitude":1,"Frequency":1,"Phase":0}},{"id":7,"x":-470.0618181818181,"y":-58.99818181818179,"type":"Chrono","parameters":{}},{"id":8,"x":-474.27090909090913,"y":-177.69454545454545,"type":"Constant","parameters":{"Value":"1"}}]}
+    {"edges":[{"block1":6,"io1":"output_0","block2":8,"io2":"input_0"},{"block1":7,"io1":"output_0","block2":8,"io2":"input_1"},{"block1":8,"io1":"output_0","block2":9,"io2":"input_0"}],"blocks":[{"id":6,"x":-440.59818181818173,"y":-123.81818181818178,"type":"Constant","parameters":{"Value":"1"}},{"id":7,"x":-438.0727272727272,"y":32.75999999999999,"type":"Constant","parameters":{"Value":"4"}},{"id":8,"x":-151.85454545454542,"y":-37.110909090909075,"type":"Smaller","parameters":{}},{"id":9,"x":161.30181818181825,"y":-55.63090909090906,"type":"Output","parameters":{"Index":"0"}}]}
     ';
 
 $options = array(

@@ -94,6 +94,17 @@ class Edge
         }
     }
 
+    /**
+     * Is this edge entering in the given block ?
+     */
+    public function isEnteringIn(BlockInterface $block)
+    {
+        return ($this->blockTo == $block);
+    }
+
+    /**
+     * Gets the identifier of the inputting block
+     */
     public function inputIdentifier()
     {
         return $this->blockFrom->getOutputIdentifier($this->ioFrom[1], true);

@@ -102,10 +102,10 @@ abstract class Block implements BlockInterface
      */
     public function addType(array $entry)
     {
-        if (isset($entry['type']) && $entry['type'] == 'integer') {
-            $entry['variableType'] = VariableType::Integer;
+        if (isset($entry['type'])) {
+            $entry['variableType'] = VariableType::stringToType($entry['type']);
         } else {
-            $entry['variableType'] = VariableType::Scalar;
+            $entry['variableType'] = VariableType::Unknown;
         }
 
         return $entry;
@@ -174,21 +174,50 @@ abstract class Block implements BlockInterface
 
         return $this->cache[$name];
     }
+
+    /**
+     * Gets the weakest type of all the inputs of this block
+     */
+    public function getWeakestType()
+    {
+        $type = VariableType::getWeakest();
+
+        foreach ($this->edges as $ioName => $edges) {
+            foreach ($edges as $edge) {
+                if ($edge->isEnteringIn($this)) {
+                    $current = $edge->inputIdentifier()->getType();
+                    if ($current > $type) {
+                        $type = $current;
+                    }
+                }
+            }
+        }
+
+        return $type;
+    }
  
     /**
      * Gets the identifier for the given output
+     *
+     * @param $name, the name of the input
+     * @param $id, is it the identifier or the name
      */
-    public function getOutputIdentifier($name, $id = false)
+    public function getOutputIdentifier($nameOrId, $id = false)
     {
         if (!$id) {
-            $entry = $this->getEntry('outputs', $name);
+            $entry = $this->getEntry('outputs', $nameOrId);
             $ioName = 'output_' . $entry['id'];
         } else {
-            $ioName = 'output_' . $name;
-            $entry = $this->getEntry('outputs', $name, true);
+            $ioName = 'output_' . $nameOrId;
+            $entry = $this->getEntry('outputs', $nameOrId, true);
         }
 
-        return $this->getVariableIdentifier($ioName, $entry['variableType']);
+        $type = $entry['variableType'];
+        if ($type == VariableType::Unknown) {
+            $type = $this->getWeakestType();
+        }
+
+        return $this->getVariableIdentifier($ioName, $type);
     }
 
     /**
@@ -222,7 +251,8 @@ abstract class Block implements BlockInterface
             }
         } else {
             if ($default !== null) {
-                return new Identifier($this->environment, $default, $entry['variableType']);
+                list($value, $type) = Identifier::guessType($default, $entry['variableType']);
+                return new Identifier($this->environment, $value, $type);
             } else {
                 throw new \RuntimeException('Cannot access identifier for input "'.$name.'" because it\'s not linked');
             }
