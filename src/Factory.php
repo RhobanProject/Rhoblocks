@@ -116,10 +116,10 @@ class Factory implements FactoryInterface
             self::$familyBinding[$this->family] && 
             self::$familyBinding[$this->family][$type]
         ) {
-            if ($arg1 && $arg2) {
+            if ($arg1 !== null && $arg2 !== null) {
                 $className = self::$familyBinding[$this->family][$type];
                 return new $className($arg1, $arg2);
-            } else if ($arg1) {
+            } else if ($arg1 !== null) {
                 $className = self::$familyBinding[$this->family][$type];
                 return new $className($arg1);
             } else {
