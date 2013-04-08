@@ -1,0 +1,26 @@
+
+* {
+    margin:0;
+    padding:0;
+}
+
+body {
+    width:1000px;
+    margin:auto;
+    margin-top:10px;
+    font-family:Sans-serif;
+}
+
+a {
+    color:#c00;
+}
+
+a:hover {
+    color:black;
+}
+
+#blocks {
+    width:1000px;
+    height:650px;
+    border:1px solid #aaa;
+}
