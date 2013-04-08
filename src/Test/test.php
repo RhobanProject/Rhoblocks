@@ -3,16 +3,7 @@
 use Rhoban\Blocks\Compiler;
 use Rhoban\Blocks\Factory;
 
-/**
- * Dummy class autoload
- */
-function __autoload($className) {
-    $className = str_replace('Rhoban\\Blocks', '../', $className);
-    $fileName = __DIR__ . '/' . str_replace('\\', '/', $className) . '.php';
-    if (file_exists($fileName)) {
-        require($fileName);
-    }
-}
+include(__DIR__.'/../autoload.php');
 
 $jsonData = '{
     "edges":[
