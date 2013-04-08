@@ -5,28 +5,32 @@ use Rhoban\Blocks\Factory;
 
 include(__DIR__.'/../autoload.php');
 
-$jsonData = '{
-    "edges":[
-        {"block1":11,"io1":"output_0","block2":4,"io2":"param_1"},
-        {"block1":12,"io1":"output_0","block2":4,"io2":"input_0"},
-        {"block1":12,"io1":"output_0","block2":4,"io2":"param_2"}
-    ],"blocks":[
-        {"id":11,"x":-399.29937283654135,"y":-155.48195167050062,"type":"Constant","parameters":{"Value":"2"}},
-        {"id":4,"x":-55.604849866396876,"y":-101.20299460902797,"type":"Sinus","parameters":{"Amplitude":1,"Frequency":10,"Phase":0,"Invert":false}},
-        {"id":12,"x":-395.74504852676955,"y":-34.48929566763786,"type":"Constant","parameters":{"Value":0}}
-]}';
+$jsonData = '
+    {"edges":[{"block1":6,"io1":"output_0","block2":8,"io2":"input_0"},{"block1":7,"io1":"output_0","block2":8,"io2":"input_1"},{"block1":10,"io1":"output_0","block2":11,"io2":"input_1"},{"block1":8,"io1":"output_0","block2":11,"io2":"input_0"},{"block1":11,"io1":"output_0","block2":9,"io2":"input_0"}],"blocks":[{"id":6,"x":-443.56872727272713,"y":-192.8833636363636,"type":"Constant","parameters":{"Value":"1"}},{"id":7,"x":-445.49909090909085,"y":-112.79672727272727,"type":"Constant","parameters":{"Value":"4"}},{"id":8,"x":-229.83136363636356,"y":-151.4769090909091,"type":"Smaller","parameters":{}},{"id":9,"x":161.30181818181825,"y":-55.63090909090906,"type":"Output","parameters":{"Index":"0"}},{"id":10,"x":-415.4958181818181,"y":21.970909090909103,"type":"Constant","parameters":{"Value":"0.25"}},{"id":11,"x":-139.23509090909081,"y":-24.07254545454544,"type":"Smaller","parameters":{}}]}
+    ';
 
-$compiler = new Compiler(new Factory('C'), $jsonData);
+$options = array(
+    'frequency' => 30,
+    'watchOutputs' => array(0),
+    'prefix' => 'test'
+);
+$compiler = new Compiler(new Factory('C', $options), $jsonData);
 
 // Generation of the blocks
 $jsonBlocks = $compiler->generateJSON();
-var_dump($jsonBlocks);
+foreach ($jsonBlocks as $name => $js) {
+    echo "blocks.register($js);\n";
+}
+//var_dump($jsonBlocks);
 
 // Generation of the code files
 $codeFiles = $compiler->generateCode();
 foreach ($codeFiles as $file => $code) {
     echo "\n".$file.":\n\n";
     echo $code;
+    if (is_dir('out')) {
+        file_put_contents('out/'.$file, $code);
+    }
 }
 
 // Generation of the main

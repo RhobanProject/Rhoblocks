@@ -2,10 +2,11 @@
 
 namespace Rhoban\Blocks;
 
+
 /**
- * VariableHolderInterface
+ * EnvironmentInterface
  */
-interface VariableHolderInterface
+interface EnvironmentInterface
 {
     /**
      * Register a global input/output/variable or a
@@ -57,10 +58,31 @@ interface VariableHolderInterface
     public function generateStructCode();
 
     /**
+     * Gets the struct name
+     */
+    public function getStructName();
+
+    /**
      * Return the generated code for initializing
      * stack variable for transition function
      *
      * @return string code
      */
     public function generateInitTransitionCode();
+
+    /**
+     * Generates the piece of code needed to cast a value from a certain 
+     * type to another
+     * @param $value string identifier
+     * @param $fromType Rhoban\Blocks\VariableType source type
+     * @param $toType Rhoban\Blocks\VariableType target type
+     */
+    public function cast($value, $fromType, $toType);
+
+    /**
+     * Gets the frequency of the machine
+     *
+     * @return the scheduling frequency in hertz
+     */
+    public function getFrequency();
 }

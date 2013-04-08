@@ -2,13 +2,14 @@
 
 namespace Rhoban\Blocks;
 
-use Rhoban\Blocks\VariableHolderInterface;
+use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
+use Rhoban\Blocks\Identifier;
 
 /**
- * VariableHolder
+ * Environment
  */
-abstract class VariableHolder implements VariableHolderInterface
+abstract class Environment implements EnvironmentInterface
 {
     /**
      * Global and stack variable containers
@@ -17,23 +18,72 @@ abstract class VariableHolder implements VariableHolderInterface
     protected $stack = array();
 
     /**
+     * The options specific to the compilation
+     */
+    public function getDefaultOptions()
+    {
+        return array(
+            'frequency' => 50,
+            'prefix' => 'blocks'
+        );
+    }
+
+    /**
+     * Options
+     */
+    protected $options;
+
+    public function __construct(array $options)
+    {
+        $this->options = array_merge($this->getDefaultOptions(), $options);
+    }
+
+    /**
+     * Shortcut to get the frequency
+     */
+    public function getFrequency()
+    {
+        return $this->getOption('frequency');
+    }
+
+    /**
+     * Shortcut to get the prefix
+     */
+    public function getPrefix()
+    {
+        return $this->getOption('prefix');
+    }
+
+    /**
+     * Getting an option value
+     */
+    public function getOption($option)
+    {
+        if (isset($this->options[$option])) {
+            return $this->options[$option];
+        }
+
+        throw new \RuntimeException('Asking for non-existing option "'.$option.'"');
+    }
+
+    /**
      * @inherit
      */
     public function registerInput($index, $type)
     {
-        $this->register($this->global, 'input', $type, $index);
+        return $this->register($this->global, 'input', $type, null, $index, true);
     }
     public function registerOutput($index, $type)
     {
-        $this->register($this->global, 'output', $type, $index);
+        return $this->register($this->global, 'output', $type, null, $index, true);
     }
     public function registerState($blockId, $index, $type)
     {
-        $this->register($this->stack, 'state', $type, $blockId, $index);
+        return $this->register($this->stack, 'state', $type, $blockId, $index);
     }
     public function registerVariable($blockId, $index, $type)
     {
-        $this->register($this->global, 'variable', $type, $blockId, $index);
+        return $this->register($this->global, 'variable', $type, $blockId, $index, true);
     }
     
     /**
@@ -93,7 +143,9 @@ abstract class VariableHolder implements VariableHolderInterface
     }
 
     /**
+     * Try to guess the type of the given numeric variable
      *
+     * @return Rhoban\Blocks\VariableType
      */
     public function guestVariableType($value)
     {
@@ -153,10 +205,12 @@ abstract class VariableHolder implements VariableHolderInterface
      * @param $index
      */
     private function register(array &$array, $name, $type, 
-        $blockId = null, $index)
+        $blockId = null, $index, $global = false)
     {
         $identifier = $this->getIdentifier($name, $blockId, $index);
         $this->checkRegistered($array, $identifier, true);
         $array[$identifier] = $type;
+
+        return new Identifier($this, $identifier, $type, $global);
     }
 }

@@ -42,7 +42,7 @@ class Compiler
      *
      * @return array of json blocks definition
      */
-    public  function generateJSON($family = 'C')
+    public  function generateJSON()
     {
         return $this->factory->generateBlocksJSON();
     }
@@ -52,20 +52,17 @@ class Compiler
      *
      * @return array of string code
      */
-    public  function generateCode()
+    public function generateCode()
     {
         $graph = new Graph($this->jsonData, $this->factory);
         $initCode = $graph->generateInitCode();
         $transitionCode = $graph->generateTransitionCode();
-        $initTransitionCode = $this->factory->getVariableHolder()
-            ->generateInitTransitionCode();
-        $structCode = $this->factory->getVariableHolder()->generateStructCode();
 
         return $this->factory->getGenerator()->generateCode(
-            $structCode, 
+            $this->factory->getEnvironment(),
             $initCode, 
-            $initTransitionCode, 
-            $transitionCode);
+            $transitionCode
+        );
     }
 
     /**

@@ -3,40 +3,79 @@
 namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\BlockInterface;
-use Rhoban\Blocks\VariableHolderInterface;
+use Rhoban\Blocks\EnvironmentInterface;
+use Rhoban\Blocks\Edge;
 
 abstract class Block implements BlockInterface
 {
     /**
      * The meta information array of the block
      */
-    private static $META;
+    protected static $META;
 
     /**
      * The parameter values of the block
      */
-    private $parameterValues = array();
+    protected $parameterValues = array();
 
     /**
-     * Compiler Variable Holder (Rhoban\Blocks\VariableHolderInterface)
+     * Compiler Environment (Rhoban\Blocks\EnvironmentInterface)
      */
-    private $variableHolder;
+    protected $environment;
 
     /**
      * The block id
      */
-    private $id;
+    protected $id;
+
+    /**
+     * Edges concerning this block
+     * Array of Rhoban\Blocks\Edge
+     */
+    protected $edges = array();
+
+    /**
+     * Cache to keep the variable names etc.
+     */
+    protected $cache = array();
 
     /**
      * Initialize the block fron json representation
      * @param $data : json array representation from blocks.js
      */
-    public function __construct(array $data, VariableHolderInterface $holder)
+    public function __construct(array $data, EnvironmentInterface $environment)
     {
-        $this->variableHolder = $holder;
+        $this->environment = $environment;
         $this->id = $data['id'];
         $this->parameterValues = $data['parameters'];
         $this->checkParameters();
+    }
+
+    /**
+     * Adding an edge that enter in this block
+     * @param $edge Rhoban\Blocks\Edge
+     */
+    public function addEdge(Edge $edge)
+    {
+        $key = $edge->ioName($this);
+
+        if (!isset($this->edges[$key])) {
+            $this->edges[$key] = array();
+        }
+
+        $this->edges[$key][] = $edge;
+    }
+
+    /**
+     * Gets the cardinality for an I/O name
+     */
+    public function getCardinality($ioName)
+    {
+        if (!isset($this->edges[$ioName])) {
+            return 0;
+        }
+
+        return count($this->edges[$ioName]);
     }
 
     /**
@@ -54,74 +93,193 @@ abstract class Block implements BlockInterface
     {
         return $this->implementInitCode();
     }
-    public function generateTransitionCode(array $linksReversed)
+
+    public function generateTransitionCode()
     {
-        //Build inputs and parameters container
-        //Resolves identifiers and type from incomming blocks
-        //for code generation
-        $parametersContainer = array();
-        $inputsContainer = array();
+        return $this->implementTransitionCode();
+    }
 
-        //Inputs
+    /**
+     * Adds the type information to an entry
+     */
+    public function addType(array $entry)
+    {
+        if (isset($entry['type'])) {
+            $entry['variableType'] = VariableType::stringToType($entry['type']);
+        } else {
+            $entry['variableType'] = VariableType::Unknown;
+        }
+
+        return $entry;
+    }
+
+    /**
+     * Gets an entry by name or id
+     *
+     * @param $section the section of the meta
+     * @param $name the name or the id of the meta
+     * @param $id true for the id, false for the name
+     *
+     * @return the entry or null if it's not found
+     */
+    public function getEntry($section, $name, $id = false)
+    {
         $meta = $this->getMeta();
-        foreach ($meta['inputs'] as $index => $input) {
-            $name = $input['name'];
-            $intputsContainer[$name] = array();
-            foreach ($linksReversed['input_'.$index] as $link) {
-                $srcId = $link['blockId'];
-                $srcIndex = substr($link['index'], 7);
-                $inputsContainer[$name][] = array(
-                    'identifier' => $this->variableHolder
-                        ->stateName($srcId, $srcIndex),
-                    'type' => $this->variableHolder
-                        ->stateType($srcId, $srcIndex),
-                );
-            }
-        }
-        //Parameters
-        foreach ($meta['parameters'] as $index => $param) {
-            $name = $param['name'];
-            $parametersContainer[$name] = array();
-            foreach ($linksReversed['param_'.$index] as $link) {
-                $srcId = $link['blockId'];
-                $srcIndex = substr($link['index'], 7);
-                $parametersContainer[$name][] = array(
-                    'identifier' => $this->variableHolder
-                        ->stateName($srcId, $srcIndex),
-                    'type' => $this->variableHolder
-                        ->stateType($srcId, $srcIndex),
-                );
-            }
-            //if parameters value is not given from an other block
-            //block parameter value is used and its type is guess
-            if (count($parametersContainer[$name]) == 0) {
-                $value = $this->parameterValues[$name];
-                $parametersContainer[$name][] = array(
-                    'identifier' => $value,
-                    'type' => $this->variableHolder
-                        ->guestVariableType($value),
-                );
+
+        if (isset($meta[$section])) {
+            if ($id) {
+                if (isset($meta[$section][$name])) {
+                    $entry = $meta[$section][$name];
+                    $entry['id'] = $id;
+                    return $this->addType($entry);
+                }
+            } else {
+                foreach ($meta[$section] as $id => $entry) {
+                    if (isset($entry['name']) && $entry['name'] == $name) {
+                        $entry['id'] = $id;
+                        
+                        return $this->addType($entry);
+                    }
+                }
             }
         }
 
-        //Call code implementation
-        $code = $this->implementTransitionCode(
-            $parametersContainer, 
-            $inputsContainer, 
-            $this->variableHolder);
+        throw new \RuntimeException('No entry "'.$name.'" in section "'.$section.'"');
+    }
 
-        //Check that all block output states have been register
-        //by the implementation
-        foreach ($meta['outputs'] as $index => $output) {
-            try {
-                $this->variableHolder->stateName($this->getId(), $index);
-            } catch (\InvalidArgumentException $e) {
-                throw new \LogicException(
-                    'State not registered for block '.$this->getId());
+    /**
+     * Gets the output identifier for given index
+     */
+    public function getGlobalOutputIdentifier($index, $type)
+    {
+        $name = 'global_output_'.$index;
+
+        if (!isset($this->cache[$name])) {
+            $this->cache[$name] = $this->environment->registerOutput($index, $type);
+        }
+
+        return $this->cache[$name];
+    }
+
+    /**
+     * Register a state or get its identifier from the cache
+     */
+    public function getVariableIdentifier($name, $type, $global = false)
+    {
+        if (!isset($this->cache[$name])) {
+            if ($global) {
+                $this->cache[$name] = $this->environment->registerVariable($this->getId(), $name, $type);
+            } else {
+                $this->cache[$name] = $this->environment->registerState($this->getId(), $name, $type);
             }
         }
 
-        return $code;
+        return $this->cache[$name];
+    }
+
+    /**
+     * Gets the weakest type of all the inputs of this block
+     */
+    public function getWeakestType()
+    {
+        $type = VariableType::getWeakest();
+
+        // Watching the inputing edges
+        foreach ($this->edges as $ioName => $edges) {
+            foreach ($edges as $edge) {
+                if ($edge->isEnteringIn($this)) {
+                    $current = $edge->inputIdentifier()->getType();
+                    $type = max($current, $type);
+                }
+            }
+        }
+
+        // Watching the parameters
+        $meta = $this->getMeta();
+        foreach ($meta['parameters'] as $parameter) {
+            $parameter = $this->getParameterIdentifier($parameter['name']);
+            $type = max($parameter->getType(), $type);
+        }
+
+        return $type;
+    }
+ 
+    /**
+     * Gets the identifier for the given output
+     *
+     * @param $name, the name of the input
+     * @param $id, is it the identifier or the name
+     */
+    public function getOutputIdentifier($nameOrId, $id = false)
+    {
+        if (!$id) {
+            $entry = $this->getEntry('outputs', $nameOrId);
+            $ioName = 'output_' . $entry['id'];
+        } else {
+            $ioName = 'output_' . $nameOrId;
+            $entry = $this->getEntry('outputs', $nameOrId, true);
+        }
+
+        $type = $entry['variableType'];
+        if ($type == VariableType::Unknown) {
+            $type = $this->getWeakestType();
+        }
+
+        return $this->getVariableIdentifier($ioName, $type);
+    }
+
+    /**
+     * Gets the output as an L value
+     */
+    public function getOutputLIdentifier($name)
+    {
+        return $this->getOutputIdentifier($name)->lValue();
+    }
+    
+    public function getIdentifier($section, $prefix, $name, $multiple = false, $default = null)
+    {
+        $entry = $this->getEntry($section, $name);
+        $ioName = $prefix . '_' . $entry['id'];
+        $card = $this->getCardinality($ioName);
+
+        if ($card) {
+            if ($multiple && $card > 1) {
+                throw new \RuntimeException('Querying single input identifier for "'.$name.'", but there is multiple edges arriving in it');
+            }
+
+            $identifiers = array();
+            foreach ($this->edges[$ioName] as $edge) {
+                $identifiers[] = $edge->inputIdentifier();
+            }
+
+            if ($multiple) {
+                return $identifiers;
+            } else {
+                return $identifiers[0];
+            }
+        } else {
+            if ($default !== null) {
+                list($value, $type) = Identifier::guessType($default, $entry['variableType']);
+                return new Identifier($this->environment, $value, $type);
+            } else {
+                throw new \RuntimeException('Cannot access identifier for input "'.$name.'" because it\'s not linked');
+            }
+        }
+    }
+    
+    public function getInputIdentifier($name)
+    {
+        return $this->getIdentifier('inputs', 'input', $name, false);
+    }
+    
+    public function getInputIdentifiers($name)
+    {
+        return $this->getIdentifier('inputs', 'input', $name, true);
+    }
+    
+    public function getParameterIdentifier($name)
+    {
+        return $this->getIdentifier('parameters', 'param', $name, false, $this->parameterValues[$name]);
     }
 
     /**
@@ -135,10 +293,10 @@ abstract class Block implements BlockInterface
     {
         return '';
     }
-    abstract protected function implementTransitionCode(
-        array $parameters, 
-        array $inputs, 
-        VariableHolderInterface $variableHolder);
+    protected function implementTransitionCode()
+    {
+        return '';
+    }
 
     /**
      * @inherit
@@ -156,77 +314,94 @@ abstract class Block implements BlockInterface
         return static::$META;
     }
     
-    public function getMinCardInput($index)
+    /**
+     * Parses the cardinality
+     *
+     * @param the cardinality, for example 2 or 0-*
+     *
+     * @return the array(a, b) where a is the min and b the max
+     */
+    public static function parseCard($cardString)
     {
-        return $this->getCard('inputs', $index, true);
-    }
-    public function getMaxCardInput($index)
-    {
-        return $this->getCard('inputs', $index, false);
-    }
-    public function getMinCardOutput($index)
-    {
-        return $this->getCard('outputs', $index, true);
-    }
-    public function getMaxCardOutput($index)
-    {
-        return $this->getCard('outputs', $index, false);
-    }
-    public function getMinCardParam($index)
-    {
-        return 0;
-    }
-    public function getMaxCardParam($index)
-    {
-        return 1;
+        $card = explode('-', $cardString);
+
+        if (count($card) == 1) {
+            $card = array($cardString, $cardString);
+        }
+
+        if (count($card) > 2) {
+            throw new \RuntimeException('Misformed cardilanity "'.$cardString.'"');
+        }
+
+        $card[0] = (int)$card[0];
+        if ($card[1] != '*') {
+            $card[1] = (int)$card[1];
+
+            if ($card[0] > $card[1]) {
+                throw new \RuntimeException
+                    ('Misformed cardilanity, min must be lower than max "'.$cardString.'"');
+            }
+        }
+
+        return $card;
     }
 
     /**
-     * Check parsed parameters against meta
-     * informations
-     * Throw Exception if error
+     * Checks that the $card cardinality is good for $ioName
      */
-    private function checkParameters()
+    public function checkCardinality(array $card, $ioName)
     {
+        $n = $this->getCardinality($ioName);
+
+        if ($n < $card[0] || ($card[1] != '*' && $n > $card[1])) {
+            throw new \RuntimeException('Bad cardinality for "'.$ioName.'" in block '.$this->getId);
+        }
+    }
+
+    /**
+     * Check the cardinalities of the edges
+     */
+    public function checkCardinalities()
+    {
+        $metaToIo = array(
+            'inputs' => 'input',
+            'outputs' => 'output',
+            'parameters' => 'param'
+        );
+
         $meta = $this->getMeta();
-        foreach ($meta['parameters'] as $param) {
-            if (!array_key_exists($param['name'], $this->parameterValues)) {
-                throw new \RuntimeException(
-                    'Missing block parameters '.$param['name']);
+        foreach ($metaToIo as $metaKey => $io) {
+            foreach ($meta[$metaKey] as $index => $point) {
+                if (isset($point['card'])) {
+                    $card = static::parseCard($point['card']);
+                } else {
+                    $card = array(0, 1);
+                }
+
+                $ioName = $io.'_'.$index;
+
+                $this->checkCardinality($card, $ioName);
             }
         }
     }
 
     /**
-     * Return min and max cardinality
-     * @param $name : string (input|output|parameters)
-     * @param $index : integer
-     * @param $isMin : bool return min card of true, else max
-     *
-     * @return null or integer
+     * Check parsed parameters against meta informations
+     * Throw Exception if error
      */
-    private function getCard($name, $index, $isMin)
+    protected function checkParameters()
     {
         $meta = $this->getMeta();
-        if ($index >= count($meta[$name])) {
-            throw new \InvalidArgumentException(
-                'Invalid '.$name.' cardinality index '.$index);
-        }
-        if (
-            !is_array($meta[$name][$index]) || 
-            !array_key_exists('card', $meta[$name][$index])
-        ) {
-            throw new \LogicException('Invalid META cardinality');
-        }
-        $card = $meta[$name][$index]['card'];
 
-        if ($isMin) {
-            if ($card{0} == '*') return null;
-            else return $card{0};
-        } else {
-            if (strlen($card) != 3) return $card{0};
-            else if ($card{2} == '*') return null;
-            else return $card{2};
+        foreach ($meta['parameters'] as $param) {
+            $name = $param['name'];
+
+            if (!array_key_exists($name, $this->parameterValues)) {
+                throw new \RuntimeException(
+                    'Missing block parameters '.$param['name']);
+            } else {
+                $this->parameterValues[$name] = str_replace(',', '.', $this->parameterValues[$name]);
+            }
         }
     }
 }

@@ -12,13 +12,17 @@ class Factory implements FactoryInterface
 {
     /**
      * Binding associations between implementation
-     * family and Blocks classes and VariableHolder
+     * family and Blocks classes and Environment
      */
     private static $familyBinding = array(
         'C' => array(
             'Constant' => 'Rhoban\\Blocks\\Implementation\\C\\ConstantBlock_C',
             'Sinus' => 'Rhoban\\Blocks\\Implementation\\C\\SinusBlock_C',
-            'HOLDER' => 'Rhoban\\Blocks\\Implementation\\C\\VariableHolder_C',
+            'Smaller' => 'Rhoban\\Blocks\\Implementation\\C\\SmallerBlock_C',
+            'Chrono' => 'Rhoban\\Blocks\\Implementation\\C\\ChronoBlock_C',
+            'Output' => 'Rhoban\\Blocks\\Implementation\\C\\OutputBlock_C',
+
+            'ENVIRONMENT' => 'Rhoban\\Blocks\\Implementation\\C\\Environment_C',
             'GENERATOR' => 'Rhoban\\Blocks\Implementation\\C\\Generator_C',
         ),
     );
@@ -29,19 +33,25 @@ class Factory implements FactoryInterface
     private $family;
 
     /**
-     * The variable holder and generator instance
+     * The environment and generator instance
      */
     private $generatorInstance = null;
-    private $variableHolderInstance = null;
+    private $environmentInstance = null;
+
+    /**
+     * The specific options to use
+     */
+    protected $options;
 
     /**
      * Initialize the Factory
      * @param $family : the implementation
      * family
      */
-    public function __construct($family)
+    public function __construct($family, array $options = array())
     {
         $this->family = $family;
+        $this->options = $options;
     }
 
     /**
@@ -59,13 +69,13 @@ class Factory implements FactoryInterface
     /**
      * @inherit
      */
-    public function getVariableHolder()
+    public function getEnvironment()
     {
-        if (!$this->variableHolderInstance) {
-            $this->variableHolderInstance = $this->newObject('HOLDER');
+        if (!$this->environmentInstance) {
+            $this->environmentInstance = $this->newObject('ENVIRONMENT', $this->options);
         }
 
-        return $this->variableHolderInstance;
+        return $this->environmentInstance;
     }
 
     /**
@@ -73,7 +83,7 @@ class Factory implements FactoryInterface
      */
     public function createBlock($type, $json)
     {
-        return $this->newObject($type, $json, $this->getVariableHolder());
+        return $this->newObject($type, $json, $this->getEnvironment());
     }
 
     /**
@@ -83,7 +93,7 @@ class Factory implements FactoryInterface
     {
         $jsonContainer = array();
         foreach (self::$familyBinding[$this->family] as $type => $className) {
-            if ($type != 'HOLDER' && $type != 'GENERATOR') {
+            if ($type != 'ENVIRONMENT' && $type != 'GENERATOR') {
                 $jsonContainer[$type] = $className::generateJSON();
             }
         }

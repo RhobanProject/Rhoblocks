@@ -20,7 +20,7 @@ interface BlockInterface
      * @return code string
      */
     public function generateInitCode();
-    public function generateTransitionCode(array $linksReversed);
+    public function generateTransitionCode();
 
     /**
      * Return the id of the block
@@ -35,18 +35,4 @@ interface BlockInterface
      * @return array
      */
     public function getMeta();
-
-    /**
-     * Return the minimum and maximum cardinality
-     * for the given input/output/parameter
-     * @param $index : integer index
-     *
-     * @return null if not bound or integer
-     */
-    public function getMinCardInput($index);
-    public function getMaxCardInput($index);
-    public function getMinCardOutput($index);
-    public function getMaxCardOutput($index);
-    public function getMinCardParam($index);
-    public function getMaxCardParam($index);
 }

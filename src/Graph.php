@@ -16,11 +16,9 @@ class Graph implements GraphInterface
     private $blocks = array();
 
     /**
-     * Link container : src -> dst
-     * Reversed links container : dst <- src
+     * The graph edges
      */
-    private $links = array();
-    private $linksReversed = array();
+    private $edges = array();
 
     /**
      * Topological sort for block evaluation order
@@ -36,14 +34,30 @@ class Graph implements GraphInterface
      * Initialize the block graph
      * @param $json : json string representation
      * of the scene from blocks.js
-     * @param $factory : FactoryInterface
+     * @param $factory : Rhoban\Blocks\FactoryInterface
      */
     public function __construct($json, FactoryInterface $factory)
     {
         $this->factory = $factory;
         $this->loadJSON($json);
-        $this->checkCardinality();
+        $this->checkCardinalities();
         $this->buildTopologicalSort();
+    }
+
+    /**
+     * Gets a block by its id
+     * @param $id the block id
+     *
+     * @return BlockInterface if the block is found, null else
+     */
+    public function getBlock($id)
+    {
+        $id = (int)$id;
+        if (isset($this->blocks[$id])) {
+            return $this->blocks[$id];
+        }
+
+        throw new \InvalidArgumentException('Unknown block Id '.$id);
     }
 
     /**
@@ -53,17 +67,17 @@ class Graph implements GraphInterface
     {
         $code = '';
         foreach ($this->topologicalSort as $id) {
-            $code .= $this->blocks[$id]->generateInitCode();
+            $code .= $this->getBlock($id)->generateInitCode();
         }
 
         return $code;
     }
+
     public function generateTransitionCode()
     {
         $code = '';
         foreach ($this->topologicalSort as $id) {
-            $code .= $this->blocks[$id]->generateTransitionCode(
-                $this->linksReversed[$id]);
+            $code .= $this->getBlock($id)->generateTransitionCode();
         }
 
         return $code;
@@ -102,56 +116,21 @@ class Graph implements GraphInterface
             $type = $block['type'];
             $this->blocks[$id] = $this->factory->createBlock($type, $block);
         }
-
-        //Links and LinksReversed structure initialization
-        foreach ($this->blocks as $block) {
-            $id = $block->getId();
-            $meta = $block->getMeta();
-            $this->links[$id] = array();
-            $this->linksReversed[$id] = array();
-            foreach ($meta['parameters'] as $index => $param) {
-                $this->linksReversed[$id]['param_'.$index] = array();
-            }
-            foreach ($meta['inputs'] as $index => $input) {
-                $this->linksReversed[$id]['input_'.$index] = array();
-            }
-            foreach ($meta['outputs'] as $index => $output) {
-                $this->links[$id]['output_'.$index] = array();
-            }
-        }
     
         //Edges extracting
         foreach ($data['edges'] as $edge) {
-            if (
-                !array_key_exists('block1', $edge) ||
-                !is_integer($edge['block1']) ||
-                !array_key_exists('block2', $edge) || 
-                !is_integer($edge['block2']) ||
-                !array_key_exists('io1', $edge) || 
-                !array_key_exists('io2', $edge)
-            ) {
-                throw new \RuntimeException(
-                    'Invalid JSON edges format');
-            }
-            $srcId = $edge['block1'];
-            $dstId = $edge['block2'];
-            $srcIndex = $edge['io1'];
-            $dstIndex = $edge['io2'];
-            if (
-                !strstr($srcIndex, 'output_') ||
-                (!strstr($dstIndex, 'param_') && !strstr($dstIndex, 'input_'))
-            ) {
-                throw new \RuntimeException(
-                    'Invalid JSON edges io format');
-            }
-            $this->links[$srcId][$srcIndex][] = array(
-                'blockId' => $dstId,
-                'index' => $dstIndex,
-            );
-            $this->linksReversed[$dstId][$dstIndex][] = array(
-                'blockId' => $srcId,
-                'index' => $srcIndex,
-            );
+            if (!(isset($edge['block1']) && isset($edge['io1']) &&
+                isset($edge['block2']) && isset($edge['io2']))) {
+                    throw new \RuntimeException('Invalid JSON edges format');
+                }
+
+            $blockFrom = $this->getBlock($edge['block1']);
+            $blockTo = $this->getBlock($edge['block2']);
+
+            $edge = new Edge($blockFrom, $edge['io1'], $blockTo, $edge['io2']);
+            $this->edges[] = $edge;
+            $blockFrom->addEdge($edge);
+            $blockTo->addEdge($edge);
         }
     }
 
@@ -159,47 +138,10 @@ class Graph implements GraphInterface
      * Check block cardinality
      * Throw Exception if error
      */
-    private function checkCardinality()
+    private function checkCardinalities()
     {
         foreach ($this->blocks as $block) {
-            $id = $block->getId();
-            $meta = $block->getMeta();
-            foreach ($meta['parameters'] as $index => $param) {
-                $min = $block->getMinCardParam($index);
-                $max = $block->getMaxCardParam($index);
-                $this->checkCardMinMax($min, $max, $id, 'param_'.$index, true);
-            }
-            foreach ($meta['inputs'] as $index => $param) {
-                $min = $block->getMinCardInput($index);
-                $max = $block->getMaxCardInput($index);
-                $this->checkCardMinMax($min, $max, $id, 'input_'.$index, true);
-            }
-            foreach ($meta['outputs'] as $index => $param) {
-                $min = $block->getMinCardOutput($index);
-                $max = $block->getMaxCardOutput($index);
-                $this->checkCardMinMax($min, $max, $id, 'output_'.$index, false);
-            }
-        }
-    }
-
-    /**
-     * Check a cardinality against min, max and graph links
-     */
-    private function checkCardMinMax($min, $max, $blockId, $index, $isReversed)
-    {
-        $count = 0;
-        $array = array();
-
-        if ($isReversed) {
-            $array = $this->linksReversed;
-        } else {
-            $array = $this->links;
-        }
-
-        $count = count($array[$blockId][$index]);
-        if ($count < $min || ($max && $count > $max)) {
-            throw new \RuntimeException(
-                'Invalid block cardinality parameters');
+            $block->checkCardinalities();
         }
     }
 
@@ -210,16 +152,17 @@ class Graph implements GraphInterface
      */
     private function buildTopologicalSort()
     {
-        //Init structure
-        //Sorted blocks Id
+        // Sorted blocks Id
         $sortedId = array();
+
         //Blocks Id without inputs
         $blocksId = array();
-        //Graph edges
+
+        // Graph edges
         $edges = array();
         $edgesReversed = array();
 
-        //Insert all blocks
+        // Insert all blocks
         foreach ($this->blocks as $block) {
             $blocksId[$block->getId()] = true;
             $edges[$block->getId()] = array();
@@ -227,23 +170,19 @@ class Graph implements GraphInterface
         }
 
         //Rebuild edges list
-        foreach ($this->links as $id => $linksIndex) {
-            foreach ($linksIndex as $links) {
-                foreach ($links as $link) {
-                    $edges[$id][$link['blockId']] = true;
-                    $edgesReversed[$link['blockId']][$id] = true;
-                }
-            }
+        foreach ($this->edges as $edge) {
+            $edges[$edge->fromId()][$edge->toId()] = true;
+            $edgesReversed[$edge->toId()][$edge->fromId()] = true;
         }
 
-        //Remove all block with incomming links
+        // Remove all block with incomming links
         foreach ($edgesReversed as $id => $links) {
             if (count($links) > 0) {
                 unset($blocksId[$id]);
             }
         }
 
-        //Topological sort algorithm
+        // Topological sort algorithm
         while (count($blocksId) > 0) {
             reset($blocksId);
             $id = key($blocksId);

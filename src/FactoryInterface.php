@@ -17,9 +17,9 @@ interface FactoryInterface
     /**
      * Get the container for variables
      * 
-     * @return Rhoban\Blocks\VariableHolderInterface
+     * @return Rhoban\Blocks\EnvironmentInterface
      */
-    public function getVariableHolder();
+    public function getEnvironment();
 
     /**
      * Create a new Block from a given json representation
