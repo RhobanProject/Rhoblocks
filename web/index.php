@@ -29,6 +29,7 @@
         <script type="text/javascript" src="js/rhoblocks.js"></script>
         <link rel="stylesheet" type="text/css" href="css/rhoblocks.css" />
         <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+        <link rel="shortcut icon" type="application/x-icon" href="favicon.ico" />
     </head>
     <body>
         <h1>Rhoban Blocks</h1>
