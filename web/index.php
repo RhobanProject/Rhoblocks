@@ -20,17 +20,19 @@
         <script type="text/javascript" src="blocks/js/blocktype.js"></script> 
         <script type="text/javascript" src="blocks/js/block.js"></script> 
         <script type="text/javascript" src="blocks/js/blocks.js"></script> 
+        <link rel="stylesheet" type="text/css" href="blocks/js/blocks.css" />
 <?php } else { ?>
         <script type="text/javascript" src="blocks/lib/blocks.js"></script> 
+        <link rel="stylesheet" type="text/css" href="blocks/lib/blocks.css" />
 <?php } ?>
 
         <script type="text/javascript" src="js/rhoblocks.js"></script>
-        <link rel="stylesheet" type="text/css" href="blocks/lib/blocks.css" />
         <link rel="stylesheet" type="text/css" href="css/rhoblocks.css" />
         <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     </head>
     <body>
         <h1>Rhoban Blocks</h1>
         <div id="blocks"></div>
+        <div id="output"></div>
     </body>
 </html>

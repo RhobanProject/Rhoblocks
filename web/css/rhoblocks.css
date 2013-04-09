@@ -24,3 +24,13 @@ a:hover {
     height:650px;
     border:1px solid #aaa;
 }
+
+#output {
+    font-size:12px;
+    margin-top:15px;
+}
+
+#output h2 {
+    color:#666;
+    margin-top:20px;
+}

@@ -1,5 +1,4 @@
 <?php
-
 use Rhoban\Blocks\Compiler;
 use Rhoban\Blocks\Factory;
 
@@ -24,6 +23,15 @@ if (isset($_GET['action'])) {
     if ($action == 'compile' && isset($_POST['data'])) {
         try {
             $files = getCompiler($_POST['data'])->generateCode();
+
+            foreach ($files as $name => &$contents) {
+                $geshi = new \GeSHi($contents, 'C');
+                $geshi->enable_classes();
+                $geshi->enable_keyword_links(false);
+
+                $contents = '<div class="highlight">'.$geshi->parse_code().'</div>';
+            }
+
             $response = array('status' => 'ok', 'files' => $files);
         } catch (\Exception $exception) {
             $response = array('status' => 'error', 'message' => $exception->getMessage());
