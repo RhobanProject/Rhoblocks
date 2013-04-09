@@ -19,6 +19,7 @@ abstract class ChronoBlock extends Block
             array(
                 'name' => 'T',
                 'card' => '0-*',
+                'type' => 'number'
             ),
         ),
     );
