@@ -46,14 +46,14 @@ class Generator_C extends Generator
         $codeC .= 'void '.$prefix.'Init(struct '.$structName." *data)\n";
         $codeC .= "{\n";
         $codeC .= $initCode;
-        $codeC .= "}\n";
+        $codeC .= "\n}\n";
         $codeC .= "\n";
         $codeC .= 'void '.$prefix.'Tick(struct '.$structName." *data)\n";
         $codeC .= "{\n";
         $codeC .= $environment->generateInitTransitionCode();
         $codeC .= "\n";
         $codeC .= $transitionCode;
-        $codeC .= "}\n";
+        $codeC .= "\n}\n";
 
         return array(
             $prefix.'.h' => $codeHeader,
@@ -79,26 +79,26 @@ class Generator_C extends Generator
         }
 
         $code = "#include <stdlib.h>
-        #include <stdio.h>
-        #include \"$prefix.h\"
+#include <stdio.h>
+#include \"$prefix.h\"
 
-        int main()
-        {
-            struct ".$environment->getStructName($prefix)." data;
+int main()
+{
+    struct ".$environment->getStructName($prefix)." data;
 
-            // Initializing the structure
-            ".$prefix."Init(&data);
+    // Initializing the structure
+    ".$prefix."Init(&data);
 
-            while(1) {
-                // Ticking the structure
-                ".$prefix."Tick(&data);
+    while(1) {
+        // Ticking the structure
+        ".$prefix."Tick(&data);
 
-                // You can do some display or code here
-                $outputs        
-                    
-                usleep(1000000/".$environment->getFrequency().");
-            }
-        }\n";
+        // You can do some display or code here
+        $outputs        
+            
+        usleep(1000000/".$environment->getFrequency().");
+    }
+}\n";
 
         return $code;
     }

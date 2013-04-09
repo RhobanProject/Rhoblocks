@@ -61,6 +61,20 @@ class Graph implements GraphInterface
     }
 
     /**
+     * Simple indentation
+     */
+    public function indent($code)
+    {
+        $lines = explode("\n", $code);
+
+        foreach ($lines as &$line) {
+            $line = '    ' . trim($line);
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /**
      * @inherit
      */
     public function generateInitCode()
@@ -70,7 +84,7 @@ class Graph implements GraphInterface
             $code .= $this->getBlock($id)->generateInitCode();
         }
 
-        return $code;
+        return $this->indent($code);
     }
 
     public function generateTransitionCode()
@@ -80,7 +94,7 @@ class Graph implements GraphInterface
             $code .= $this->getBlock($id)->generateTransitionCode();
         }
 
-        return $code;
+        return $this->indent($code);
     }
 
     /**
