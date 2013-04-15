@@ -14,7 +14,7 @@ $(document).ready(function() {
             data = $.toJSON(blocks.exportData());
             $.post('blocks.php?action=compile', {'data':data}, function(response) {
                 if (response.status == 'error') {
-                    blocks.message.show(response.message, {'class': 'error'});
+                    blocks.messages.show(response.message, {'class': 'error'});
                 } else {
                     var html = '';
 
@@ -24,6 +24,7 @@ $(document).ready(function() {
                     }
 
                     $('#output').html(html);
+                    blocks.messages.show('The code was generated successfully', {'class': 'valid'});
                 }
             }, 'json').fail(function(jh, error) {
                 $('#output').html(jh.responseText);
