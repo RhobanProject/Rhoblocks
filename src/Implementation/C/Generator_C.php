@@ -58,6 +58,7 @@ class Generator_C extends Generator
         return array(
             $prefix.'.h' => $codeHeader,
             $prefix.'.c' => $codeC,
+            'Makefile' => file_get_contents(__DIR__.'/templates/Makefile'),
             'main.c' => $this->generateMain($environment)
         );
     }

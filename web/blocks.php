@@ -1,6 +1,9 @@
 <?php
+session_start();
+
 use Rhoban\Blocks\Compiler;
 use Rhoban\Blocks\Factory;
+use Rhoban\Blocks\ArchiveWriter;
 
 include('../src/autoload.php');
 include('../vendor/geshi/geshi.php');
@@ -24,8 +27,16 @@ if (isset($_GET['action'])) {
         try {
             $files = getCompiler($_POST['data'])->generateCode();
 
+            $archive = new ArchiveWriter('output');
+            $name = $archive->writeFiles($files);
+            $url = 'http://'.$_SERVER['HTTP_HOST'].'/'.dirname($_SERVER['REQUEST_URI']).'/'.$name;
+
+            $files = array(
+                'script.sh' => "wget $url -O blocks.tgz &&\ntar zxvf blocks.tgz &&\nmake &&\n./blocks"
+            );
+
             foreach ($files as $name => &$contents) {
-                $geshi = new \GeSHi($contents, 'C');
+                $geshi = new \GeSHi($contents, 'sh');
                 $geshi->enable_classes();
                 $geshi->enable_keyword_links(false);
 
