@@ -65,28 +65,14 @@ class Generator_C extends Generator
             }
         }
 
-        $code = "#include <stdlib.h>
-#include <stdio.h>
-#include \"$prefix.h\"
-
-int main()
-{
-    struct ".$environment->getStructName($prefix)." data;
-
-    // Initializing the structure
-    ".$prefix."Init(&data);
-
-    while(1) {
-        // Ticking the structure
-        ".$prefix."Tick(&data);
-
-        // You can do some display or code here
-        $outputs        
-            
-        usleep(1000000/".$environment->getFrequency().");
-    }
-}\n";
-
+        $mainTemplate = new Template(__DIR__.'/templates/main.c');
+        $code = $mainTemplate->render(array(
+            'prefix' => $prefix,
+            'structName' => $environment->getStructName($prefix),
+            'outputs' => $outputs,
+            'frequency' => $environment->getFrequency()
+        ));
+        
         return $code;
     }
 }
