@@ -33,13 +33,19 @@ class Edge
     public static function convertIo($io)
     {
         $patterns = array('input', 'output', 'param');
-        $io = explode('_', $io);
+        $io = explode('_', $io, 2);
 
         if (count($io) == 2) {
             if (in_array($io[0], $patterns)) {
-                $io[1] = (int)$io[1];
+                if (strpos($io[1], '_') !== false) {
+                    $io[1] = explode('_', $io[1], 2);
+                    $io[1][0] = (int)$io[1][0];
+                    $io[1][1] = (int)$io[1][1];
+                } else {
+                    $io[1] = array((int)$io[1]);
+                }
 
-                if ($io[1] >= 0) {
+                if ($io[1][0] >= 0) {
                     return $io;
                 }
             }
@@ -56,6 +62,8 @@ class Edge
      */
     public static function reverseIo($ioArray)
     {
+        $ioArray[1] = implode('_', $ioArray[1]);
+
         return implode('_', $ioArray);
     }
 
@@ -107,6 +115,19 @@ class Edge
      * The I/O name for the given block
      * @param Rhoban\Blocks\BlockInterface
      */
+    public function ioSection(BlockInterface $block)
+    {
+        if ($block == $this->blockFrom) {
+            return $this->ioFrom;
+        } else {
+            return $this->ioTo;
+        }
+    }
+
+    /**
+     * The I/O name for the given block
+     * @param Rhoban\Blocks\BlockInterface
+     */
     public function ioName(BlockInterface $block)
     {
         if ($block == $this->blockFrom) {
@@ -122,6 +143,14 @@ class Edge
     public function isEnteringIn(BlockInterface $block)
     {
         return ($this->blockTo == $block);
+    }
+
+    /**
+     * Returns the number of the section for the destination
+     */
+    public function getTargetSection()
+    {
+        return $this->ioTo;
     }
 
     /**

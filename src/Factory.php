@@ -21,6 +21,7 @@ class Factory implements FactoryInterface
             'Smaller' => 'Rhoban\\Blocks\\Implementation\\C\\SmallerBlock_C',
             'Chrono' => 'Rhoban\\Blocks\\Implementation\\C\\ChronoBlock_C',
             'Output' => 'Rhoban\\Blocks\\Implementation\\C\\OutputBlock_C',
+            'Multiplexer' => 'Rhoban\\Blocks\\Implementation\\C\\MultiplexerBlock_C',
 
             'ENVIRONMENT' => 'Rhoban\\Blocks\\Implementation\\C\\Environment_C',
             'GENERATOR' => 'Rhoban\\Blocks\Implementation\\C\\Generator_C',

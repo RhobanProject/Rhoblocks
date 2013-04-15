@@ -9,7 +9,7 @@ include('../src/autoload.php');
 include('../vendor/geshi/geshi.php');
 
 function getCompiler($jsonData = null) {
-    return new Compiler(new Factory('C'), $jsonData);
+    return new Compiler(new Factory('C', array('watchOutputs' => array(0))), $jsonData);
 }
 
 header('Content-type: text/plain');
@@ -23,8 +23,17 @@ if (isset($_GET['action'])) {
         $response = '['.implode(',', getCompiler()->generateJSON()).']';
     }
 
+    if ($action == 'getScene') {
+        if (isset($_SESSION['scene'])) {
+            $response = $_SESSION['scene'];
+        } else {
+            $response = 'null';
+        }
+    }
+
     if ($action == 'compile' && isset($_POST['data'])) {
         try {
+            $_SESSION['scene'] = $_POST['data'];
             $files = getCompiler($_POST['data'])->generateCode();
 
             $archive = new ArchiveWriter('output');

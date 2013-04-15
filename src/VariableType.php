@@ -20,6 +20,7 @@ class VariableType
         case 'guess':
             return self::Unknown;
             break;
+        case 'check':
         case 'integer':
             return self::Integer;
             break;

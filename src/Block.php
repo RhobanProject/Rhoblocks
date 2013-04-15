@@ -128,8 +128,8 @@ abstract class Block implements BlockInterface
 
         if (isset($meta[$section])) {
             if ($id) {
-                if (isset($meta[$section][$name])) {
-                    $entry = $meta[$section][$name];
+                if (isset($meta[$section][$name[0]])) {
+                    $entry = $meta[$section][$name[0]];
                     $entry['id'] = $id;
                     return $this->addType($entry);
                 }
@@ -188,8 +188,17 @@ abstract class Block implements BlockInterface
         foreach ($this->edges as $ioName => $edges) {
             foreach ($edges as $edge) {
                 if ($edge->isEnteringIn($this)) {
-                    $current = $edge->inputIdentifier()->getType();
-                    $type = max($current, $type);
+                    $section = $edge->ioSection($this);
+                    $entry = $this->getEntry($section[0].'s', $section[1], true);
+                    $this->addType($entry);
+
+                    $currentType = $entry['variableType'];
+
+                    if ($currentType == VariableType::Unknown) {
+                        $currentType = $edge->inputIdentifier()->getType();
+                    }
+                    
+                    $type = max($type, $currentType);
                 }
             }
         }
@@ -203,7 +212,7 @@ abstract class Block implements BlockInterface
 
         return $type;
     }
- 
+
     /**
      * Gets the identifier for the given output
      *
@@ -213,10 +222,21 @@ abstract class Block implements BlockInterface
     public function getOutputIdentifier($nameOrId, $id = false)
     {
         if (!$id) {
-            $entry = $this->getEntry('outputs', $nameOrId);
+            if (is_array($nameOrId)) {
+                list($name, $index) = $nameOrId;
+            } else {
+                $name = $nameOrId;
+                $index = null;
+            }
+
+            $entry = $this->getEntry('outputs', $name);
             $ioName = 'output_' . $entry['id'];
+
+            if ($index !== null) {
+                $ioName .= '_' . $index;
+            }
         } else {
-            $ioName = 'output_' . $nameOrId;
+            $ioName = 'output_' . implode('_', $nameOrId);
             $entry = $this->getEntry('outputs', $nameOrId, true);
         }
 
@@ -229,6 +249,55 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Gets the size of a variadic section
+     */
+    public function getVariadicSize($section, $name)
+    {
+        $entry = $this->getEntry('inputs', $name);
+
+        if (!isset($entry['length'])) {
+            throw new \RuntimeException('The field '.$name.' is not variadic and does not have size');
+        } else {
+            $length = $entry['length'];
+            if (is_numeric($length)) {
+                return (int)$length;
+            }
+
+            $parts = explode('.', $length);
+            if (count($parts) == 2) {
+                $key = $parts[0];
+                $operation = $parts[1];
+
+                if ($operation == 'length') {
+                    throw new \RuntimeException('Variadicity "Something.length" is unimplemented');
+                }
+
+                if ($operation == 'value') {
+                    return (int)$this->parameterValues[$key];
+                }
+            }
+
+            throw new \RuntimeException($length.' is not a valid variadic length');
+        }
+    }
+
+    /**
+     * Get the size of a variadic input
+     */
+    public function getInputSize($name)
+    {
+        return $this->getVariadicSize('inputs', $name);
+    }
+
+    /**
+     * Get the size of a variadic output
+     */
+    public function getOutputSize($name)
+    {
+        return $this->getVariadicSize('outputs', $name);
+    }
+
+    /**
      * Gets the output as an L value
      */
     public function getOutputLIdentifier($name)
@@ -238,8 +307,18 @@ abstract class Block implements BlockInterface
     
     public function getIdentifier($section, $prefix, $name, $multiple = false, $default = null)
     {
+        $index = null;
+        if (is_array($name)) {
+            list($name, $index) = $name;
+        }
+
         $entry = $this->getEntry($section, $name);
         $ioName = $prefix . '_' . $entry['id'];
+
+        if ($index !== null) {
+            $ioName .= '_' . $index;
+        }
+        
         $card = $this->getCardinality($ioName);
 
         if ($card) {
@@ -395,6 +474,10 @@ abstract class Block implements BlockInterface
 
         foreach ($meta['parameters'] as $param) {
             $name = $param['name'];
+
+            if (isset($param['type']) && $param['type'] == 'check') {
+                $this->parameterValues[$name] = (isset($this->parameterValues[$name]) && $this->parameterValues[$name] == 'on') ? 1 : 0;
+            }
 
             if (!array_key_exists($name, $this->parameterValues)) {
                 throw new \RuntimeException(

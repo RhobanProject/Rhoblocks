@@ -7,6 +7,11 @@ $(document).ready(function() {
         }
     
         blocks.run('#blocks');
+        $.getJSON('blocks.php?action=getScene', function(scene) {
+            if (scene) {
+                blocks.load(scene);
+            }
+        });
     });
     
     blocks.ready(function() {
