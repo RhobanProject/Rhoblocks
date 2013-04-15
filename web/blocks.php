@@ -9,7 +9,7 @@ include('../src/autoload.php');
 include('../vendor/geshi/geshi.php');
 
 function getCompiler($jsonData = null) {
-    return new Compiler(new Factory('C', array('watchOutputs' => array(0))), $jsonData);
+    return new Compiler(new Factory('C'), $jsonData);
 }
 
 header('Content-type: text/plain');
