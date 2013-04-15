@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Rhoban Blocks</title>
+        <title>RhoBlocks</title>
         <script type="text/javascript" src="js/jquery.js"></script>
 
 <?php if (isset($_GET['dev'])) { ?>
@@ -32,7 +32,9 @@
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     </head>
     <body>
-        <h1>Rhoban Blocks</h1>
+        <center>
+            <img src="css/gfx/logo.jpg" alt="RhoBlocks" />
+        </center>
         <div id="blocks"></div>
         <div id="output"></div>
     </body>
