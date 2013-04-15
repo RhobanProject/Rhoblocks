@@ -22,7 +22,10 @@ a:hover {
 #blocks {
     width:1200px;
     height:650px;
-    border:1px solid #aaa;
+    border:2px solid #aaa;
+    border-radius:20px;
+    background-image:url('gfx/fade.png');
+    background-repeat:repeat-x;
 }
 
 #output {
