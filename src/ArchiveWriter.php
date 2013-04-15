@@ -66,9 +66,9 @@ class ArchiveWriter
         shell_exec("tar zcvf $output -C $tmp $names");
 
         foreach ($files as $name => $contents) {
-            @unlink($tmp . '/' . $name, $contents);
+            @unlink($tmp . '/' . $name);
         }
-        @unlink($tmp);
+        @rmdir($tmp);
 
         return $output;
     }
