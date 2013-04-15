@@ -38,11 +38,11 @@ class PrintBlock_C extends PrintBlock
             } else {
                 $format[] = '%g';
             }
-            $values[] = $identifier;
+            $values[] = $identifier->lValue();
         }
 
         $code = "if ($divider == 0) {\n";
-        $code .= "printf(\"".implode(' ', $format)."\\n\", ".implode(' ', $values).");\n";
+        $code .= "printf(\"".implode(' ', $format)."\\n\", ".implode(', ', $values).");\n";
         $code .= "};\n";
 
         $code .= $divider->lValue() . "++;\n";
