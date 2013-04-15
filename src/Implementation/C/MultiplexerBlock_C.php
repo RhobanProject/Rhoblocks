@@ -30,7 +30,7 @@ class MultiplexerBlock_C extends MultiplexerBlock
 
         $code .= $case->lValue() ." = ".$this->getInputIdentifier('N')->asInteger().";\n";
         $code .= "if (".$this->getParameterIdentifier('Cyclic')->asInteger().") {\n";
-        $code .= $case->lValue() ." = ".$case->asInteger()." % $size;\n";
+        $code .= $case->lValue() ." %= $size;\n";
         $code .= "};\n";
 
         $code .= 'switch ('.$case->asInteger().") {\n";
