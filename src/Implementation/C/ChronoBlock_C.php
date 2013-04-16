@@ -15,7 +15,7 @@ class ChronoBlock_C extends ChronoBlock
     {
         $t = $this->getVariableIdentifier('T', VariableType::Scalar, true);
 
-        return "$t = 0.0;\n";
+        return "$t = -".(1/$this->environment->getFrequency()).";\n";
     }
 
     /**
