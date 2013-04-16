@@ -41,7 +41,7 @@ class PrintBlock_C extends PrintBlock
             }
         }
 
-        $trigger = $this->getInputIdentifier('Trigger');
+        $trigger = $this->getInputIdentifier('Trigger')->asInteger();
 
         $code = "if ($trigger) {\n";
         $comma = '';

@@ -29,7 +29,9 @@ abstract class PrintBlock extends Block
         'inputs' => array(
             array(
                 'name' => 'Trigger',
-                'type' => 'integer'
+                'type' => 'integer',
+                'card' => '0-1',
+                'default' => 0
             ),
             array(
                 'name' => 'Value #',

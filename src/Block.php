@@ -356,6 +356,10 @@ abstract class Block implements BlockInterface
                 return $identifiers[0];
             }
         } else {
+            if ($default === null && isset($entry['default'])) {
+                $default = $entry['default'];
+            }
+
             if ($default !== null) {
                 list($value, $type) = Identifier::guessType($default, $entry['variableType']);
                 return new Identifier($this->environment, $value, $type);
