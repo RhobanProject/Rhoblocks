@@ -84,7 +84,7 @@ class Graph implements GraphInterface
             try {
                 $code .= $this->getBlock($id)->generateInitCode();
             } catch (\Exception $e) {
-                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getName().': '.$e->getMessage());
+                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getBlockId().': '.$e->getMessage());
             }
         }
 
@@ -98,7 +98,7 @@ class Graph implements GraphInterface
             try {
                 $code .= $this->getBlock($id)->generateTransitionCode();
             } catch (\Exception $e) {
-                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getName().': '.$e->getMessage());
+                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getBlockId().': '.$e->getMessage());
             }
         }
 

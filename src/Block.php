@@ -52,6 +52,23 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Returns the name of the block
+     */
+    public function getName()
+    {
+        $meta = $this->getMeta();
+        return $meta['name'];
+    }
+
+    /**
+     * Return the block identifier (name and id)
+     */
+    public function getBlockId()
+    {
+        return $this->getName().'#'.$this->getId();
+    }
+
+    /**
      * Adding an edge that enter in this block
      * @param $edge Rhoban\Blocks\Edge
      */
@@ -435,7 +452,7 @@ abstract class Block implements BlockInterface
         $n = $this->getCardinality($ioName);
 
         if ($n < $card[0] || ($card[1] != '*' && $n > $card[1])) {
-            throw new \RuntimeException('Bad cardinality for "'.$ioName.'" in block '.$this->getId);
+            throw new \RuntimeException('Bad cardinality for "'.$ioName.'" in block '.$this->getBlockId());
         }
     }
 
