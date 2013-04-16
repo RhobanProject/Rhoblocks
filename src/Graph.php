@@ -81,7 +81,11 @@ class Graph implements GraphInterface
     {
         $code = '';
         foreach ($this->topologicalSort as $id) {
-            $code .= $this->getBlock($id)->generateInitCode();
+            try {
+                $code .= $this->getBlock($id)->generateInitCode();
+            } catch (\Exception $e) {
+                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getName().': '.$e->getMessage());
+            }
         }
 
         return $this->indent($code);
@@ -91,7 +95,11 @@ class Graph implements GraphInterface
     {
         $code = '';
         foreach ($this->topologicalSort as $id) {
-            $code .= $this->getBlock($id)->generateTransitionCode();
+            try {
+                $code .= $this->getBlock($id)->generateTransitionCode();
+            } catch (\Exception $e) {
+                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getName().': '.$e->getMessage());
+            }
         }
 
         return $this->indent($code);
