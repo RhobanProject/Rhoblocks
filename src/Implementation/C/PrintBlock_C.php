@@ -49,6 +49,7 @@ class PrintBlock_C extends PrintBlock
             $comma = ',';
         }
         $code .= "printf(\"".$this->getParameterIdentifier('Format')."\\n\"$comma ".implode(', ', $values).");\n";
+        $code .= "fflush(stdout);\n";
         $code .= "}\n";
 
         return $code;
