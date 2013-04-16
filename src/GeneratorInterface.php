@@ -25,10 +25,4 @@ interface GeneratorInterface
      */
     public function generateCode
         (EnvironmentInterface $environment, $initCode, $transitionCode);
-
-    /**
-     * Return 
-     * @return array of string code
-     */
-    public function generateMain(EnvironmentInterface $environment);
 }

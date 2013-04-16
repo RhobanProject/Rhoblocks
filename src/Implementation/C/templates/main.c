@@ -14,7 +14,6 @@ int main()
         <?php echo $prefix; ?>Tick(&data);
 
         // You can do some display or code here
-        <?php echo $outputs; ?>
 
         usleep(1000000/<?php echo $frequency; ?>);
     }

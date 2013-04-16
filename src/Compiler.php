@@ -64,13 +64,4 @@ class Compiler
             $transitionCode
         );
     }
-
-    /**
-     * Generate main code files
-     * @return array of string code
-     */
-    public  function generateMain()
-    {
-        return $this->factory->getGenerator()->generateMain();
-    }
 }

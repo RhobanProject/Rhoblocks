@@ -21,7 +21,7 @@ class Environment_C extends Environment
     public function getDefaultOptions()
     {
         return array_merge(parent::getDefaultOptions(), array(
-            'watchOutputs' => false
+            'generateMain' => true
         ));
     }
 

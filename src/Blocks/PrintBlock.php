@@ -24,14 +24,13 @@ abstract class PrintBlock extends Block
                 'type' => 'integer',
                 'default' => 1,
                 'card' => 0
-            ),
-            array(
-                'name' => 'Frequency',
-                'type' => 'number',
-                'default' => '1'
             )
         ),
         'inputs' => array(
+            array(
+                'name' => 'Trigger',
+                'type' => 'integer'
+            ),
             array(
                 'name' => 'Value #',
                 'card' => '0-1',

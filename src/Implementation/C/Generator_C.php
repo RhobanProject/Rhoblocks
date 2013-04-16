@@ -41,12 +41,17 @@ class Generator_C extends Generator
             'transitionCode' => $transitionCode
         ));
 
-        return array(
+        $files = array(
             $prefix.'.h' => $codeHeader,
             $prefix.'.c' => $codeC,
-            'Makefile' => file_get_contents(__DIR__.'/templates/Makefile'),
-            'main.c' => $this->generateMain($environment)
+            'Makefile' => file_get_contents(__DIR__.'/templates/Makefile')
         );
+
+        if ($environment->getOption('generateMain')) {
+            $files['main.c'] = $this->generateMain($environment);
+        }
+
+        return $files;
     }
 
     /**
@@ -57,19 +62,10 @@ class Generator_C extends Generator
         $prefix = $environment->getPrefix();
         $outputs = '';
 
-        $watch = $environment->getOption('watchOutputs');
-        if ($watch) {
-            $outputs .= "printf(\"\\n\");\n";
-            foreach ($watch as $index) {
-                $outputs .= "printf(\"Output $index: %f\\n\", data.output_$index);\n";
-            }
-        }
-
         $mainTemplate = new Template(__DIR__.'/templates/main.c');
         $code = $mainTemplate->render(array(
             'prefix' => $prefix,
             'structName' => $environment->getStructName($prefix),
-            'outputs' => $outputs,
             'frequency' => $environment->getFrequency()
         ));
         

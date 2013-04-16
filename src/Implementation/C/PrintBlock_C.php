@@ -14,9 +14,6 @@ class PrintBlock_C extends PrintBlock
     public function implementInitCode()
     {
         $this->environment->addHeader('stdio.h');
-        $divider = $this->getVariableIdentifier('divider', VariableType::Integer, true);
-
-        return $divider->lValue() ." = 0;\n";
     }
 
     /**
@@ -24,7 +21,6 @@ class PrintBlock_C extends PrintBlock
      */
     public function implementTransitionCode()
     {
-        $divider = $this->getVariableIdentifier('divider', VariableType::Integer, true);
         $size = $this->getInputSize('Value #');
         $frequency = $this->environment->getFrequency();
 
@@ -45,13 +41,14 @@ class PrintBlock_C extends PrintBlock
             }
         }
 
-        $code = "if ($divider == 0) {\n";
-        $code .= "printf(\"".$this->getParameterIdentifier('Format')."\\n\", ".implode(', ', $values).");\n";
-        $code .= "}\n";
+        $trigger = $this->getInputIdentifier('Trigger');
 
-        $code .= $divider->lValue() . "++;\n";
-        $code .= "if ($divider > ($frequency/".$this->getParameterIdentifier('Frequency').")) {\n";
-        $code .= $divider->lValue() . " = 0;\n";
+        $code = "if ($trigger) {\n";
+        $comma = '';
+        if ($size) {
+            $comma = ',';
+        }
+        $code .= "printf(\"".$this->getParameterIdentifier('Format')."\\n\"$comma ".implode(', ', $values).");\n";
         $code .= "}\n";
 
         return $code;
