@@ -28,6 +28,7 @@ class PulseBlock_C extends PulseBlock
         $frequency = $this->environment->getFrequency();
 
         $code = $output . " = (".$divider."==0);\n";
+        $code = "$divider++;\n";
         $code .= "if ($divider >= ($frequency/".$this->getParameterIdentifier('Frequency').")) {\n";
         $code .= $divider . " = 0;\n";
         $code .= "}\n";
