@@ -197,8 +197,10 @@ abstract class Block implements BlockInterface
                     if ($currentType == VariableType::Unknown) {
                         $currentType = $edge->inputIdentifier()->getType();
                     }
-                    
-                    $type = max($type, $currentType);
+
+                    if (VariableType::isNumeric($currentType)) {
+                        $type = max($type, $currentType);
+                    }
                 }
             }
         }

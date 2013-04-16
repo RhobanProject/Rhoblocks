@@ -15,9 +15,15 @@ abstract class PrintBlock extends Block
         'description' => 'Print all the inputs',
         'parameters' => array(
             array(
+                'name' => 'Format',
+                'type' => 'text',
+                'card' => 0
+            ),
+            array(
                 'name' => 'Inputs',
                 'type' => 'integer',
-                'default' => 1
+                'default' => 1,
+                'card' => 0
             ),
             array(
                 'name' => 'Frequency',

@@ -101,8 +101,7 @@ class Identifier
      */
     public function __toString()
     {
-        $s = $this->get(VariableType::Scalar);
-        return "$s";
+        return $this->lValue();
     }
 
     /**

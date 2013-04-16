@@ -28,22 +28,26 @@ class PrintBlock_C extends PrintBlock
         $size = $this->getInputSize('Value #');
         $frequency = $this->environment->getFrequency();
 
-        $format = array();
         $values = array();
+        preg_match_all('#%([dgf])#', $this->getParameterIdentifier('Format'), $matches);
 
         for ($i=0; $i<$size; $i++) {
             $identifier = $this->getInputIdentifier(array('Value #', $i));
-            if ($identifier->getType() == VariableType::Integer) {
-                $format[] = '%d';
+
+            if (isset($matches[1][$i])) {
+                if ($matches[1][$i] == 'd') {
+                    $values[] = $identifier->get(VariableType::Integer);
+                } else {
+                    $values[] = $identifier->get(VariableType::Scalar);
+                }
             } else {
-                $format[] = '%g';
+                $values[] = $identifier->lValue();
             }
-            $values[] = $identifier->lValue();
         }
 
         $code = "if ($divider == 0) {\n";
-        $code .= "printf(\"".implode(' ', $format)."\\n\", ".implode(', ', $values).");\n";
-        $code .= "};\n";
+        $code .= "printf(\"".$this->getParameterIdentifier('Format')."\\n\", ".implode(', ', $values).");\n";
+        $code .= "}\n";
 
         $code .= $divider->lValue() . "++;\n";
         $code .= "if ($divider > ($frequency/".$this->getParameterIdentifier('Frequency').")) {\n";
