@@ -46,8 +46,12 @@ $(document).ready(function() {
         evt.preventDefault();
         $('.optionsForm .optionsStatus').text('(saving...)');
         $.post('blocks.php?action=saveOptions', $(this).serializeArray(), function(response) {
-            $('.optionsForm .optionsStatus').text('(saved)');
-        }).fail(function() {
+            if (response) {
+                $('.optionsForm .optionsStatus').text('(saved)');
+            } else {
+                $('.optionsForm .optionsStatus').text('(saving failed)');
+            }
+        }, 'json').fail(function() {
             $('.optionsForm .optionsStatus').text('(saving failed)');
         });
         return false;

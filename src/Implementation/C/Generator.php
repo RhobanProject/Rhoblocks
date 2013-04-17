@@ -47,7 +47,8 @@ class Generator extends Base
         );
 
         if ($environment->getOption('generateMain')) {
-            $files['Makefile'] = file_get_contents(__DIR__.'/templates/Makefile');
+            $makefileTemplate = new Template(__DIR__.'/templates/Makefile');
+            $files['Makefile'] = $makefileTemplate->render(array('prefix' => $prefix));
             $files['main.c'] = $this->generateMain($environment);
         }
 
