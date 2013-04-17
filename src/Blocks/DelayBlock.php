@@ -20,6 +20,11 @@ abstract class DelayBlock extends Block
                 'default' => 1,
                 'card' => 0
             ),
+            array(
+                'name' => 'Default',
+                'card' => 0,
+                'default' => 0
+            )
         ),
         'inputs' => array(
             array(

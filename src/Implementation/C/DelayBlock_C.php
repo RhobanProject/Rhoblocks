@@ -27,11 +27,12 @@ class DelayBlock_C extends DelayBlock
         $this->size = (int)($delay*$frequency);
 
         $output = $this->getOutputIdentifier('Output');
+        $default = $this->getParameterIdentifier('Default');
         $values = $this->getVariableIdentifier('values', $output->getType(), true, $this->size);
         $position = $this->getVariableIdentifier('position', VariableType::Integer, true);
 
         $code = "for (i=0; i<".$this->size."; i++) {\n";
-        $code .= '    '.$values."[i] = 0;\n";
+        $code .= '    '.$values."[i] = ".$default.";\n";
         $code .= "}\n";
         $code .= "$position = 0;\n";
 
