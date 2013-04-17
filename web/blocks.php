@@ -67,7 +67,7 @@ if (isset($_GET['action'])) {
 
     }
 
-    if ($action == 'saveOptions' && $form->posted()) {
+    if ($action == 'saveOptions' && $form->posted() && !$form->check()) {
         $options = $form->getDatas();
         $_SESSION['options'] = $options;
         var_dump($_SESSION['options']);

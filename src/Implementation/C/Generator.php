@@ -44,10 +44,10 @@ class Generator extends Base
         $files = array(
             $prefix.'.h' => $codeHeader,
             $prefix.'.c' => $codeC,
-            'Makefile' => file_get_contents(__DIR__.'/templates/Makefile')
         );
 
         if ($environment->getOption('generateMain')) {
+            $files['Makefile'] = file_get_contents(__DIR__.'/templates/Makefile');
             $files['main.c'] = $this->generateMain($environment);
         }
 

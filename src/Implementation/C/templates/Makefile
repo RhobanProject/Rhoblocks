@@ -1,3 +1,3 @@
 
 blocks: main.c blocks.c
-	gcc $^ -lm -o $@
+	gcc -O2 $^ -lm -o $@
