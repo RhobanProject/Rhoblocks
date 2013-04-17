@@ -19,11 +19,16 @@ class Identifier
      * The type of the identifier
      */
     protected $type;
+
+    /**
+     * The dimension of the variable
+     */
+    protected $dimension;
     
     /**
      * Is the identifier in the strut ?
      */
-    protected $struct;
+    protected $prefix;
 
     public static function guessType($variable, $type)
     {
@@ -47,26 +52,25 @@ class Identifier
      * @param $type Rhoban\Blocks\VariableType
      */
     public function __construct
-        (EnvironmentInterface $environment, $value, $type, $struct = false)
+        (EnvironmentInterface $environment, $value, $type, $prefix = '')
     {
         $this->environment = $environment;
         $this->value = $value;
         $this->type = $type;
-        $this->struct = $struct;
+        $this->prefix = $prefix;
     }
 
     /**
      * Get the value of the identifier
      */
-    public function getValue($noPrefix = false)
+    public function getValue()
     {
-        $value = $this->value;
+        return $this->prefix.$this->value;
+    }
 
-        if ($this->struct && !$noPrefix) {
-            $value = "data->$value";
-        }
-
-        return $value;
+    public function getDeclaration()
+    {
+        return $this->value;
     }
 
     /**

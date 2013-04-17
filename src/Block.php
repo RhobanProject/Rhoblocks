@@ -35,11 +35,6 @@ abstract class Block implements BlockInterface
     protected $edges = array();
 
     /**
-     * Cache to keep the variable names etc.
-     */
-    protected $cache = array();
-
-    /**
      * Initialize the block fron json representation
      * @param $data : json array representation from blocks.js
      */
@@ -171,27 +166,19 @@ abstract class Block implements BlockInterface
     {
         $name = 'global_output_'.$index;
 
-        if (!isset($this->cache[$name])) {
-            $this->cache[$name] = $this->environment->registerOutput($index, $type);
-        }
-
-        return $this->cache[$name];
+        return $this->environment->registerOutput($index, $type);
     }
 
     /**
-     * Register a state or get its identifier from the cache
+     * Register a variable
      */
     public function getVariableIdentifier($name, $type, $global = false)
     {
-        if (!isset($this->cache[$name])) {
-            if ($global) {
-                $this->cache[$name] = $this->environment->registerVariable($this->getId(), $name, $type);
-            } else {
-                $this->cache[$name] = $this->environment->registerState($this->getId(), $name, $type);
-            }
+        if ($global) {
+            return $this->environment->registerVariable($this->getId(), $name, $type);
+        } else {
+            return $this->environment->registerState($this->getId(), $name, $type);
         }
-
-        return $this->cache[$name];
     }
 
     /**
@@ -340,8 +327,8 @@ abstract class Block implements BlockInterface
         
         $card = $this->getCardinality($ioName);
 
-        if ($card) {
-            if ($multiple && $card > 1) {
+        if ($card || $multiple) {
+            if (!$multiple && $card > 1) {
                 throw new \RuntimeException('Querying single input identifier for "'.$name.'", but there is multiple edges arriving in it');
             }
 
@@ -364,7 +351,7 @@ abstract class Block implements BlockInterface
                 list($value, $type) = Identifier::guessType($default, $entry['variableType']);
                 return new Identifier($this->environment, $value, $type);
             } else {
-                throw new \RuntimeException('Cannot access identifier for input "'.$name.'" because it\'s not linked');
+                throw new \RuntimeException('Cannot access identifier for input "'.$name.'" because it\'s not linked and has no default value');
             }
         }
     }
@@ -372,6 +359,21 @@ abstract class Block implements BlockInterface
     public function getInputIdentifier($name)
     {
         return $this->getIdentifier('inputs', 'input', $name, false);
+    }
+
+    /**
+     * Gets the cardinality, i.e the number of arriving edges in an input
+     *
+     * @param $name the input
+     *
+     * @return the number of arriving edges on the input given by $name
+     */
+    public function getInputCardinality($name)
+    {
+        $entry = $this->getEntry('inputs', $name);
+        $ioName = $prefix . '_' . $entry['id'];
+
+        return $this->getCardinality($ioName);
     }
     
     public function getInputIdentifiers($name)
