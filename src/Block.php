@@ -164,9 +164,7 @@ abstract class Block implements BlockInterface
      */
     public function getGlobalOutputIdentifier($index, $type)
     {
-        $name = 'global_output_'.$index;
-
-        return $this->environment->registerOutput($index, $type);
+        return $this->environment->registerGlobal('output', $index, $type);
     }
 
     /**

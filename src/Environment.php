@@ -69,14 +69,19 @@ abstract class Environment implements EnvironmentInterface
     /**
      * @inherit
      */
-    public function registerState($name, $index, $type, $dimension)
+    public function registerState($name, $index, $type, $dimension = 0)
     {
         return $this->register($this->global, 'state', $type, $dimension, $name, $index, true);
     }
 
-    public function registerVariable($name, $index, $type, $dimension)
+    public function registerVariable($name, $index, $type, $dimension = 0)
     {
         return $this->register($this->stack, 'variable', $type, $dimension, $name, $index);
+    }
+
+    public function registerGlobal($name, $index, $type, $dimension = 0)
+    {
+        return $this->register($this->global, $name, $type, $dimension, $index, null, true);
     }
 
     /**
@@ -88,10 +93,10 @@ abstract class Environment implements EnvironmentInterface
      */
     protected function getIdentifier($name, $varName, $index)
     {
-        if ($name) {
+        if ($index) {
             return $name.'_'.$varName.'_'.$index;
         } else {
-            return $name.'_'.$index;
+            return $name.'_'.$varName;
         }
     }
 
