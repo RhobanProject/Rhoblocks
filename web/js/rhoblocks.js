@@ -44,7 +44,12 @@ $(document).ready(function() {
 
     $('.optionsForm form').on('submit', function(evt) {
         evt.preventDefault();
-        $.post('blocks.php?action=saveOptions', $(this).serializeArray());
+        $('.optionsForm .optionsStatus').text('(saving...)');
+        $.post('blocks.php?action=saveOptions', $(this).serializeArray(), function(response) {
+            $('.optionsForm .optionsStatus').text('(saved)');
+        }).fail(function() {
+            $('.optionsForm .optionsStatus').text('(saving failed)');
+        });
         return false;
     });
 });

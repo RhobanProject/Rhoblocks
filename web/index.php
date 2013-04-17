@@ -41,7 +41,7 @@ $form = @include('form.php');
         </div>
         <div id="blocks"></div>
         <div class="optionsForm">
-            <h2>Options</h2>
+            <h2>Options <span class="optionsStatus"></span></h2>
             <?php echo $form; ?>
         </div>
         <div id="output"></div>
