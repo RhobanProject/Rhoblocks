@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhoban\Blocks\Blocks;
+namespace Rhoban\Blocks\Blocks\Signal;
 
 use Rhoban\Blocks\Block;
 

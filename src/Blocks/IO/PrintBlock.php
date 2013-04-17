@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhoban\Blocks\Blocks;
+namespace Rhoban\Blocks\Blocks\IO;
 
 use Rhoban\Blocks\Block;
 

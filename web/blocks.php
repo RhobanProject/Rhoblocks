@@ -12,7 +12,7 @@ $form = @include('form.php');
 $options = $_SESSION['options'];
 
 function getCompiler($jsonData = null, $options = array()) {
-    return new Compiler(new Factory('C', $options), $jsonData);
+    return new Compiler(new Factory('Arduino', $options), $jsonData);
 }
 
 header('Content-type: text/plain');
@@ -22,7 +22,6 @@ if (isset($_GET['action'])) {
     $action = $_GET['action'];
 
     if ($action == 'getBlocks') {
-        // Generation of the blocks
         $response = '['.implode(',', getCompiler()->generateJSON()).']';
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhoban\Blocks\Blocks;
+namespace Rhoban\Blocks\Blocks\Time;
 
 use Rhoban\Blocks\Block;
 
@@ -11,7 +11,7 @@ abstract class DelayBlock extends Block
      */
     protected static $META = array(
         'name' => 'Delay',
-        'family' => 'I/O',
+        'family' => 'Time',
         'description' => 'Outputs its inputs with a given delay',
         'parameters' => array(
             array(

@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhoban\Blocks\Implementation\C;
+namespace Rhoban\Blocks\Implementation\C\Time;
 
-use Rhoban\Blocks\Blocks\DelayBlock as Base;
+use Rhoban\Blocks\Blocks\Time\DelayBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhoban\Blocks\Blocks;
+namespace Rhoban\Blocks\Blocks\Signal;
 
 use Rhoban\Blocks\Block;
 
@@ -11,7 +11,7 @@ abstract class ConstantBlock extends Block
      */
     protected static $META = array(
         'name' => 'Constant',
-        'family' => 'Math',
+        'family' => 'Signal',
         'description' => 'A simple input constant',
         'parameters' => array(
             array(

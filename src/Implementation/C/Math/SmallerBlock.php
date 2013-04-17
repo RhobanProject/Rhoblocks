@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhoban\Blocks\Implementation\C;
+namespace Rhoban\Blocks\Implementation\C\Math;
 
-use Rhoban\Blocks\Blocks\SmallerBlock as Base;
+use Rhoban\Blocks\Blocks\Math\SmallerBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 

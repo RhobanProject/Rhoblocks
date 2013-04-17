@@ -11,12 +11,17 @@ class Family extends Base
 {
     protected function getBlocks()
     {
-        $types = array('Chrono', 'Constant', 'Delay', 'Output', 
-            'Print', 'Pulse', 'Sinus', 'Smaller');
+        $types = array(
+            'Time.Chrono', 'Time.Delay',
+            'Signal.Constant', 'Signal.Pulse',
+            'IO.Output', 'IO.Print',
+            'Math.Sinus', 'Math.Smaller'
+        );
         $blocks = array();
 
         foreach ($types as $type) {
-            $blocks[$type] = 'Rhoban\\Blocks\\Implementation\\C\\' . $type . 'Block';
+            list($family, $name) = explode('.', $type);
+            $blocks[$name] = 'Rhoban\\Blocks\\Implementation\\C\\' . $family . '\\' . $name . 'Block';
         }
 
         return $blocks;

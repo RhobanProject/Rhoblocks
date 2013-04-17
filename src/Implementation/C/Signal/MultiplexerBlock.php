@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhoban\Blocks\Implementation\C;
+namespace Rhoban\Blocks\Implementation\C\Signal;
 
-use Rhoban\Blocks\Blocks\MultiplexerBlock as Base;
+use Rhoban\Blocks\Blocks\Signal\MultiplexerBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 

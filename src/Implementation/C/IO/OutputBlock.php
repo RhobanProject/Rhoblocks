@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhoban\Blocks\Implementation\C;
+namespace Rhoban\Blocks\Implementation\C\IO;
 
-use Rhoban\Blocks\Blocks\OutputBlock as Base;
+use Rhoban\Blocks\Blocks\IO\OutputBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 

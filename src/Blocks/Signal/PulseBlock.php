@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhoban\Blocks\Blocks;
+namespace Rhoban\Blocks\Blocks\Signal;
 
 use Rhoban\Blocks\Block;
 
@@ -11,7 +11,7 @@ abstract class PulseBlock extends Block
      */
     protected static $META = array(
         'name' => 'Pulse',
-        'family' => 'I/O',
+        'family' => 'Signal',
         'description' => 'Send pulses',
         'parameters' => array(
             array(
