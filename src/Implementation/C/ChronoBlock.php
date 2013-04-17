@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\ChronoBlock;
+use Rhoban\Blocks\Blocks\ChronoBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class ChronoBlock_C extends ChronoBlock
+class ChronoBlock extends Base
 {
     /**
      * @inherit

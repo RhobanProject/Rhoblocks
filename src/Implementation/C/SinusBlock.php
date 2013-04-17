@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\SinusBlock;
+use Rhoban\Blocks\Blocks\SinusBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class SinusBlock_C extends SinusBlock
+class SinusBlock extends Base
 {
     /**
      * @inherit

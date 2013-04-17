@@ -2,12 +2,12 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Generator;
+use Rhoban\Blocks\Generator as Base;
 use Rhoban\Blocks\Template;
 use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\Implementation\C\Environment_C;
+use Rhoban\Blocks\Implementation\C\Environment;
 
-class Generator_C extends Generator
+class Generator extends Base
 {
     /**
      * @inherit
@@ -15,7 +15,7 @@ class Generator_C extends Generator
     public function generateCode
         (EnvironmentInterface $environment, $initCode, $transitionCode)
     {
-        if (!$environment instanceof Environment_C) {
+        if (!$environment instanceof Environment) {
             throw new \RuntimeException
                 ('The environment should be a C environment');
         }

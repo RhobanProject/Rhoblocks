@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\MultiplexerBlock;
+use Rhoban\Blocks\Blocks\MultiplexerBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class MultiplexerBlock_C extends MultiplexerBlock
+class MultiplexerBlock extends Base
 {
     /**
      * @inherit

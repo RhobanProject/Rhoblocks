@@ -2,14 +2,14 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Environment;
+use Rhoban\Blocks\Environment as Base;
 use Rhoban\Blocks\VariableType;
 use Rhoban\Blocks\Identifier;
 
 /**
- * Environment_C
+ * Environment
  */
-class Environment_C extends Environment
+class Environment extends Base
 {
     /**
      * Headers to add

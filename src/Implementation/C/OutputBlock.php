@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\OutputBlock;
+use Rhoban\Blocks\Blocks\OutputBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class OutputBlock_C extends OutputBlock
+class OutputBlock extends Base
 {
     /**
      * @inherit

@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\PrintBlock;
+use Rhoban\Blocks\Blocks\PrintBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class PrintBlock_C extends PrintBlock
+class PrintBlock extends Base
 {
     /**
      * @inherit

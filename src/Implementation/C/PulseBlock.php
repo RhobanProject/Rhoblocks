@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\PulseBlock;
+use Rhoban\Blocks\Blocks\PulseBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class PulseBlock_C extends PulseBlock
+class PulseBlock extends Base
 {
     /**
      * @inherit

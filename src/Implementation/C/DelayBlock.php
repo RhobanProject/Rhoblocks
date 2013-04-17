@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\DelayBlock;
+use Rhoban\Blocks\Blocks\DelayBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class DelayBlock_C extends DelayBlock
+class DelayBlock extends Base
 {
     protected $size;
 

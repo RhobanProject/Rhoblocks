@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\ConstantBlock;
+use Rhoban\Blocks\Blocks\ConstantBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class ConstantBlock_C extends ConstantBlock
+class ConstantBlock extends Base
 {
     /**
      * @inherit

@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\FactoryInterface;
-use Rhoban\Blocks\Implementation\C\ConstantBlock_C;
 
 /**
  * Factory
@@ -16,18 +15,18 @@ class Factory implements FactoryInterface
      */
     private static $familyBinding = array(
         'C' => array(
-            'Constant' => 'Rhoban\\Blocks\\Implementation\\C\\ConstantBlock_C',
-            'Sinus' => 'Rhoban\\Blocks\\Implementation\\C\\SinusBlock_C',
-            'Smaller' => 'Rhoban\\Blocks\\Implementation\\C\\SmallerBlock_C',
-            'Chrono' => 'Rhoban\\Blocks\\Implementation\\C\\ChronoBlock_C',
-            'Output' => 'Rhoban\\Blocks\\Implementation\\C\\OutputBlock_C',
-            'Multiplexer' => 'Rhoban\\Blocks\\Implementation\\C\\MultiplexerBlock_C',
-            'Print' => 'Rhoban\\Blocks\\Implementation\\C\\PrintBlock_C',
-            'Pulse' => 'Rhoban\\Blocks\\Implementation\\C\\PulseBlock_C',
-            'Delay' => 'Rhoban\\Blocks\\Implementation\\C\\DelayBlock_C',
+            'Constant' => 'Rhoban\\Blocks\\Implementation\\C\\ConstantBlock',
+            'Sinus' => 'Rhoban\\Blocks\\Implementation\\C\\SinusBlock',
+            'Smaller' => 'Rhoban\\Blocks\\Implementation\\C\\SmallerBlock',
+            'Chrono' => 'Rhoban\\Blocks\\Implementation\\C\\ChronoBlock',
+            'Output' => 'Rhoban\\Blocks\\Implementation\\C\\OutputBlock',
+            'Multiplexer' => 'Rhoban\\Blocks\\Implementation\\C\\MultiplexerBlock',
+            'Print' => 'Rhoban\\Blocks\\Implementation\\C\\PrintBlock',
+            'Pulse' => 'Rhoban\\Blocks\\Implementation\\C\\PulseBlock',
+            'Delay' => 'Rhoban\\Blocks\\Implementation\\C\\DelayBlock',
 
-            'ENVIRONMENT' => 'Rhoban\\Blocks\\Implementation\\C\\Environment_C',
-            'GENERATOR' => 'Rhoban\\Blocks\Implementation\\C\\Generator_C',
+            'ENVIRONMENT' => 'Rhoban\\Blocks\\Implementation\\C\\Environment',
+            'GENERATOR' => 'Rhoban\\Blocks\Implementation\\C\\Generator',
         ),
     );
 

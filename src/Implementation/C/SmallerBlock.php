@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C;
 
-use Rhoban\Blocks\Blocks\SmallerBlock;
+use Rhoban\Blocks\Blocks\SmallerBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class SmallerBlock_C extends SmallerBlock
+class SmallerBlock extends Base
 {
     /**
      * @inherit
