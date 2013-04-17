@@ -42,7 +42,7 @@ $(document).ready(function() {
 	});
     });
 
-    $('.optionsForm form').on('submit', function(evt) {
+    $('.optionsForm form').on('change', function(evt) {
         evt.preventDefault();
         $('.optionsForm .optionsStatus').text('(saving...)');
         $.post('blocks.php?action=saveOptions', $(this).serializeArray(), function(response) {
