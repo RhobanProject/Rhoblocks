@@ -69,27 +69,27 @@ abstract class Environment implements EnvironmentInterface
     /**
      * @inherit
      */
-    public function registerState($blockId, $index, $type)
+    public function registerState($name, $index, $type, $dimension)
     {
-        return $this->register($this->stack, 'state', $type, $blockId, $index);
+        return $this->register($this->global, 'state', $type, $dimension, $name, $index, true);
     }
 
-    public function registerVariable($blockId, $index, $type)
+    public function registerVariable($name, $index, $type, $dimension)
     {
-        return $this->register($this->global, 'variable', $type, $blockId, $index, true);
+        return $this->register($this->stack, 'variable', $type, $dimension, $name, $index);
     }
 
     /**
      * Build the variable identifier based on
-     * its name, index and blockId
+     * its name, index and name
      * @param $name : string
-     * @param $blockId : null or integer
+     * @param $name : null or integer
      * @param $index : integer
      */
-    protected function getIdentifier($name, $blockId, $index)
+    protected function getIdentifier($name, $varName, $index)
     {
-        if ($blockId) {
-            return $name.'_'.$blockId.'_'.$index;
+        if ($name) {
+            return $name.'_'.$varName.'_'.$index;
         } else {
             return $name.'_'.$index;
         }
@@ -98,9 +98,9 @@ abstract class Environment implements EnvironmentInterface
     /**
      * Creates an identifier
      */
-    protected function createIdentifier($identifier, $type, $global = false)
+    protected function createIdentifier($identifier, $type, $dimension, $global = false)
     {
-        return new Identifier($this, $identifier, $type);
+        return new Identifier($this, $identifier, $type, $dimension);
     }
     
     /**
@@ -108,16 +108,15 @@ abstract class Environment implements EnvironmentInterface
      * @param $array : the container array 
      * @param $name : the variable type name
      * @param $type : Rhoban\Blocks\VariableType
-     * @param $blockId
+     * @param $name
      * @param $index
      */
-    private function register(array &$array, $name, $type, 
-        $blockId = null, $index, $global = false)
+    private function register(array &$array, $name, $type, $dimension, $varName = null, $index, $global = false)
     {
-        $identifier = $this->getIdentifier($name, $blockId, $index);
+        $identifier = $this->getIdentifier($name, $varName, $index);
 
         if (!isset($array[$identifier])) {
-            $array[$identifier] = $this->createIdentifier($identifier, $type, $global);
+            $array[$identifier] = $this->createIdentifier($identifier, $type, $dimension, $global);
         }
 
         return $array[$identifier];

@@ -52,12 +52,13 @@ class Identifier
      * @param $type Rhoban\Blocks\VariableType
      */
     public function __construct
-        (EnvironmentInterface $environment, $value, $type, $prefix = '')
+        (EnvironmentInterface $environment, $value, $type, $dimension = 0, $prefix = '')
     {
         $this->environment = $environment;
         $this->value = $value;
         $this->type = $type;
         $this->prefix = $prefix;
+        $this->dimension = $dimension;
     }
 
     /**
@@ -68,9 +69,17 @@ class Identifier
         return $this->prefix.$this->value;
     }
 
+    /**
+     * Gets the declaration of the identifier
+     */
     public function getDeclaration()
     {
-        return $this->value;
+        $suffix = '';
+        if ($this->dimension) {
+            $suffix = '['.$this->dimension.']';
+        }
+        
+        return $this->value.$suffix;
     }
 
     /**

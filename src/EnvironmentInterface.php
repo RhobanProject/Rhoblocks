@@ -12,11 +12,12 @@ interface EnvironmentInterface
      * Register a global input/output/variable or a
      * stack state
      * @param $index : an unsigned unique identifier
-     * @param $blockId : the block identifier
+     * @param $name : the block identifier
      * @param $type : Integer or Scalar type
+     * @param $dimension : The size of the declaration
      */
-    public function registerState($blockId, $index, $type);
-    public function registerVariable($blockId, $index, $type);
+    public function registerState($name, $index, $type, $dimension);
+    public function registerVariable($name, $index, $type, $dimension);
 
     /**
      * Gets the frequency of the machine

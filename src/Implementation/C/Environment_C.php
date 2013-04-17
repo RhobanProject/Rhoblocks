@@ -19,9 +19,9 @@ class Environment_C extends Environment
     /**
      * Creates an identifier
      */
-    protected function createIdentifier($identifier, $type, $global = false)
+    protected function createIdentifier($identifier, $type, $dimension, $global = false)
     {
-        return new Identifier($this, $identifier, $type, $global ? 'data->' : '');
+        return new Identifier($this, $identifier, $type, $dimension, $global ? 'data->' : '');
     }
 
     /**

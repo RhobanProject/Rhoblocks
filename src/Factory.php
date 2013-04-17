@@ -24,6 +24,7 @@ class Factory implements FactoryInterface
             'Multiplexer' => 'Rhoban\\Blocks\\Implementation\\C\\MultiplexerBlock_C',
             'Print' => 'Rhoban\\Blocks\\Implementation\\C\\PrintBlock_C',
             'Pulse' => 'Rhoban\\Blocks\\Implementation\\C\\PulseBlock_C',
+            'Delay' => 'Rhoban\\Blocks\\Implementation\\C\\DelayBlock_C',
 
             'ENVIRONMENT' => 'Rhoban\\Blocks\\Implementation\\C\\Environment_C',
             'GENERATOR' => 'Rhoban\\Blocks\Implementation\\C\\Generator_C',

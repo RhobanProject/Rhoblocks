@@ -172,12 +172,12 @@ abstract class Block implements BlockInterface
     /**
      * Register a variable
      */
-    public function getVariableIdentifier($name, $type, $global = false)
+    public function getVariableIdentifier($name, $type, $global = false, $dimension = 0)
     {
         if ($global) {
-            return $this->environment->registerVariable($this->getId(), $name, $type);
+            return $this->environment->registerState($this->getId(), $name, $type, $dimension);
         } else {
-            return $this->environment->registerState($this->getId(), $name, $type);
+            return $this->environment->registerVariable($this->getId(), $name, $type, $dimension);
         }
     }
 
@@ -220,6 +220,14 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Guess the type of an output
+     */
+    protected function guessOutputType($name)
+    {
+        return $this->getWeakestType();
+    }
+
+    /**
      * Gets the identifier for the given output
      *
      * @param $name, the name of the input
@@ -248,7 +256,7 @@ abstract class Block implements BlockInterface
 
         $type = $entry['variableType'];
         if ($type == VariableType::Unknown) {
-            $type = $this->getWeakestType();
+            $type = $this->guessOutputType($entry['name']);
         }
 
         return $this->getVariableIdentifier($ioName, $type);

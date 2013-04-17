@@ -5,6 +5,7 @@
 
 void <?php echo $prefix; ?>Init(struct <?php echo $structName; ?> *data)
 {
+    int i, j, k;
 <?php echo $initCode; ?>
 
 }
