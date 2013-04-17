@@ -42,6 +42,7 @@ $form = @include('form.php');
         <div id="blocks"></div>
         <div class="optionsForm">
             <h2>Options <span class="optionsStatus"></span></h2>
+            <hr />
             <?php echo $form; ?>
         </div>
         <div id="output"></div>

@@ -52,9 +52,10 @@ a:hover {
 .optionsForm { 
     font-size:12px;
     margin-top:5px;
-    border:2px solid #54c85c;
     border-radius:20px;
     padding:10px;
+  background-color:#ccc;
+  border:2px solid #666
 }
 
 .optionsForm input {
@@ -63,5 +64,12 @@ a:hover {
 
 h2 {
     font-size:14px;
-    color:#666;
+}
+
+hr {
+    border:0;
+    height:0px;
+    border-bottom:1px dashed #666;
+    margin-top:5px;
+    margin-bottom:5px;
 }
