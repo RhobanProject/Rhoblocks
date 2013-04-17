@@ -3,7 +3,8 @@ session_start();
 
 use Rhoban\Blocks\Compiler;
 use Rhoban\Blocks\Factory;
-use Rhoban\Blocks\ArchiveWriter;
+use Rhoban\Blocks\Tools\ArchiveWriter;
+use Rhoban\Blocks\Tools\JsonIndent;
 
 include('../src/autoload.php');
 include('../vendor/geshi/geshi.php');
@@ -37,7 +38,7 @@ if (isset($_GET['action'])) {
         try {
             $_SESSION['scene'] = $_POST['data'];
             $files = getCompiler($_POST['data'], $options)->generateCode();
-            $files['scene.json'] = $_POST['data'];
+            $files['scene.json'] = JsonIndent::indent($_POST['data']);
 
             if ($options['archive'] == 'yes') {
                 $archive = new ArchiveWriter('output');
