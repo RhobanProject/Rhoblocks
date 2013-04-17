@@ -1,3 +1,7 @@
+<?php
+session_start();
+$form = @include('form.php');
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,10 +36,14 @@
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     </head>
     <body>
-        <center>
-            <img src="css/gfx/logo.jpg" alt="RhoBlocks" />
-        </center>
+        <div class="header">
+            <img src="css/gfx/logo.png" alt="RhoBlocks" />
+        </div>
         <div id="blocks"></div>
+        <div class="optionsForm">
+            <h2>Options</h2>
+            <?php echo $form; ?>
+        </div>
         <div id="output"></div>
     </body>
 </html>

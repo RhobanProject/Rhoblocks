@@ -41,4 +41,10 @@ $(document).ready(function() {
             });
 	});
     });
+
+    $('.optionsForm form').on('submit', function(evt) {
+        evt.preventDefault();
+        $.post('blocks.php?action=saveOptions', $(this).serializeArray());
+        return false;
+    });
 });
