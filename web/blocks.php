@@ -35,6 +35,7 @@ if (isset($_GET['action'])) {
         try {
             $_SESSION['scene'] = $_POST['data'];
             $files = getCompiler($_POST['data'])->generateCode();
+            $files['scene.json'] = $_POST['data'];
 
             $archive = new ArchiveWriter('output');
             $name = $archive->writeFiles($files);
@@ -45,7 +46,7 @@ if (isset($_GET['action'])) {
             );
 
             foreach ($files as $name => &$contents) {
-                $geshi = new \GeSHi($contents, 'sh');
+                $geshi = new \GeSHi($contents, 'C');
                 $geshi->enable_classes();
                 $geshi->enable_keyword_links(false);
 
