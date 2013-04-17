@@ -6,7 +6,7 @@ typedef float scalar;
 
 <?php echo $structCode; ?>
 
-void <?php echo $prefix; ?>Init();
-void <?php echo $prefix; ?>Tick();
+void <?php echo $prefix; ?>Init(struct <?php echo $prefix; ?>_data *);
+void <?php echo $prefix; ?>Tick(struct <?php echo $prefix; ?>_data *);
 
 #endif
