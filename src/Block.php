@@ -2,6 +2,7 @@
 
 namespace Rhoban\Blocks;
 
+use Rhoban\Blocks\Exceptions\ParametersException;
 use Rhoban\Blocks\BlockInterface;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\Edge;
@@ -510,9 +511,8 @@ abstract class Block implements BlockInterface
                 $this->parameterValues[$name] = (isset($this->parameterValues[$name]) && $this->parameterValues[$name] == 'on') ? 1 : 0;
             }
 
-            if (!array_key_exists($name, $this->parameterValues)) {
-                throw new \RuntimeException(
-                    'Missing block parameters '.$param['name']);
+            if (!array_key_exists($name, $this->parameterValues) || $this->parameterValues[$name] === '') {
+                throw new ParametersException('Missing block parameters '.$param['name']);
             } else {
                 $this->parameterValues[$name] = str_replace(',', '.', $this->parameterValues[$name]);
             }

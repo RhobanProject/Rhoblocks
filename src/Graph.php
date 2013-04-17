@@ -4,6 +4,8 @@ namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\GraphInterface;
 use Rhoban\Blocks\FactoryInterface;
+use Rhoban\Blocks\Exceptions\GenerateException;
+use Rhoban\Blocks\Exceptions\LoadingException;
 
 /**
  * Graph
@@ -84,7 +86,7 @@ class Graph implements GraphInterface
             try {
                 $code .= $this->getBlock($id)->generateInitCode();
             } catch (\Exception $e) {
-                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getBlockId().': '.$e->getMessage());
+                throw new GenerateException('Error while generating block '.$this->getBlock($id)->getBlockId().': '.$e->getMessage(), 0, $e);
             }
         }
 
@@ -98,7 +100,7 @@ class Graph implements GraphInterface
             try {
                 $code .= $this->getBlock($id)->generateTransitionCode();
             } catch (\Exception $e) {
-                throw new \RuntimeException('Error while generating block '.$this->getBlock($id)->getBlockId().': '.$e->getMessage());
+                throw new GenerateException('Error while generating block '.$this->getBlock($id)->getBlockId().': '.$e->getMessage());
             }
         }
 
@@ -119,24 +121,28 @@ class Graph implements GraphInterface
             !$data || !is_array($data) || 
             !is_array($data['edges']) || !is_array($data['blocks'])
         ) {
-            throw new \RuntimeException('Invalid JSON format');
+            throw new LoadingException('Invalid JSON format');
         }
 
         //Blocks extracting and allocating
         foreach ($data['blocks'] as $block) {
-            if (
-                !array_key_exists('id', $block) ||
-                !is_integer($block['id']) || 
-                !array_key_exists('type', $block) ||
-                !array_key_exists('parameters', $block) ||
-                !is_array($block['parameters'])
-            ) {
-                throw new \RuntimeException(
-                    'Invalid JSON blocks format');
+            try {
+                if (
+                    !array_key_exists('id', $block) ||
+                    !is_integer($block['id']) || 
+                    !array_key_exists('type', $block) ||
+                    !array_key_exists('parameters', $block) ||
+                    !is_array($block['parameters'])
+                ) {
+                    throw new LoadingException(
+                        'Invalid JSON blocks format');
+                }
+                $id = $block['id'];
+                $type = $block['type'];
+                $this->blocks[$id] = $this->factory->createBlock($type, $block);
+            } catch (\Exception $e) {
+                throw new LoadingException('Error while loading block '.$block['type'].'#'.$block['id'].': '.$e->getMessage(), 0, $e);
             }
-            $id = $block['id'];
-            $type = $block['type'];
-            $this->blocks[$id] = $this->factory->createBlock($type, $block);
         }
     
         //Edges extracting

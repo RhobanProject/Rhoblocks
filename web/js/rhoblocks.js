@@ -15,6 +15,11 @@ $(document).ready(function() {
     });
     
     blocks.ready(function() {
+	blocks.menu.addAction('Export', function(blocks) {
+            data = $.toJSON(blocks.exportData());
+            $('#output').html('<pre>'+data+'</pre>');
+        });
+
 	blocks.menu.addAction('Compile', function(blocks) {
             data = $.toJSON(blocks.exportData());
             $.post('blocks.php?action=compile', {'data':data}, function(response) {

@@ -1,0 +1,1 @@
+{"edges":[{"block1":2,"io1":"output_0","block2":3,"io2":"input_0"}],"blocks":[{"id":2,"x":-201.6608068329704,"y":-76.64595942726527,"type":"Constant","parameters":{"Value":0}},{"id":3,"x":144.51255108992154,"y":-84.2504580632785,"type":"Output","parameters":{"Index":0}}]}

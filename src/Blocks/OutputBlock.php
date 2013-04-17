@@ -17,6 +17,7 @@ abstract class OutputBlock extends Block
             array(
                 'name' => 'Index',
                 'type' => 'integer',
+                'card' => 0,
                 'default' => 0
             )
         ),
