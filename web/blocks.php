@@ -38,7 +38,10 @@ if (isset($_GET['action'])) {
         try {
             $_SESSION['scene'] = $_POST['data'];
             $files = getCompiler($_POST['data'], $options)->generateCode();
-            $files['scene.json'] = JsonIndent::indent($_POST['data']);
+
+            if ($options['includeJson'] == 'yes') {
+                $files['scene.json'] = JsonIndent::indent($_POST['data']);
+            }
 
             if ($options['archive'] == 'yes') {
                 $archive = new ArchiveWriter('output');
