@@ -3,6 +3,7 @@
 namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\FactoryInterface;
+use Rhoban\Blocks\Family;
 
 /**
  * Factory
@@ -13,22 +14,7 @@ class Factory implements FactoryInterface
      * Binding associations between implementation
      * family and Blocks classes and Environment
      */
-    private static $familyBinding = array(
-        'C' => array(
-            'Constant' => 'Rhoban\\Blocks\\Implementation\\C\\ConstantBlock',
-            'Sinus' => 'Rhoban\\Blocks\\Implementation\\C\\SinusBlock',
-            'Smaller' => 'Rhoban\\Blocks\\Implementation\\C\\SmallerBlock',
-            'Chrono' => 'Rhoban\\Blocks\\Implementation\\C\\ChronoBlock',
-            'Output' => 'Rhoban\\Blocks\\Implementation\\C\\OutputBlock',
-            'Multiplexer' => 'Rhoban\\Blocks\\Implementation\\C\\MultiplexerBlock',
-            'Print' => 'Rhoban\\Blocks\\Implementation\\C\\PrintBlock',
-            'Pulse' => 'Rhoban\\Blocks\\Implementation\\C\\PulseBlock',
-            'Delay' => 'Rhoban\\Blocks\\Implementation\\C\\DelayBlock',
-
-            'ENVIRONMENT' => 'Rhoban\\Blocks\\Implementation\\C\\Environment',
-            'GENERATOR' => 'Rhoban\\Blocks\Implementation\\C\\Generator',
-        ),
-    );
+    private static $families = array('C');
 
     /**
      * The implementation family of the factory
@@ -47,13 +33,37 @@ class Factory implements FactoryInterface
     protected $options;
 
     /**
+     * Get a class name regarding the project convention
+     */
+    protected function getClassName($family, $className)
+    {
+         return 'Rhoban\\Blocks\\Implementation\\'.$family.'\\'.$className;
+    }
+
+    /**
      * Initialize the Factory
      * @param $family : the implementation
      * family
      */
     public function __construct($family, array $options = array())
     {
-        $this->family = $family;
+        if (!in_array($family, self::$families)) {
+            throw new \RuntimeException('Unknown family: '.$family);
+        }
+
+        $class = $this->getClassName($family, 'Family');
+        $this->family = new $class($family);
+
+        if (!$this->family instanceof Family) {
+            throw new \RuntimeException('The family for '.$family.' should extends Family');
+        }
+        
+        $generator = $class = $this->getClassName($family, 'Generator');
+        $this->generatorInstance = new $generator;
+
+        $environment = $class = $this->getClassName($family, 'Environment');
+        $this->environmentInstance = new $environment($options);
+
         $this->options = $options;
     }
 
@@ -62,10 +72,6 @@ class Factory implements FactoryInterface
      */
     public function getGenerator()
     {
-        if (!$this->generatorInstance) {
-            $this->generatorInstance = $this->newObject('GENERATOR');
-        }
-
         return $this->generatorInstance;
     }
 
@@ -74,10 +80,6 @@ class Factory implements FactoryInterface
      */
     public function getEnvironment()
     {
-        if (!$this->environmentInstance) {
-            $this->environmentInstance = $this->newObject('ENVIRONMENT', $this->options);
-        }
-
         return $this->environmentInstance;
     }
 
@@ -95,7 +97,9 @@ class Factory implements FactoryInterface
     public function generateBlocksJSON()
     {
         $jsonContainer = array();
-        foreach (self::$familyBinding[$this->family] as $type => $className) {
+        $blocks = $this->family->getAllBlocks();
+
+        foreach ($blocks as $type => $className) {
             if ($type != 'ENVIRONMENT' && $type != 'GENERATOR') {
                 $jsonContainer[$type] = $className::generateJSON();
             }
@@ -115,23 +119,19 @@ class Factory implements FactoryInterface
      */
     private function newObject($type, $arg1 = null, $arg2 = null)
     {
-        if (
-            self::$familyBinding[$this->family] && 
-            self::$familyBinding[$this->family][$type]
-        ) {
+        $className = $this->family->getClassFor($type);
+
+        if ($className) {
+
             if ($arg1 !== null && $arg2 !== null) {
-                $className = self::$familyBinding[$this->family][$type];
                 return new $className($arg1, $arg2);
             } else if ($arg1 !== null) {
-                $className = self::$familyBinding[$this->family][$type];
                 return new $className($arg1);
             } else {
-                $className = self::$familyBinding[$this->family][$type];
                 return new $className();
             }
         } else {
-            throw new \RuntimeException(
-                'Unknown '.$type.' for family '.$this->family);
+            throw new \RuntimeException('Unknown '.$type.' for family '.$this->family->getName());
         }
     }
 }
