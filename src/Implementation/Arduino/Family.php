@@ -12,7 +12,9 @@ class Family extends Base
     protected function getBlocks()
     {
         $types = array(
-            'Pins.DigitalPin'
+            'Pins.DigitalOutput',
+            'Pins.DigitalInput',
+            'Pins.PWMOutput', 
         );
 
         $blocks = parent::getBlocks();

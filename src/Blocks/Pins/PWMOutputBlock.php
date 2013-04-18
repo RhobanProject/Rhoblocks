@@ -4,7 +4,7 @@ namespace Rhoban\Blocks\Blocks\Pins;
 
 use Rhoban\Blocks\Block;
 
-abstract class DigitalPinBlock extends Block
+abstract class PWMOutputBlock extends Block
 {
     /**
      * @see inherit
@@ -12,9 +12,9 @@ abstract class DigitalPinBlock extends Block
     protected function meta()
     {
         return array(
-            'name' => 'DigitalPin',
+            'name' => 'PWMOutput',
             'family' => 'Pins',
-            'description' => 'Outputs a digital value to a pin (off/on)',
+            'description' => 'Outputs a pwm value on the pin',
             'parameters' => array(
                 array(
                     'name' => 'Pin',

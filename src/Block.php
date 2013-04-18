@@ -395,6 +395,10 @@ abstract class Block implements BlockInterface
     
     public function getParameterIdentifier($name)
     {
+        if (!isset($this->parameterValues[$name])) {
+            throw new \RuntimeException('The parameter "'.$name.'" does not exists');
+        }
+
         return $this->getIdentifier('parameters', 'param', $name, false, $this->parameterValues[$name]);
     }
 

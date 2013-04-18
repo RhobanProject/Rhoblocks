@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\Arduino\Pins;
 
-use Rhoban\Blocks\Blocks\Pins\DigitalPinBlock as Base;
+use Rhoban\Blocks\Blocks\Pins\DigitalOutputBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class DigitalPinBlock extends Base
+class DigitalOutputBlock extends Base
 {
     /**
      * @inherit
