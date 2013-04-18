@@ -24,7 +24,7 @@ if (isset($_GET['action'])) {
     $action = $_GET['action'];
 
     if ($action == 'getBlocks') {
-        $response = '['.implode(',', getCompiler()->generateJSON()).']';
+        $response = '['.implode(',', getCompiler(null, $options)->generateJSON()).']';
     }
 
     if ($action == 'getScene') {

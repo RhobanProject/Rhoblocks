@@ -15,6 +15,10 @@ $(document).ready(function() {
     });
     
     blocks.ready(function() {
+	blocks.menu.addAction('Clear', function(blocks) {
+            blocks.clear();
+        });
+
 	blocks.menu.addAction('Export', function(blocks) {
             data = $.toJSON(blocks.exportData());
             $('#output').html('<pre>'+data+'</pre>');

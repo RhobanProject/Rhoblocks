@@ -13,7 +13,7 @@ class Family extends Base
     {
         $types = array(
             'Time.Chrono', 'Time.Delay',
-            'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector',
+            'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.PWM',
             'IO.Output', 'IO.Print',
             'Math.Sinus', 'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 'Math.Discount', 'Math.Greater',
             'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor'
