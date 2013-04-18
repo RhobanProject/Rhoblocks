@@ -16,7 +16,7 @@ class Family extends Base
             'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector',
             'IO.Output', 'IO.Print',
             'Math.Sinus', 'Math.Smaller', 'Math.Expression',
-            'Logic.Counter'
+            'Logic.Counter', 'Logic.Memory'
         );
         $blocks = array();
 
