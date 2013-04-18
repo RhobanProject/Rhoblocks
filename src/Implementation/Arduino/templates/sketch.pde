@@ -22,22 +22,23 @@ void <?php echo $prefix; ?>Tick(struct <?php echo $structName; ?> *data)
 }
 
 <?php if ($generateMain) { ?>
+struct <?php echo $structName; ?> data;
 
-int main()
+void setup()
 {
-    int last;
-    struct <?php echo $structName; ?> data;
-
     <?php echo $prefix; ?>Init(&data);
+}
+
+void loop()
+{
+    unsigned long int tick;
 
     while (1) {
+        tick = millis();
         <?php echo $prefix; ?>Tick(&data);
 
-        last = millis();
-        while ((millis()-last) < <?php echo $period; ?>);
+        while ((millis()-tick) < <?php echo $period; ?>);
     }
-
-    return 0;
 }
 
 <?php } ?>

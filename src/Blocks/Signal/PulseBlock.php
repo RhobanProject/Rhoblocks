@@ -27,7 +27,8 @@ abstract class PulseBlock extends Block
             'outputs' => array(
                 array(
                     'name' => 'Pulse',
-                    'card' => '0-*'
+                    'card' => '0-*',
+                    'type' => 'integer'
                 )
             ),
         );

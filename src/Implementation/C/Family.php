@@ -15,7 +15,8 @@ class Family extends Base
             'Time.Chrono', 'Time.Delay',
             'Signal.Constant', 'Signal.Pulse',
             'IO.Output', 'IO.Print',
-            'Math.Sinus', 'Math.Smaller'
+            'Math.Sinus', 'Math.Smaller', 'Math.Expression',
+            'Logic.Counter'
         );
         $blocks = array();
 
