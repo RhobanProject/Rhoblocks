@@ -11,7 +11,7 @@ class SceneTests extends \PHPUnit_Framework_TestCase
 
     protected function getCompiler($family, $data = null)
     {
-        return new Compiler(new Factory($family), $data);
+        return new Compiler(new Factory(array('family' => $family)), $data);
     }
 
     protected function doTest($sceneFile)

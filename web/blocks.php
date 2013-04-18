@@ -11,9 +11,10 @@ include('../vendor/geshi/geshi.php');
 
 $form = @include('form.php');
 $options = $_SESSION['options'];
+$options['family'] = 'Arduino';
 
 function getCompiler($jsonData = null, $options = array()) {
-    return new Compiler(new Factory('Arduino', $options), $jsonData);
+    return new Compiler(new Factory($options), $jsonData);
 }
 
 header('Content-type: text/plain');

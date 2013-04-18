@@ -45,8 +45,14 @@ class Factory implements FactoryInterface
      * @param $family : the implementation
      * family
      */
-    public function __construct($family, array $options = array())
+    public function __construct(array $options = array())
     {
+        if (!isset($options['family'])) {
+            throw new \RuntimeException('No family given');
+        }
+
+        $family = $options['family'];
+
         if (!in_array($family, self::$families)) {
             throw new \RuntimeException('Unknown family: '.$family);
         }
