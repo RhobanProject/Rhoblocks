@@ -118,10 +118,16 @@ class Edge
     public function ioSection(BlockInterface $block)
     {
         if ($block == $this->blockFrom) {
-            return $this->ioFrom;
+            $section = $this->ioFrom;
         } else {
-            return $this->ioTo;
+            $section = $this->ioTo;
         }
+
+        if ($section[0] == 'param') {
+            $section[0] = 'parameter';
+        }
+
+        return $section;
     }
 
     /**

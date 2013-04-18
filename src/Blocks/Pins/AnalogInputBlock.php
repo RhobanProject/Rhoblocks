@@ -4,7 +4,7 @@ namespace Rhoban\Blocks\Blocks\Pins;
 
 use Rhoban\Blocks\Block;
 
-abstract class DigitalInputBlock extends Block
+abstract class AnalogInputBlock extends Block
 {
     /**
      * @see inherit
@@ -12,7 +12,7 @@ abstract class DigitalInputBlock extends Block
     protected function meta()
     {
         return array(
-            'name' => 'DigitalInput',
+            'name' => 'AnalogInput',
             'family' => 'Pins',
             'description' => 'Inputs a digital value to a pin (off/on)',
             'parameters' => array(
@@ -22,17 +22,6 @@ abstract class DigitalInputBlock extends Block
                     'default' => 1,
                     'card' => 0
                 ),
-                array(
-                    'name' => 'Pull-Up',
-                    'type' => 'check',
-                    'default' => true,
-                    'card' => 0
-                ),
-                array(
-                    'name' => 'Invert',
-                    'type' => 'check',
-                    'default' => true
-                )
             ),
             'inputs' => array(
             ),

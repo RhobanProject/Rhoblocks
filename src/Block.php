@@ -215,6 +215,7 @@ abstract class Block implements BlockInterface
         $meta = $this->getMeta();
         foreach ($meta['parameters'] as $parameter) {
             $parameter = $this->getParameterIdentifier($parameter['name']);
+
             if (VariableType::isNumeric($parameter->getType())) {
                 $type = max($parameter->getType(), $type);
             }
@@ -326,6 +327,7 @@ abstract class Block implements BlockInterface
     public function getIdentifier($section, $prefix, $name, $multiple = false, $default = null)
     {
         $index = null;
+
         if (is_array($name)) {
             list($name, $index) = $name;
         }

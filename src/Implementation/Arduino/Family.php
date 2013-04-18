@@ -14,7 +14,8 @@ class Family extends Base
         $types = array(
             'Pins.DigitalOutput',
             'Pins.DigitalInput',
-            'Pins.PWMOutput', 
+            'Pins.PWMOutput',
+            'Pins.AnalogInput',
         );
 
         $blocks = parent::getBlocks();
