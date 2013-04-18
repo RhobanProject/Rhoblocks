@@ -30,7 +30,7 @@ class EdgeDetectorBlock extends Base
         $rising = $this->getParameterIdentifier('Rising')->asInteger();
         $falling = $this->getParameterIdentifier('Falling')->asInteger();
 
-        $code = "$output = ($input < $lastValue && $falling) || ($input > $lastValue && $rising);\n";
+        $code = "$output = ($input < $lastValue && $falling) ||\n ($input > $lastValue && $rising);\n";
         $code .= "$lastValue = $input;\n";
 
         return $code;
