@@ -18,7 +18,7 @@ abstract class DigitalOutputBlock extends Block
             'parameters' => array(
                 array(
                     'name' => 'Pin',
-                    'type' => 'integer',
+                    'type' => 'text',
                     'default' => 1,
                     'card' => 0
                 ),
