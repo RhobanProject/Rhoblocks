@@ -98,6 +98,7 @@ class Graph implements GraphInterface
         $code = '';
         foreach ($this->topologicalSort as $id) {
             try {
+                $code .= "\n// Transition for ".$this->getBlock($id)->getBlockId()."\n";
                 $code .= $this->getBlock($id)->generateTransitionCode();
             } catch (\Exception $e) {
                 throw new GenerateException('Error while generating block '.$this->getBlock($id)->getBlockId().': '.$e->getMessage());

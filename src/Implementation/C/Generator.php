@@ -6,6 +6,7 @@ use Rhoban\Blocks\Generator as Base;
 use Rhoban\Blocks\Template;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\Implementation\C\Environment;
+use Rhoban\Blocks\Tools\CIndent;
 
 class Generator extends Base
 {
@@ -23,22 +24,22 @@ class Generator extends Base
         $structName = $environment->getStructName($prefix);
 
         $headerTemplate = new Template(__DIR__.'/templates/header.h');
-        $codeHeader = $headerTemplate->render(array(
+        $codeHeader = CIndent::indent($headerTemplate->render(array(
             'structName' => $structName,
             'prefixUpper' => $prefixUpper,
             'prefix' => $prefix,
             'structCode' => $environment->generateStructCode()
-        ));
+        )));
 
         $cTemplate = new Template(__DIR__.'/templates/code.c');
-        $codeC = $cTemplate->render(array(
+        $codeC = CIndent::indent($cTemplate->render(array(
             'headers' => $environment->getHeaders(),
             'prefix' => $prefix,
             'structName' => $structName,
             'transitionInitCode' => $environment->generateInitTransitionCode(),
             'initCode' => $initCode,
             'transitionCode' => $transitionCode
-        ));
+        )));
 
         $files = array(
             $prefix.'.h' => $codeHeader,
@@ -48,7 +49,7 @@ class Generator extends Base
         if ($environment->getOption('generateMain')) {
             $makefileTemplate = new Template(__DIR__.'/templates/Makefile');
             $files['Makefile'] = $makefileTemplate->render(array('prefix' => $prefix));
-            $files['main.c'] = $this->generateMain($environment);
+            $files['main.c'] = CIndent::indent($this->generateMain($environment));
         }
 
         return $files;

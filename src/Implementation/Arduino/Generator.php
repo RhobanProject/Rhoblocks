@@ -6,6 +6,7 @@ use Rhoban\Blocks\Implementation\C\Generator as Base;
 use Rhoban\Blocks\Template;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\Implementation\Arduino\Environment;
+use Rhoban\Blocks\Tools\CIndent;
 
 class Generator extends Base
 {
@@ -21,7 +22,7 @@ class Generator extends Base
         $sketchTemplate = new Template(__DIR__.'/templates/sketch.pde');
 
         $files = array(
-            $prefix.'.pde' => $sketchTemplate->render(array(
+            $prefix.'.pde' => CIndent::indent($sketchTemplate->render(array(
                 'headers' => $environment->getHeaders(),
                 'prefix' => $prefix,
                 'structName' => $structName,
@@ -33,7 +34,7 @@ class Generator extends Base
                 'period' => (int)(1000/$environment->getFrequency()),
                 'printf' => $environment->getOption('supportPrintf'),
                 'baudrate' => $environment->getOption('baudrate')
-            ))
+            )))
         );
 
         return $files;
