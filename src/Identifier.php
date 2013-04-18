@@ -59,7 +59,15 @@ class Identifier
         $this->type = $type;
         $this->prefix = $prefix;
         $this->dimension = $dimension;
+
+        if ($type == VariableType::Scalar) {
+            $guess = static::guessType($value, VariableType::Unknown);
+            if ($guess[1] == VariableType::Integer) {
+                $this->value = $this->value . '.';
+            }
+        }
     }
+
 
     /**
      * Get the value of the identifier
