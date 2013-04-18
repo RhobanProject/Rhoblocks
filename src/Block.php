@@ -10,11 +10,6 @@ use Rhoban\Blocks\Edge;
 abstract class Block implements BlockInterface
 {
     /**
-     * The meta information array of the block
-     */
-    protected static $META;
-
-    /**
      * The parameter values of the block
      */
     protected $parameterValues = array();
@@ -65,6 +60,14 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Returns the block metas
+     */
+    public function getMeta()
+    {
+        return static::meta();
+    }
+
+    /**
      * Adding an edge that enter in this block
      * @param $edge Rhoban\Blocks\Edge
      */
@@ -96,7 +99,7 @@ abstract class Block implements BlockInterface
      */
     public static function generateJSON()
     {
-        return json_encode(static::$META);
+        return json_encode(static::meta());
     }
 
     /**
@@ -415,14 +418,6 @@ abstract class Block implements BlockInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @inherit
-     */
-    public function getMeta()
-    {
-        return static::$META;
     }
     
     /**

@@ -9,24 +9,27 @@ abstract class OutputBlock extends Block
     /**
      * @see inherit
      */
-    protected static $META = array(
-        'name' => 'Output',
-        'family' => 'I/O',
-        'description' => 'Outputs to the output_N variable',
-        'parameters' => array(
-            array(
-                'name' => 'Index',
-                'type' => 'integer',
-                'card' => 0,
-                'default' => 0
-            )
-        ),
-        'inputs' => array(
-            array(
-                'name' => 'Value',
-                'card' => '0-1',
+    protected static function meta()
+    {
+        return array(
+            'name' => 'Output',
+            'family' => 'I/O',
+            'description' => 'Outputs to the output_N variable',
+            'parameters' => array(
+                array(
+                    'name' => 'Index',
+                    'type' => 'integer',
+                    'card' => 0,
+                    'default' => 0
+                )
             ),
-        ),
-        'outputs' => array(),
-    );
+            'inputs' => array(
+                array(
+                    'name' => 'Value',
+                    'card' => '0-1',
+                ),
+            ),
+            'outputs' => array(),
+        );
+    }
 }

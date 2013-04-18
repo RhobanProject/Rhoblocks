@@ -26,14 +26,27 @@ $(document).ready(function() {
                 if (response.status == 'error') {
                     blocks.messages.show(response.message, {'class': 'error'});
                 } else {
+                    var contentId = 0;
                     var html = '';
 
                     for (name in response.files) {
                         var contents = response.files[name];
-                        html += '<h2>'+name+'</h2>'+contents;
+                        html += '<h2>'+name+' <a href="javascript:void(0)" class="clipboard" rel="'+contentId+'">(Clipboard)</a></h2><span class="content'+contentId+'">'+contents+'</span>';
+                        contentId++;
                     }
 
                     $('#output').html(html);
+
+                    $('a.clipboard').each(function() {
+                        var div = $('.content'+$(this).attr('rel'));
+
+                        $(this).zclip({
+                            path: 'js/ZeroClipboard.swf',
+                            copy: div.text(),
+                            afterCopy: function(){}
+                        });
+                    });
+
                     blocks.messages.show('The code was generated successfully', {'class': 'valid'});
                 }
             }, 'json').fail(function(jh, error) {

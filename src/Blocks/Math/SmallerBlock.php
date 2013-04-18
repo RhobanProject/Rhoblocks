@@ -9,28 +9,31 @@ abstract class SmallerBlock extends Block
     /**
      * @see inherit
      */
-    protected static $META = array(
-        'name' => 'Smaller',
-        'family' => 'Math',
-        'description' => 'The < comparator',
-        'parameters' => array(
-        ),
-        'inputs' => array(
-            array(
-                'name' => 'A',
-                'card' => '1'
+    protected static function meta()
+    {
+        return array(
+            'name' => 'Smaller',
+            'family' => 'Math',
+            'description' => 'The < comparator',
+            'parameters' => array(
             ),
-            array(
-                'name' => 'B',
-                'card' => '1'
-            )
-        ),
-        'outputs' => array(
-            array(
-                'name' => 'A<B',
-                'type' => 'integer',
-                'card' => '0-*',
+            'inputs' => array(
+                array(
+                    'name' => 'A',
+                    'card' => '1'
+                ),
+                array(
+                    'name' => 'B',
+                    'card' => '1'
+                )
             ),
-        ),
-    );
+            'outputs' => array(
+                array(
+                    'name' => 'A<B',
+                    'type' => 'integer',
+                    'card' => '0-*',
+                ),
+            ),
+        );
+    }
 }

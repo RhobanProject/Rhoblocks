@@ -8,6 +8,7 @@ $form = @include('form.php');
         <meta charset="utf-8" />
         <title>RhoBlocks</title>
         <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.zclip.min.js"></script>
 
 <?php if (isset($_GET['dev'])) { ?>
         <script type="text/javascript" src="blocks/js/jquery.json.js"></script>

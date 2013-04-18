@@ -12,12 +12,10 @@ class Generator extends Base
     /**
      * @inherit
      */
-    public function generateCode
-        (EnvironmentInterface $environment, $initCode, $transitionCode)
+    public function generateCode(EnvironmentInterface $environment, $initCode, $transitionCode)
     {
         if (!$environment instanceof Environment) {
-            throw new \RuntimeException
-                ('The environment should be a C environment');
+            throw new \RuntimeException('The environment should be a C environment');
         }
 
         $prefix = $environment->getPrefix();
@@ -26,6 +24,7 @@ class Generator extends Base
 
         $headerTemplate = new Template(__DIR__.'/templates/header.h');
         $codeHeader = $headerTemplate->render(array(
+            'structName' => $structName,
             'prefixUpper' => $prefixUpper,
             'prefix' => $prefix,
             'structCode' => $environment->generateStructCode()
