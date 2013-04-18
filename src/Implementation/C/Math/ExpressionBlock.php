@@ -8,6 +8,17 @@ use Rhoban\Blocks\VariableType;
 
 class ExpressionBlock extends Base
 {
+    protected function guessOutputType($name)
+    {
+        $expression = ''.$this->getParameterIdentifier('Expression');
+
+        if (strpos($expression, '.') !== false) {
+            return VariableType::Scalar;
+        }
+
+        return $this->getWeakestType();
+    }
+
     /**
      * @inherit
      */

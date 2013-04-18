@@ -38,8 +38,7 @@ abstract class ExpressionBlock extends Block
             'outputs' => array(
                 array(
                     'name' => 'Result',
-                    'card' => '0-*',
-                    'type' => 'number'
+                    'card' => '0-*'
                 ),
             ),
         );
