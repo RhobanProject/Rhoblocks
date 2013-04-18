@@ -41,7 +41,8 @@ if (isset($_GET['action'])) {
             $files = getCompiler($_POST['data'], $options)->generateCode();
 
             if ($options['includeJson'] == 'yes') {
-                $files['scene.json'] = JsonIndent::indent($_POST['data']);
+                $data = '['.json_encode($options).','.$_POST['data'].']';
+                $files['scene.json'] = JsonIndent::indent($data);
             }
 
             if ($options['archive'] == 'yes') {
