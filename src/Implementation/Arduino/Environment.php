@@ -11,4 +11,13 @@ use Rhoban\Blocks\Identifier;
  */
 class Environment extends Base
 {
+    /**
+     * Adding specific options
+     */
+    public function getDefaultOptions()
+    {
+        return array_merge(parent::getDefaultOptions(), array(
+            'supportPrintf' => false
+        ));
+    }
 }

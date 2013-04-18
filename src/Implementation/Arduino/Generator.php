@@ -30,7 +30,9 @@ class Generator extends Base
                 'initCode' => $initCode,
                 'transitionCode' => $transitionCode,
                 'generateMain' => $environment->getOption('generateMain'),
-                'period' => (int)(1000/$environment->getFrequency())
+                'period' => (int)(1000/$environment->getFrequency()),
+                'printf' => $environment->getOption('supportPrintf'),
+                'baudrate' => $environment->getOption('baudrate')
             ))
         );
 

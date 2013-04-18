@@ -5,6 +5,15 @@
 typedef int integer;
 typedef float scalar;
 
+<?php if ($printf) { ?>
+static FILE uartout = {0} ;
+static int uart_putchar (char c, FILE *stream)
+{
+    Serial.write(c) ;
+    return 0 ;
+}
+<?php } ?>
+
 <?php echo $structCode; ?>
 
 void <?php echo $prefix; ?>Init(struct <?php echo $structName; ?> *data)
@@ -28,7 +37,13 @@ struct <?php echo $structName; ?> data;
 
 void setup()
 {
-    <?php echo $prefix; ?>Init(&data);
+<?php echo $prefix; ?>Init(&data);
+
+<?php if ($printf) { ?>
+    Serial.begin(<?php echo $baudrate; ?>);
+    fdev_setup_stream (&uartout, uart_putchar, NULL, _FDEV_SETUP_WRITE);
+    stdout = &uartout ;
+<?php } ?>
 }
 
 void loop()

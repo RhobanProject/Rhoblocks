@@ -67,6 +67,14 @@ abstract class Environment implements EnvironmentInterface
     }
 
     /**
+     * Setting the value of an option
+     */
+    public function setOption($option, $value)
+    {
+        $this->options[$option] = $value;
+    }
+
+    /**
      * @inherit
      */
     public function registerState($name, $index, $type, $dimension = 0)

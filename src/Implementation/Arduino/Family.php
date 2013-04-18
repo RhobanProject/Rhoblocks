@@ -16,6 +16,7 @@ class Family extends Base
             'Pins.DigitalInput',
             'Pins.PWMOutput',
             'Pins.AnalogInput',
+            'IO.Print',
         );
 
         $blocks = parent::getBlocks();
@@ -24,7 +25,6 @@ class Family extends Base
             list($family, $name) = explode('.', $type);
             $blocks[$name] = 'Rhoban\\Blocks\\Implementation\\Arduino\\' . $family . '\\' . $name . 'Block';
         }
-
         return $blocks;
     }
 }
