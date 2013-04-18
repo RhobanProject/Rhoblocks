@@ -54,6 +54,7 @@ void loop()
 {
     unsigned long int tick;
 
+    // Main loop, call the tick @<?php echo $frequency; ?>hz
     while (1) {
         tick = millis();
         <?php echo $prefix; ?>Tick(&data);
@@ -61,5 +62,4 @@ void loop()
         while ((millis()-tick) < <?php echo $period; ?>);
     }
 }
-
 <?php } ?>
