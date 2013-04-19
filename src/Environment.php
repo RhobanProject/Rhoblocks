@@ -47,6 +47,14 @@ abstract class Environment implements EnvironmentInterface
     }
 
     /**
+     * Gets the period in s
+     */
+    public function getPeriod()
+    {
+        return 1.0/$this->getFrequency();
+    }
+
+    /**
      * Shortcut to get the prefix
      */
     public function getPrefix()

@@ -30,7 +30,7 @@ class ChronoBlock extends Base
         $code = "if ($reset) {\n";
         $code .= "$t = 0;\n";
         $code .= "} else {\n";
-        $code .= $t .' += ('.(1/$this->environment->getFrequency()).")*$factor;\n";
+        $code .= $t .' += ('.$this->environment->getPeriod().")*$factor;\n";
         $code .= "}\n";
         $code .= $this->getOutputLIdentifier('T') . ' = ' . $t . ";\n";
 

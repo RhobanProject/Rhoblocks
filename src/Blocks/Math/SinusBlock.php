@@ -37,7 +37,8 @@ abstract class SinusBlock extends Block
             'inputs' => array(
                 array(
                     'name' => 'T',
-                    'card' => '1',
+                    'card' => '0-1',
+                    'default' => 0
                 ),
             ),
             'outputs' => array(
