@@ -10,7 +10,7 @@ class LoopBlock extends Base
 {
     public function getOutputIdentifier($nameOrId, $id = false)
     {
-        $type = $this->getInputIdentifier('Input')->getType();
+        $type = $this->getWeakestType();
         return $this->getVariableIdentifier('loop', $type, true);
     }
 
