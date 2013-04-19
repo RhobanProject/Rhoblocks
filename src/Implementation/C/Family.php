@@ -16,7 +16,8 @@ class Family extends Base
             'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.PWM',
             'IO.Output', 'IO.Print',
             'Math.Sinus', 'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 'Math.Discount', 'Math.Greater',
-            'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor'
+            'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor',
+            'Loop.Loop'
         );
         $blocks = array();
 

@@ -200,8 +200,10 @@ class Graph implements GraphInterface
 
         //Rebuild edges list
         foreach ($this->edges as $edge) {
-            $edges[$edge->fromId()][$edge->toId()] = true;
-            $edgesReversed[$edge->toId()][$edge->fromId()] = true;
+            if (!$edge->isLoopable()) {
+                $edges[$edge->fromId()][$edge->toId()] = true;
+                $edgesReversed[$edge->toId()][$edge->fromId()] = true;
+            }
         }
 
         // Remove all block with incomming links

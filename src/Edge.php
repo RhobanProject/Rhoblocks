@@ -55,6 +55,14 @@ class Edge
     }
 
     /**
+     * Should this edge be ignored in loop testing ?
+     */
+    public function isLoopable()
+    {
+        return ($this->blockFrom->isLoopable());
+    }
+
+    /**
      * Apply the inversed transformation convertIo
      * @param $ioArray formated as array('input', 12)
      *

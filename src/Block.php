@@ -44,6 +44,16 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Should this block be ignored in loop testing ?
+     */
+    public function isLoopable()
+    {
+        $meta = $this->getMeta();
+
+        return (isset($meta['loopable']) && $meta['loopable']);
+    }
+
+    /**
      * Returns the name of the block
      */
     public function getName()
@@ -231,7 +241,7 @@ abstract class Block implements BlockInterface
         // Watching the inputing edges
         foreach ($this->edges as $ioName => $edges) {
             foreach ($edges as $edge) {
-                if ($edge->isEnteringIn($this)) {
+                if ($edge->isEnteringIn($this) && !$edge->isLoopable()) {
                     $section = $edge->ioSection($this);
                     $entry = $this->getEntry($section[0].'s', $section[1], true);
                     $this->addType($entry);
