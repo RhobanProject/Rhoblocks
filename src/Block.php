@@ -395,8 +395,10 @@ abstract class Block implements BlockInterface
             }
 
             $identifiers = array();
-            foreach ($this->edges[$ioName] as $edge) {
-                $identifiers[] = $edge->inputIdentifier();
+            if (isset($this->edges[$ioName])) {
+                foreach ($this->edges[$ioName] as $edge) {
+                    $identifiers[] = $edge->inputIdentifier();
+                }
             }
 
             if ($multiple) {
