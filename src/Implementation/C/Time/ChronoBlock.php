@@ -25,12 +25,15 @@ class ChronoBlock extends Base
     {
         $t = $this->getVariableIdentifier('T', VariableType::Scalar, true);
         $reset = $this->getInputIdentifier('Reset')->asInteger();
+        $pause = $this->getInputIdentifier('Pause')->asInteger();
         $factor = $this->getParameterIdentifier('Factor');
 
         $code = "if ($reset) {\n";
         $code .= "$t = 0;\n";
         $code .= "} else {\n";
+        $code .= "if (!$pause) {;\n";
         $code .= $t .' += ('.$this->environment->getPeriod().")*$factor;\n";
+        $code .= "}\n";
         $code .= "}\n";
         $code .= $this->getOutputLIdentifier('T') . ' = ' . $t . ";\n";
 

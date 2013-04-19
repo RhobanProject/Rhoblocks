@@ -24,6 +24,11 @@ abstract class ChronoBlock extends Block
             ),
             'inputs' => array(
                 array(
+                    'name' => 'Pause',
+                    'card' => '0-1',
+                    'default' => 0
+                ),
+                array(
                     'name' => 'Reset',
                     'card' => '0-1',
                     'default' => 0
