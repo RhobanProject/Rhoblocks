@@ -1,17 +1,22 @@
 $(document).ready(function() {
     var blocks = new Blocks;
     
-    $.getJSON('blocks.php?action=getBlocks', function(blocksData) {
-        for (k in blocksData) {
-            blocks.register(blocksData[k]);
-        }
-    
-        blocks.run('#blocks');
-        $.getJSON('blocks.php?action=getScene', function(scene) {
-            if (scene) {
-                blocks.load(scene);
+    $.getJSON('blocks.php?action=getBlocks', function(response) {
+        if (response.status == 'ok') {
+            for (k in response.blocks) {
+                blocks.register(response.blocks[k]);
             }
-        });
+        
+            blocks.run('#blocks');
+            $.getJSON('blocks.php?action=getScene', function(scene) {
+                if (scene) {
+                    blocks.load(scene);
+                }
+            });
+        } else {
+            blocks.run('#blocks');
+            blocks.messages.show(response.message, {'class': 'error'});
+        }
     });
     
     blocks.ready(function() {

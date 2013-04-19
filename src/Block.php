@@ -40,6 +40,7 @@ abstract class Block implements BlockInterface
         $this->id = $data['id'];
         $this->parameterValues = $data['parameters'];
         $this->checkParameters();
+        static::checkMeta();
     }
 
     /**
@@ -65,6 +66,43 @@ abstract class Block implements BlockInterface
     public function getMeta()
     {
         return static::meta();
+    }
+
+    /**
+     *
+     */
+    public static function checkMeta()
+    {
+        $fields = array('family', 'description');
+        $sections = array('parameters', 'inputs', 'outputs');
+        $meta = static::meta();
+
+        if (!isset($meta['name'])) {
+            throw new \RuntimeException('Meta: A block does not have name');
+        }
+        $name = $meta['name'];
+
+        foreach ($fields as $field) {
+            if (!isset($meta[$field])) {
+                throw new \RuntimeException('Meta: There is no field "'.$field.'" in the block "'.$name.'"');
+            }
+        }
+
+        foreach ($sections as $section) {
+            if (!isset($meta[$section])) {
+                throw new \RuntimeException('Meta: There is no section "'.$section.'" in the block "'.$name.'"');
+            }
+
+            if (!is_array($meta[$section])) {
+                throw new \RuntimeException('Meta: Section "'.$section.'" is not an array in the block "'.$name.'"');
+            }
+
+            foreach ($meta[$section] as $entry) {
+                if (!is_array($entry)) {
+                    throw new \RuntimeException('Meta: Section "'.$section.'" contains malformed entries in block "'.$name.'"');
+                }
+            }
+        }
     }
 
     /**

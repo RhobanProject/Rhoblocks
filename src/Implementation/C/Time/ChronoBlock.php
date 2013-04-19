@@ -24,8 +24,14 @@ class ChronoBlock extends Base
     public function implementTransitionCode()
     {
         $t = $this->getVariableIdentifier('T', VariableType::Scalar, true);
+        $reset = $this->getInputIdentifier('Reset')->asInteger();
+        $factor = $this->getParameterIdentifier('Factor');
 
-        $code = $t .' += '.(1/$this->environment->getFrequency()).";\n";
+        $code = "if ($reset) {\n";
+        $code .= "$t = 0;\n";
+        $code .= "} else {\n";
+        $code .= $t .' += ('.(1/$this->environment->getFrequency()).")*$factor;\n";
+        $code .= "}\n";
         $code .= $this->getOutputLIdentifier('T') . ' = ' . $t . ";\n";
 
         return $code;

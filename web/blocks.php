@@ -24,7 +24,11 @@ if (isset($_GET['action'])) {
     $action = $_GET['action'];
 
     if ($action == 'getBlocks') {
-        $response = '['.implode(',', getCompiler(null, $options)->generateJSON()).']';
+        try {
+            $response = '{"status":"ok","blocks":['.implode(',', getCompiler(null, $options)->generateJSON()).']}';
+        } catch (\Exception $e) {
+            $response = json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
     }
 
     if ($action == 'getScene') {

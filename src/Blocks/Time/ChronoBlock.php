@@ -15,8 +15,20 @@ abstract class ChronoBlock extends Block
             'name' => 'Chrono',
             'family' => 'Time',
             'description' => 'Outputs the time',
-            'parameters' => array(),
-            'inputs' => array(),
+            'parameters' => array(
+                array(
+                    'name' => 'Factor',
+                    'type' => 'number',
+                    'default' => 1
+                )
+            ),
+            'inputs' => array(
+                array(
+                    'name' => 'Reset',
+                    'card' => '0-1',
+                    'default' => 0
+                )
+            ),
             'outputs' => array(
                 array(
                     'name' => 'T',

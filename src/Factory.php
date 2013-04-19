@@ -107,6 +107,7 @@ class Factory implements FactoryInterface
 
         foreach ($blocks as $type => $className) {
             if ($type != 'ENVIRONMENT' && $type != 'GENERATOR') {
+                $className::checkMeta();
                 $jsonContainer[$type] = $className::generateJSON();
             }
         }
