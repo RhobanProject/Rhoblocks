@@ -65,6 +65,11 @@ abstract class PIDBlock extends Block
                     'type' => 'number',
                     'card' => '0-*',
                 ),
+                array(
+                    'name' => 'Error',
+                    'type' => 'number',
+                    'card' => '0-*'
+                )
             ),
         );
     }

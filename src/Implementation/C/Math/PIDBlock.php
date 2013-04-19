@@ -39,6 +39,7 @@ class PIDBlock extends Base
         $order = $this->getInputIdentifier('Order')->asScalar();
         $actual = $this->getInputIdentifier('Actual')->asScalar();
         $command = $this->getOutputIdentifier('Command');
+        $outputError = $this->getOutputIdentifier('Error');
         $P = $this->getParameterIdentifier('P')->asScalar();
         $I = $this->getParameterIdentifier('I')->asScalar();
         $D = $this->getParameterIdentifier('D')->asScalar();
@@ -54,6 +55,7 @@ class PIDBlock extends Base
         $code .= "$derrivative = ($discount*$derrivative)+((1-$discount)*($error/".$this->environment->getPeriod()."));\n";
         $code .= "$command = ($P*$error)+($I*$integral)+($D*$derrivative);\n";
         $code .= "$lastError = $error;\n";
+        $code .= "$outputError = $error;\n";
 
         return $code;
     }
