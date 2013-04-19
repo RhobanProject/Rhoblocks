@@ -24,6 +24,7 @@ $form = @include('form.php');
         <script type="text/javascript" src="blocks/js/blocksmenu.js"></script> 
         <script type="text/javascript" src="blocks/js/blocktype.js"></script> 
         <script type="text/javascript" src="blocks/js/block.js"></script> 
+        <script type="text/javascript" src="blocks/js/history.js"></script> 
         <script type="text/javascript" src="blocks/js/blocks.js"></script> 
         <link rel="stylesheet" type="text/css" href="blocks/js/blocks.css" />
 <?php } else { ?>
