@@ -22,12 +22,12 @@ $(document).ready(function() {
     blocks.ready(function() {
 	blocks.menu.addAction('Clear', function(blocks) {
             blocks.clear();
-        });
+        }, 'clear');
 
 	blocks.menu.addAction('Export', function(blocks) {
             data = $.toJSON(blocks.exportData());
             $('#output').html('<pre>'+data+'</pre>');
-        });
+        }, 'export');
 
 	blocks.menu.addAction('Compile', function(blocks) {
             data = $.toJSON(blocks.exportData());
@@ -61,7 +61,7 @@ $(document).ready(function() {
             }, 'json').fail(function(jh, error) {
                 $('#output').html(jh.responseText);
             });
-	});
+	}, 'compile');
     });
 
     $('.optionsForm form').on('change', function(evt) {
