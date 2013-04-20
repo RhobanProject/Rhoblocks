@@ -29,7 +29,7 @@ $(document).ready(function() {
             $('#output').html('<pre>'+data+'</pre>');
         }, 'export');
 
-	blocks.menu.addAction('Compile', function(blocks) {
+        function runCompile(blocks) {
             data = $.toJSON(blocks.exportData());
             $.post('blocks.php?action=compile', {'data':data}, function(response) {
                 if (response.status == 'error') {
@@ -61,7 +61,13 @@ $(document).ready(function() {
             }, 'json').fail(function(jh, error) {
                 $('#output').html(jh.responseText);
             });
-	}, 'compile');
+        };
+
+        $('.compileButton').click(function() {
+            runCompile(blocks);
+        });
+
+	blocks.menu.addAction('Compile', runCompile, 'compile');
     });
 
     $('.optionsForm form').on('change', function(evt) {

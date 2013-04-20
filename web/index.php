@@ -39,6 +39,7 @@ $form = @include('form.php');
     </head>
     <body>
         <div class="header">
+            <button class="compileButton">Compile</button>
             <img src="css/gfx/logo.png" alt="RhoBlocks" />
         </div>
         <div id="blocks"></div>

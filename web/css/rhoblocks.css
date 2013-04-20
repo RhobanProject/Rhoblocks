@@ -39,9 +39,8 @@ a:hover {
 }
 
 .header {
-    wdith:100%;
+    width:1200px;
     position:absolute;
-    text-align:center;
     margin-top:-25px;
 }
 
@@ -113,4 +112,24 @@ hr {
 
 .blocks_js_editor .menu_icon_family_Pins {
     background-image:url('gfx/pins.png');
+}
+
+.compileButton {
+    margin-top:30px;
+    padding:3px;
+    padding-left:20px;
+    background-image:url('gfx/compile.png');
+    background-position:3px 3px;
+    background-repeat:no-repeat;
+    border:2px solid #666;
+    border-radius:5px;
+    margin-right:20px;
+    z-index:10;
+    position:absolute;
+    margin-left:790px;
+    cursor:pointer;
+}
+
+.compileButton:hover {
+    background-color:#eee;
 }
