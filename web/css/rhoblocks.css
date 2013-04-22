@@ -131,3 +131,8 @@ hr {
     border-radius:5px;
     cursor:pointer;
 }
+
+.compileButtons button:hover {
+    background-color:#eee;
+    border:2px solid #000;
+}
