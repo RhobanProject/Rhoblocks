@@ -52,11 +52,13 @@ abstract class PIDBlock extends Block
                     'name' => 'Order',
                     'type' => 'number',
                     'card' => '0-1',
+                    'default' => 0
                 ),
                 array(
                     'name' => 'Actual',
                     'type' => 'number',
                     'card' => '0-1',
+                    'default' => 0
                 ),
             ),
             'outputs' => array(

@@ -14,11 +14,9 @@ class PIDBlock extends Base
     public function implementInitCode()
     {
         $integral = $this->getVariableIdentifier('integral', VariableType::Scalar, true);
-        $derrivative = $this->getVariableIdentifier('derrivative', VariableType::Scalar, true);
         $lastError = $this->getVariableIdentifier('lastError', VariableType::Scalar, true);
 
         $code = "$integral = 0;\n";
-        $code .= "$derrivative = 0;\n";
         $code .= "$lastError = 0;\n";
 
         return $code;
@@ -30,9 +28,9 @@ class PIDBlock extends Base
     public function implementTransitionCode()
     {
         $error = $this->getVariableIdentifier('error', VariableType::Scalar);
+        $derivate = $this->getVariableIdentifier('derivate', VariableType::Scalar);
         $lastError = $this->getVariableIdentifier('lastError', VariableType::Scalar, true);
         $integral = $this->getVariableIdentifier('integral', VariableType::Scalar, true);
-        $derrivative = $this->getVariableIdentifier('derrivative', VariableType::Scalar, true);
         $imin = $this->getParameterIdentifier('IMin')->asScalar();
         $imax = $this->getParameterIdentifier('IMax')->asScalar();
         $discount = $this->getParameterIdentifier('Discount')->asScalar();
@@ -52,9 +50,9 @@ class PIDBlock extends Base
         $code .= "if ($integral < $imin) {\n";
         $code .= "$integral = $imin;\n";
         $code .= "}\n";
-        $code .= "$derrivative = ($discount*$derrivative)+((1-$discount)*($error/".$this->environment->getPeriod()."));\n";
-        $code .= "$command = ($P*$error)+($I*$integral)+($D*$derrivative);\n";
-        $code .= "$lastError = $error;\n";
+        $code .= "$derivate = ($error-$lastError)/".$this->environment->getPeriod().";\n";
+        $code .= "$lastError = ($discount*$lastError)+(1-$discount)*($error);\n";
+        $code .= "$command = ($P*$error)+($I*$integral)+($D*$derivate);\n";
         $code .= "$outputError = $error;\n";
 
         return $code;

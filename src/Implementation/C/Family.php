@@ -17,7 +17,7 @@ class Family extends Base
             'IO.Output', 'IO.Print',
             'Math.Sinus', 'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 
             'Math.Discount', 'Math.Greater', 'Math.PID', 'Math.MinMax',
-            'Math.DerivativeDriver', 'Math.Min', 'Math.Max', 'Math.Sum', 'Math.Equal',
+            'Math.DerivativeDriver', 'Math.Min', 'Math.Max', 'Math.Sum', 'Math.Equal', 'Math.Derivate',
             'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor',
             'Loop.Loop'
         );
