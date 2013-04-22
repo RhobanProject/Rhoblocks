@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhoban\Blocks\Blocks\Math;
+namespace Rhoban\Blocks\Blocks\Signal;
 
 use Rhoban\Blocks\Block;
 
@@ -13,7 +13,7 @@ abstract class SinusBlock extends Block
     {
         return array(
             'name' => 'Sinus',
-            'family' => 'Math',
+            'family' => 'Signal',
             'description' => 'Outputs <b>sin(T+phase)*amplitude</b>',
             'parameters' => array(
                 array(

@@ -435,7 +435,7 @@ abstract class Block implements BlockInterface
     public function getInputCardinality($name)
     {
         $entry = $this->getEntry('inputs', $name);
-        $ioName = $prefix . '_' . $entry['id'];
+        $ioName = 'input_' . $entry['id'];
 
         return $this->getCardinality($ioName);
     }
