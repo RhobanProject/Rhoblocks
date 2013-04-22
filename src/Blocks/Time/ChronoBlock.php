@@ -20,7 +20,13 @@ abstract class ChronoBlock extends Block
                     'name' => 'Factor',
                     'type' => 'number',
                     'default' => 1
-                )
+                ),
+                array(
+                    'name' => 'Default',
+                    'type' => 'number',
+                    'card' => 0,
+                    'default' => 0
+                ),
             ),
             'inputs' => array(
                 array(

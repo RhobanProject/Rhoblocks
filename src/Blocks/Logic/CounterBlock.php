@@ -17,6 +17,12 @@ abstract class CounterBlock extends Block
             'description' => 'Counts until max on each trigger',
             'parameters' => array(
                 array(
+                    'name' => 'Default',
+                    'type' => 'integer',
+                    'card' => 0,
+                    'default' => 0
+                ),
+                array(
                     'name' => 'Max',
                     'type' => 'integer',
                     'default' => 1

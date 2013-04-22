@@ -14,8 +14,9 @@ class CounterBlock extends Base
     public function implementInitCode()
     {
         $counter = $this->getVariableIdentifier('counter', VariableType::Integer, true);
+        $default = $this->getParameterIdentifier('Default')->asInteger();
 
-        $code = "$counter = 0;\n";
+        $code = "$counter = ".$default.";\n";
 
         return $code;
     }

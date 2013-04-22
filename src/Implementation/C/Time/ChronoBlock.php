@@ -14,8 +14,9 @@ class ChronoBlock extends Base
     public function implementInitCode()
     {
         $t = $this->getVariableIdentifier('T', VariableType::Scalar, true);
+        $default = $this->getParameterIdentifier('Default')->asScalar();
 
-        return "$t = -".(1/$this->environment->getFrequency()).";\n";
+        return "$t = ".$default."-".(1/$this->environment->getFrequency()).";\n";
     }
 
     /**
