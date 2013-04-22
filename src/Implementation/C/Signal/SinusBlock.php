@@ -13,16 +13,7 @@ class SinusBlock extends Base
      */
     public function implementInitCode()
     {
-        $code = '';
-
-        if ($this->getInputCardinality('T') == 0) {
-            $T = $this->getVariableIdentifier('T', VariableType::Scalar, true);
-            $code = "$T = 0;\n";
-        }
-
         $this->environment->addHeader('math.h');
-
-        return $code;
     }
 
     /**
@@ -33,7 +24,7 @@ class SinusBlock extends Base
         $code = '';
 
         if ($this->getInputCardinality('T') == 0) {
-            $T = $this->getVariableIdentifier('T', VariableType::Integer, true);
+            $T = '('.$this->environment->getTicksIdentifier().'*'.$this->environment->getPeriod().')';
         } else {
             $T = $this->getInputIdentifier('T');
         }
@@ -47,10 +38,6 @@ class SinusBlock extends Base
         $code .= ')*';
         $code .= $this->getParameterIdentifier('Amplitude');
         $code .= ";\n";
-        
-        if ($this->getInputCardinality('T') == 0) {
-            $code .= "$T += ".$this->environment->getPeriod().";\n";
-        }
 
         return $code;
     }

@@ -17,6 +17,9 @@ int i,j,k;
 
 <?php echo $initCode; ?>
 
+<?php if ($ticksIdentifier) { ?>
+<?php echo $ticksIdentifier; ?> = 0;
+<?php } ?>
 }
 
 void <?php echo $prefix; ?>Tick(struct <?php echo $structName; ?> *data)
@@ -25,6 +28,9 @@ void <?php echo $prefix; ?>Tick(struct <?php echo $structName; ?> *data)
 
 <?php echo $transitionCode; ?>
 
+<?php if ($ticksIdentifier) { ?>
+<?php echo $ticksIdentifier; ?>++;
+<?php } ?>
 }
 
 <?php if ($generateMain) { ?>

@@ -111,8 +111,10 @@ abstract class Environment implements EnvironmentInterface
     {
         if ($index) {
             return $name.'_'.$varName.'_'.$index;
-        } else {
+        } else if ($varName) {
             return $name.'_'.$varName;
+        } else {
+            return $name;
         }
     }
 

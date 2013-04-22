@@ -13,16 +13,7 @@ class TriangleBlock extends Base
      */
     public function implementInitCode()
     {
-        $code = '';
-
-        if ($this->getInputCardinality('T') == 0) {
-            $T = $this->getVariableIdentifier('T', VariableType::Scalar, true);
-            $code = "$T = 0;\n";
-        }
-
         $this->environment->addHeader('math.h');
-
-        return $code;
     }
 
     /**
@@ -39,7 +30,7 @@ class TriangleBlock extends Base
         $code = '';
 
         if ($this->getInputCardinality('T') == 0) {
-            $T = $this->getVariableIdentifier('T', VariableType::Integer, true);
+            $T = '('.$this->environment->getTicksIdentifier().'*'.$this->environment->getPeriod().')';
         } else {
             $T = $this->getInputIdentifier('T');
         }
@@ -53,11 +44,6 @@ class TriangleBlock extends Base
 
         // Calculating the square
         $code .= "$wave = $amplitude*(($x<0.5) ? (2*$x) : (2-2*$x));\n";
-
-        // Increasing timer
-        if ($this->getInputCardinality('T') == 0) {
-            $code .= "$T += ".$this->environment->getPeriod().";\n";
-        }
 
         return $code;
     }

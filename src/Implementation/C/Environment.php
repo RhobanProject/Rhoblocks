@@ -15,6 +15,11 @@ class Environment extends Base
      * Headers to add
      */
     protected $headers = array();
+
+    /**
+     * Identifier to count the ticks of the machine
+     */
+    protected $ticksIdentifier = null;
     
     /**
      * Creates an identifier
@@ -22,6 +27,18 @@ class Environment extends Base
     protected function createIdentifier($identifier, $type, $dimension, $global = false)
     {
         return new Identifier($this, $identifier, $type, $dimension, $global ? 'data->' : '');
+    }
+
+    /**
+     * Gets the tick identifier
+     */
+    public function getTicksIdentifier($create = true)
+    {
+        if ($this->ticksIdentifier == null && $create) {
+            $this->ticksIdentifier = $this->registerGlobal('ticks', null, VariableType::Integer, 0);
+        }
+
+        return $this->ticksIdentifier;
     }
 
     /**

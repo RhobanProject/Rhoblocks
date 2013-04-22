@@ -23,6 +23,7 @@ class Generator extends Base
 
         $files = array(
             $prefix.'.pde' => CIndent::indent($sketchTemplate->render(array(
+                'ticksIdentifier' => $environment->getTicksIdentifier(false),
                 'headers' => $environment->getHeaders(),
                 'prefix' => $prefix,
                 'structName' => $structName,
