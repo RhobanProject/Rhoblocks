@@ -38,7 +38,8 @@ class Generator extends Base
             'structName' => $structName,
             'transitionInitCode' => $environment->generateInitTransitionCode(),
             'initCode' => $initCode,
-            'transitionCode' => $transitionCode
+            'transitionCode' => $transitionCode,
+            'ticksIdentifier' => $environment->getTicksIdentifier(false)
         )));
 
         $files = array(
