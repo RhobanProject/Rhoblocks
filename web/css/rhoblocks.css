@@ -42,6 +42,7 @@ a:hover {
     width:1200px;
     position:absolute;
     margin-top:-25px;
+    z-index:10;
 }
 
 .header img {
@@ -114,7 +115,12 @@ hr {
     background-image:url('gfx/pins.png');
 }
 
-.compileButton {
+.compileButtons {
+    float:right;
+    margin-right:20px;
+}
+
+.compileButtons button {
     margin-top:30px;
     padding:3px;
     padding-left:20px;
@@ -123,13 +129,5 @@ hr {
     background-repeat:no-repeat;
     border:2px solid #666;
     border-radius:5px;
-    margin-right:20px;
-    z-index:10;
-    position:absolute;
-    margin-left:790px;
     cursor:pointer;
-}
-
-.compileButton:hover {
-    background-color:#eee;
 }

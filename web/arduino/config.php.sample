@@ -1,0 +1,7 @@
+<?php
+return array(
+    'enabled' => true,
+    'arduino' => '/path/to/arduino-1.5.x',
+    'board' => 'arduino:avr:uno',
+    'port' => '/dev/ttyACM0'
+);

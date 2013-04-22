@@ -29,9 +29,14 @@ $(document).ready(function() {
             $('#output').html('<pre>'+data+'</pre>');
         }, 'export');
 
-        function runCompile(blocks) {
+        function runCompile(blocks, send) {
             data = $.toJSON(blocks.exportData());
-            $.post('blocks.php?action=compile', {'data':data}, function(response) {
+            var action = 'compile';
+            if (typeof(send) != 'undefined' && send) {
+                action = 'compileAndSend';
+            }
+
+            $.post('blocks.php?action='+action, {'data':data}, function(response) {
                 if (response.status == 'error') {
                     blocks.messages.show(response.message, {'class': 'error'});
                 } else {
@@ -65,6 +70,10 @@ $(document).ready(function() {
 
         $('.compileButton').click(function() {
             runCompile(blocks);
+        });
+        
+        $('.compileAndSendButton').click(function() {
+            runCompile(blocks, true);
         });
 
 	blocks.menu.addAction('Compile', runCompile, 'compile');

@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
         }
     }
 
-    if ($action == 'compile' && isset($_POST['data'])) {
+    if (($action == 'compile' || $action == 'compileAndSend') && isset($_POST['data'])) {
         try {
             $_SESSION['scene'] = $_POST['data'];
             $files = getCompiler($_POST['data'], $options)->generateCode();
@@ -59,6 +59,17 @@ if (isset($_GET['action'])) {
                 );
             }
 
+            if ($action == 'compileAndSend') {
+                $arduino = include(__DIR__.'/arduino/arduino.php');
+
+                foreach ($files as $name => $contents) {
+                    if (preg_match('#\.pde$#mUsi', $name)) {
+                        $files = array('compile.log' => $arduino->compileAndSend($contents));
+                        break;
+                    }
+                }
+            }
+
             foreach ($files as $name => &$contents) {
                 $geshi = new \GeSHi($contents, 'C');
                 $geshi->enable_classes();
@@ -66,7 +77,7 @@ if (isset($_GET['action'])) {
 
                 $contents = '<div class="highlight">'.$geshi->parse_code().'</div>';
             }
-
+            
             $response = array('status' => 'ok', 'files' => $files);
         } catch (\Exception $exception) {
             $response = array('status' => 'error', 'message' => $exception->getMessage());
