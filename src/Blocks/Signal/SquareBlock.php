@@ -4,7 +4,7 @@ namespace Rhoban\Blocks\Blocks\Signal;
 
 use Rhoban\Blocks\Block;
 
-abstract class PWMBlock extends Block
+abstract class SquareBlock extends Block
 {
     /**
      * @see inherit
@@ -12,13 +12,14 @@ abstract class PWMBlock extends Block
     protected static function meta()
     {
         return array(
-            'name' => 'PWM',
+            'name' => 'Square',
             'family' => 'Signal',
-            'description' => 'Outputs a PWM',
+            'description' => 'Outputs a Square',
             'parameters' => array(
                 array(
                     'name' => 'Duty',
                     'default' => 50,
+                    'unit' => '%'
                 ),
                 array(
                     'name' => 'Frequency',
@@ -29,7 +30,7 @@ abstract class PWMBlock extends Block
             'inputs' => array(),
             'outputs' => array(
                 array(
-                    'name' => 'PWM',
+                    'name' => 'Square',
                     'type' => 'integer',
                     'card' => '0-*',
                 ),

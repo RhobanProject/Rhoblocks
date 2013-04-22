@@ -2,11 +2,11 @@
 
 namespace Rhoban\Blocks\Implementation\C\Signal;
 
-use Rhoban\Blocks\Blocks\Signal\PWMBlock as Base;
+use Rhoban\Blocks\Blocks\Signal\SquareBlock as Base;
 use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
-class PWMBlock extends Base
+class SquareBlock extends Base
 {
     /**
      * @inherit
@@ -24,7 +24,7 @@ class PWMBlock extends Base
     public function implementTransitionCode()
     {
         $type = $this->getWeakestType();
-        $output = $this->getOutputIdentifier('PWM');
+        $output = $this->getOutputIdentifier('Square');
         $counter = $this->getVariableIdentifier('counter', VariableType::Integer, true);
         $duty = $this->getParameterIdentifier('Duty')->get($type);
         $frequency = $this->getParameterIdentifier('Frequency')->get($type);
