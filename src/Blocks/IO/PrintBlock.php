@@ -19,6 +19,7 @@ abstract class PrintBlock extends Block
                 array(
                     'name' => 'Format',
                     'type' => 'textarea',
+                    'default' => 'Value: %d',
                     'card' => 0
                 ),
                 array(

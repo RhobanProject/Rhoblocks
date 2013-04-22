@@ -22,7 +22,6 @@ class PrintBlock extends Base
     public function implementTransitionCode()
     {
         $size = $this->getInputSize('Value #');
-        $frequency = $this->environment->getFrequency();
 
         $values = array();
         preg_match_all('#%([dgf])#', $this->getParameterIdentifier('Format'), $matches);
