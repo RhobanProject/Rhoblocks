@@ -37,7 +37,7 @@ class Arduino
         $file = $dir.'/'.$name.'.pde';
         file_put_contents($file, $code);
 
-        $command = "DISPLAY=\":0\" $this->path/arduino --board $this->board --port $this->port --upload $file";
+        $command = "DISPLAY=\":0\" $this->path/arduino --board $this->board --port $this->port --upload $file 2>&1";
         $result = shell_exec($command);
 
         unlink($file);
