@@ -320,7 +320,7 @@ abstract class Block implements BlockInterface
      */
     public function getVariadicSize($section, $name)
     {
-        $entry = $this->getEntry('inputs', $name);
+        $entry = $this->getEntry($section, $name);
 
         if (!isset($entry['length'])) {
             throw new \RuntimeException('The field '.$name.' is not variadic and does not have size');

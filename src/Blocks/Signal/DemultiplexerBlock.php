@@ -4,7 +4,7 @@ namespace Rhoban\Blocks\Blocks\Signal;
 
 use Rhoban\Blocks\Block;
 
-abstract class MultiplexerBlock extends Block
+abstract class DemultiplexerBlock extends Block
 {
     /**
      * @see inherit
@@ -12,12 +12,12 @@ abstract class MultiplexerBlock extends Block
     protected static function meta()
     {
         return array(
-            'name' => 'Multiplexer',
+            'name' => 'Demultiplexer',
             'family' => 'Signal',
-            'description' => 'Outputs the nth input',
+            'description' => 'Sets the nth output to 1',
             'parameters' => array(
                 array(
-                    'name' => 'Inputs',
+                    'name' => 'Outputs',
                     'default' => 2,
                     'type' => 'integer',
                     'card' => 0
@@ -30,6 +30,10 @@ abstract class MultiplexerBlock extends Block
                     'name' => 'Cyclic',
                     'type' => 'check',
                     'default' => false
+                ),
+                array(
+                    'name' => 'Value',
+                    'default' => '1'
                 )
             ),
             'inputs' => array(
@@ -39,14 +43,11 @@ abstract class MultiplexerBlock extends Block
                     'card' => '0-1',
                     'default' => 0
                 ),
-                array(
-                    'name' => 'Input #',
-                    'length' => 'Inputs.value'
-                )
             ),
             'outputs' => array(
                 array(
-                    'name' => 'Output',
+                    'name' => 'Output #',
+                    'length' => 'Outputs.value',
                     'card' => '0-*'
                 ),
             ),
