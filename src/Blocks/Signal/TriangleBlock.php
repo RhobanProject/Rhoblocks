@@ -30,7 +30,6 @@ abstract class TriangleBlock extends Block
                 array(
                     'name' => 'Phase',
                     'type' => 'number',
-                    'unit' => '°',
                     'default' => 0,
                 ),
             ),

@@ -34,7 +34,7 @@ class SinusBlock extends Base
         $code .= $T;
         $code .= '*2.0*M_PI*';
         $code .= $this->getParameterIdentifier('Frequency');
-        $code .= '+' . $this->getParameterIdentifier('Phase');
+        $code .= '+(180.0/M_PI)*'.$this->getParameterIdentifier('Phase');
         $code .= ')*';
         $code .= $this->getParameterIdentifier('Amplitude');
         $code .= ";\n";
