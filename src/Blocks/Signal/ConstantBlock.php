@@ -13,18 +13,28 @@ abstract class ConstantBlock extends Block
     {
         return array(
             'name' => 'Constant',
+            'size' => 'small',
             'family' => 'Signal',
             'description' => 'A simple input constant',
             'parameters' => array(
                 array(
-                    'name' => 'Value',
-                    'default' => 0,
-                ),
+                    'name' => 'Values',
+                    'hide' => true,
+                    'type' => array(
+                        array(
+                            'name' => 'Value',
+                            'default' => array(1),
+                            'card' => 0
+                        ),
+                    )
+                )
             ),
             'inputs' => array(),
             'outputs' => array(
                 array(
-                    'name' => 'Value',
+                    'name' => 'Value #',
+                    'variadicLabel' => 'self.parameters["Values.Value"][x]',
+                    'length' => 'Values.length',
                     'card' => '0-*',
                 ),
             ),

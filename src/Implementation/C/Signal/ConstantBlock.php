@@ -13,8 +13,14 @@ class ConstantBlock extends Base
      */
     public function implementTransitionCode()
     {
-        $output = $this->getOutputIdentifier('Value');
+        $size = $this->getOutputSize('Value #');
+        $code = '';
 
-        return $output->lValue() . ' = ' . $this->getParameterIdentifier('Value')->get($output->getType()) . ";\n";
+        for ($i=0; $i<$size; $i++) {
+            $output = $this->getOutputIdentifier(array('Value #', $i));
+            $code .= "$output = ".$this->getParameterVariadicIdentifier('Values', 'Value', $i)->get($output->getType()).";\n";
+        }
+
+        return $code;
     }
 }

@@ -192,8 +192,8 @@ abstract class Block implements BlockInterface
 
         if (isset($meta[$section])) {
             if ($id) {
-                if (isset($meta[$section][$name[0]])) {
-                    $entry = $meta[$section][$name[0]];
+                if (isset($meta[$section][$name])) {
+                    $entry = $meta[$section][$name];
                     $entry['id'] = $id;
                     return $this->addType($entry);
                 }
@@ -243,7 +243,7 @@ abstract class Block implements BlockInterface
             foreach ($edges as $edge) {
                 if ($edge->isEnteringIn($this) && !$edge->isLoopable()) {
                     $section = $edge->ioSection($this);
-                    $entry = $this->getEntry($section[0].'s', $section[1], true);
+                    $entry = $this->getEntry($section[0].'s', $section[1][0], true);
                     $this->addType($entry);
 
                     $currentType = $entry['variableType'];
@@ -262,10 +262,24 @@ abstract class Block implements BlockInterface
         // Watching the parameters
         $meta = $this->getMeta();
         foreach ($meta['parameters'] as $parameter) {
-            $parameter = $this->getParameterIdentifier($parameter['name']);
+            if (isset($parameter['type']) && is_array($parameter['type'])) {
+                foreach ($parameter['type'] as $subType) {
+                    $size = $this->getParameterVariadicSize($parameter['name'], $subType['name']);
 
-            if (VariableType::isNumeric($parameter->getType())) {
-                $type = max($parameter->getType(), $type);
+                    for ($i=0; $i<$size; $i++) {
+                        $parameterId = $this->getParameterVariadicIdentifier($parameter['name'], $subType['name'], $i);
+                        
+                        if (VariableType::isNumeric($parameterId->getType())) {
+                           $type = max($parameterId->getType(), $type);
+                        }
+                    }
+                }
+            } else {
+                $parameterId = $this->getParameterIdentifier($parameter['name']);
+
+                if (VariableType::isNumeric($parameterId->getType())) {
+                    $type = max($parameterId->getType(), $type);
+                }
             }
         }
 
@@ -304,7 +318,7 @@ abstract class Block implements BlockInterface
             }
         } else {
             $ioName = 'output_' . implode('_', $nameOrId);
-            $entry = $this->getEntry('outputs', $nameOrId, true);
+            $entry = $this->getEntry('outputs', $nameOrId[0], true);
         }
 
         $type = $entry['variableType'];
@@ -336,7 +350,13 @@ abstract class Block implements BlockInterface
                 $operation = $parts[1];
 
                 if ($operation == 'length') {
-                    throw new \RuntimeException('Variadicity "Something.length" is unimplemented');
+                    $max = 0;
+
+                    foreach ($this->parameterValues[$key] as $array) {
+                        $max = max($max, count($array));
+                    }
+
+                    return $max;
                 }
 
                 if ($operation == 'value') {
@@ -412,12 +432,17 @@ abstract class Block implements BlockInterface
             }
 
             if ($default !== null) {
-                list($value, $type) = Identifier::guessType($default, $entry['variableType']);
-                return new Identifier($this->environment, $value, $type);
+                return $this->valueToIdentifier($entry, $default);
             } else {
                 throw new \RuntimeException('Cannot access identifier for input "'.$name.'" because it\'s not linked and has no default value');
             }
         }
+    }
+
+    public function valueToIdentifier($entry, $value)
+    {
+        list($value, $type) = Identifier::guessType($value, $entry['variableType']);
+        return new Identifier($this->environment, $value, $type);
     }
     
     public function getInputIdentifier($name)
@@ -443,6 +468,42 @@ abstract class Block implements BlockInterface
     public function getInputIdentifiers($name)
     {
         return $this->getIdentifier('inputs', 'input', $name, true);
+    }
+    
+    public function getParameterVariadicSize($key, $name)
+    {
+        if (!isset($this->parameterValues[$key][$name])) {
+            throw new \RuntimeException('The variadic parameter "'.$name.'.'.$key.'" does not exists');
+        }
+ 
+        return count($this->parameterValues[$key][$name]);
+    }
+
+    public function getParameterVariadicIdentifier($key, $name, $index)
+    {
+        $meta = $this->getEntry('parameters', $key);
+
+        if (!isset($this->parameterValues[$key][$name])) {
+            throw new \RuntimeException('The variadic parameter "'.$name.'.'.$key.'" does not exists');
+        }
+
+        $entry = null;
+        foreach ($meta['type'] as $tempEntry) {
+            if ($tempEntry['name'] == $name) {
+                $entry = $tempEntry;
+                $entry = $this->addType($entry);
+                break;
+            }
+        }
+
+        if (!$entry) {
+            throw new \RuntimeException('The variadic parameter entry for "'.$key.'.'.$name.'"');
+        }
+ 
+        if (!isset($this->parameterValues[$key][$name][$index])) {
+            throw new \RuntimeException('The variadic parameter "'.$name.'.'.$key.'['.$index.']" does not exists');
+        }
+        return $this->valueToIdentifier($entry, $this->parameterValues[$key][$name][$index]);
     }
     
     public function getParameterIdentifier($name)
@@ -564,10 +625,25 @@ abstract class Block implements BlockInterface
                 $this->parameterValues[$name] = (isset($this->parameterValues[$name]) && $this->parameterValues[$name] == 'on') ? 1 : 0;
             }
 
-            if (!array_key_exists($name, $this->parameterValues) || $this->parameterValues[$name] === '') {
-                throw new ParametersException('Missing block parameters '.$param['name']);
+            if (isset($param['type']) && is_array($param['type'])) {
+                $this->parameterValues[$name] = array();
+                $prefix = $name;
+
+                foreach ($param['type'] as $subType) {
+                    $subName = $name.'.'.$subType['name'];
+
+                    if (!isset($this->parameterValues[$subName]) || $this->parameterValues[$subName] === '') {
+                        throw new ParametersException('Missing block variadic sub-parameter '.$param['name']);
+                    } else {
+                        $this->parameterValues[$name][$subType['name']] = $this->parameterValues[$subName];
+                    }
+                }
             } else {
-                $this->parameterValues[$name] = str_replace(',', '.', $this->parameterValues[$name]);
+                if (!isset($this->parameterValues[$name]) || $this->parameterValues[$name] === '') {
+                    throw new ParametersException('Missing block parameters '.$param['name']);
+                } else {
+                    $this->parameterValues[$name] = $this->parameterValues[$name];
+                }
             }
         }
     }
