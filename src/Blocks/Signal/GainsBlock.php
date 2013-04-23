@@ -15,6 +15,7 @@ abstract class GainsBlock extends Block
             'name' => 'Gains',
             'family' => 'Signal',
             'description' => 'Output n is input n * gain[n]',
+            'size' => 'small',
             'parameters' => array(
                 array(
                     'name' => 'Gains',
@@ -32,13 +33,14 @@ abstract class GainsBlock extends Block
                 array(
                     'name' => 'X#',
                     'card' => '0-1',
+                    'default' => 0,
                     'length' => 'Gains.length'
                 )
             ),
             'outputs' => array(
                 array(
                     'name' => 'Output #',
-                    'variadicLabel' => 'self.parameters["Gains.Gain"][x]+"*X"+(x+1)',
+                    'dynamicLabel' => 'self.parameters["Gains.Gain"][x]+"*X"+(x+1)',
                     'card' => '0-*',
                     'length' => 'Gains.length'
                 ),

@@ -13,9 +13,9 @@ abstract class ConstantBlock extends Block
     {
         return array(
             'name' => 'Constant',
-            'size' => 'small',
             'family' => 'Signal',
             'description' => 'A simple input constant',
+            'size' => 'small',
             'parameters' => array(
                 array(
                     'name' => 'Values',
@@ -33,7 +33,7 @@ abstract class ConstantBlock extends Block
             'outputs' => array(
                 array(
                     'name' => 'Value #',
-                    'variadicLabel' => 'self.parameters["Values.Value"][x]',
+                    'dynamicLabel' => 'self.parameters["Values.Value"][x]',
                     'length' => 'Values.length',
                     'card' => '0-*',
                 ),

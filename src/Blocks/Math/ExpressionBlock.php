@@ -18,13 +18,16 @@ abstract class ExpressionBlock extends Block
             'parameters' => array(
                 array(
                     'name' => 'Expression',
+                    'hideLabel' => true,
                     'type' => 'text',
-                    'card' => 0
+                    'card' => 0,
+                    'hide' => true
                 ),
                 array(
                     'name' => 'Inputs',
                     'type' => 'integer',
                     'default' => 1,
+                    'hide' => true,
                     'card' => 0
                 )
             ),
@@ -32,6 +35,7 @@ abstract class ExpressionBlock extends Block
                 array(
                     'name' => 'X#',
                     'card' => '0-1',
+                    'default' => 0,
                     'length' => 'Inputs.value'
                 ),
             ),
