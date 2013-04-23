@@ -14,7 +14,7 @@ class Family extends Base
         $types = array(
             'Time.Chrono', 'Time.Delay',
             'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
-            'Signal.Sinus', 'Signal.Triangle',
+            'Signal.Sinus', 'Signal.Triangle', 'Signal.Gains',
             'IO.Output', 'IO.Print',
              'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 
             'Math.Discount', 'Math.Greater', 'Math.PID', 'Math.MinMax',
