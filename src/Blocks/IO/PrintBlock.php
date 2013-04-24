@@ -24,6 +24,7 @@ abstract class PrintBlock extends Block
                 ),
                 array(
                     'name' => 'Inputs',
+                    'hide' => true,
                     'type' => 'integer',
                     'default' => 1,
                     'card' => 0
