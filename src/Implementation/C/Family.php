@@ -12,7 +12,7 @@ class Family extends Base
     protected function getBlocks()
     {
         $types = array(
-            'Time.Chrono', 'Time.Delay',
+            'Time.Chrono', 'Time.Delay', 'Time.Debounce',
             'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
             'Signal.Sinus', 'Signal.Triangle', 'Signal.Gains', 'Signal.Hysteresis',
             'IO.Output', 'IO.Print',

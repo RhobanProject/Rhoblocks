@@ -6,7 +6,7 @@
 #include <<?php echo $header; ?>>
 <?php } ?>
 
-typedef int integer;
+typedef long int integer;
 typedef float scalar;
 
 <?php echo $structCode; ?>
