@@ -9,7 +9,7 @@ abstract class VariationBoundBlock extends Block
     /**
      * @see inherit
      */
-    protected static function meta()
+    public static function meta()
     {
         return array(
             'name' => 'VariationBound',

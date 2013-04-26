@@ -9,7 +9,7 @@ abstract class DigitalOutputBlock extends Block
     /**
      * @see inherit
      */
-    protected function meta()
+    public static function meta()
     {
         return array(
             'name' => 'DigitalOutput',

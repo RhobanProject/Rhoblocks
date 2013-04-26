@@ -9,7 +9,7 @@ abstract class DelayBlock extends Block
     /**
      * @see inherit
      */
-    protected static function meta()
+    public static function meta()
     {
         return array(
             'name' => 'Delay',
