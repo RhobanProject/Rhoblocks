@@ -15,6 +15,14 @@ namespace Blocks
             <?php echo $name; ?>Block(string jsonData);
             <?php echo $name; ?>Block(const Json::Value &block);
 
+            void addEdge(Edge *edge);
+            void initialize(Block *older);
+            void tick();
+
+            string getName();
+
+            <?php echo $header; ?>
+
         protected:
             void load(const Json::Value &block);
     };

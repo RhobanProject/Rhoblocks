@@ -32,8 +32,11 @@ class Generator
     protected function getBlocks()
     {
         $blocks = array(
+            'Signal.Constant', 'Time.Chrono',
+            /*
+            'Signal.Constant',
+            'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
             'Time.Chrono', 'Time.Delay', 'Time.Debounce',
-            'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
             'Signal.Sinus', 'Signal.Triangle', 'Signal.Gains', 'Signal.Hysteresis',
             'IO.Output', 'IO.Print',
              'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 
@@ -41,6 +44,7 @@ class Generator
             'Math.DerivativeDriver', 'Math.Min', 'Math.Max', 'Math.Sum', 'Math.Equal', 'Math.Derivate',
             'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor',
             'Loop.Loop'
+             */
         );
 
         foreach ($blocks as &$block) {
@@ -78,6 +82,9 @@ class Generator
         
         $this->copyFile('Edge.h', 'blocks/');
         $this->copyFile('Edge.cpp', 'blocks/');
+        
+        $this->copyFile('Index.h', 'blocks/');
+        $this->copyFile('Index.cpp', 'blocks/');
 
         $this->copyFile('main.cpp', '/');
         $this->render('CMakeLists.txt', 'CMakeLists.txt', array('blocks' => $blocks));

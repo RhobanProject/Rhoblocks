@@ -1,3 +1,4 @@
+#include <sstream>
 #include <iostream>
 #include "<?php echo $name; ?>Block.h"
 
@@ -25,5 +26,25 @@ namespace Blocks
     void <?php echo $name; ?>Block::load(const Json::Value &block)
     {
         cout << "Loading block data for block <?php echo $name; ?>" << endl;
+        Block::load(block);
     }
+
+    string <?php echo $name; ?>Block::getName()
+    {
+        ostringstream oss;
+        oss << "<?php echo $name; ?>#" << getId();
+        return oss.str();
+    }
+
+    void <?php echo $name; ?>Block::addEdge(Edge *edge)
+    {
+        Index *index = edge->getIndex(this);
+
+        cout << "~~~ " << index->getName() << endl;
+
+
+        Block::addEdge(edge);
+    }
+
+    <?php echo $code; ?>
 };

@@ -1,6 +1,11 @@
 #ifndef _BLOCKS_SCENE_H
 #define _BLOCKS_SCENE_H
 
+namespace Blocks {
+    class Scene;
+};
+
+#include <vector>
 #include <map>
 #include "Edge.h"
 #include "Block.h"
@@ -16,11 +21,13 @@ namespace Blocks
             ~Scene();
 
             bool hasBlock(int id);
-            void setBlock(int id, Block *block);
+            void addBlock(Block *block);
             Block *getBlock(int id);
+            void addEdge(Edge *edge);
 
         protected:
             map<int, Block*> blocks;
+            vector<Edge *> edges;
     };
 };
 

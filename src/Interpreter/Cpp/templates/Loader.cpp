@@ -1,5 +1,6 @@
 // You need to install JsonCpp to get this working
 #include <jsoncpp/json/json.h>
+#include <sstream>
 #include "Loader.h"
 <?php foreach ($blocks as $block) { ?>
 #include "<?php echo $block['name']; ?>Block.h"
@@ -22,36 +23,83 @@ namespace Blocks
             throw string("The scene must contain blocks and edges nodes");
         }
 
-        // Handling all the blocks
-        const Json::Value blocks = root["blocks"];
-        for (int i=0; i<blocks.size(); i++) {
-            bool typeFound = false;
-            const Json::Value block = blocks[i];
+        Scene *scene = new Scene;
 
-            if (block["type"].isNull() || !block["type"].isString()) {
-                throw string("A block doesn't have any type");
+        try {
+            // Handling all the blocks
+            const Json::Value blocks = root["blocks"];
+            for (int i=0; i<blocks.size(); i++) {
+                Block *newBlock = createBlock(blocks[i]);
+                scene->addBlock(newBlock);
             }
 
-            string type = block["type"].asString();
-
-            if (block["id"].isNull() || !block["id"].isInt()) {
-                throw string("Block " + type + " has no id");
+            // Handling all the edges
+            const Json::Value edges = root["edges"];
+            for (int i=0; i<edges.size(); i++) {
+                Edge *newEdge = createEdge(edges[i], scene);
+                scene->addEdge(newEdge);
             }
-
-            int id = block["id"].asInt();
-
-            <?php foreach ($blocks as $block) { ?>
-                // <?php echo $block['name']; ?>
-                
-                if (!typeFound && type == "<?php echo $block['name']; ?>") {
-                    typeFound = true;
-                    Block *newBlock = new <?php echo $block['name']; ?>Block(block);
-                }
-            <?php } ?>
-
-            if (typeFound = false) {
-                throw string("Unknown block type " + type);
-            }
+            
+        } catch (string error) {
+            delete scene;
+            throw error;
         }
+    }
+
+    Block *Loader::createBlock(const Json::Value &block)
+    {
+        Block *newBlock = NULL;
+
+        if (block["type"].isNull() || !block["type"].isString()) {
+            throw string("A block doesn't have any type");
+        }
+
+        string type = block["type"].asString();
+
+        <?php foreach ($blocks as $block) { ?>
+            // <?php echo $block['name']; ?>
+            
+            if (newBlock == NULL && type == "<?php echo $block['name']; ?>") {
+                newBlock = new <?php echo $block['name']; ?>Block(block);
+            }
+        <?php } ?>
+
+        if (newBlock == NULL) {
+            throw string("Unknown block type " + type);
+        }
+
+        return newBlock;
+    }
+
+    Block *Loader::findEdgeBlock(Scene *scene, int id)
+    {
+        Block *block = scene->getBlock(id);
+
+        if (block == NULL) {
+            ostringstream oss;
+            oss << "Invalid edge, unable to find the block " << id;
+            throw oss.str();
+        }
+
+        return block;
+    }
+
+    Edge *Loader::createEdge(const Json::Value &edge, Scene *scene)
+    {
+        if (!edge["block1"].isInt() || !edge["block2"].isInt()) {
+            throw string("Invalid edge, block1 or block2 is not an integer");
+        }
+
+        if (!edge["io1"].isString() || !edge["io2"].isString()) {
+            throw string("Invalid edge, input/output should be strings identifiers");
+        }
+
+        Block *blockFrom = findEdgeBlock(scene, edge["block1"].asInt());
+        Block *blockTo = findEdgeBlock(scene, edge["block2"].asInt());
+
+        Index *indexFrom = Index::fromString(edge["io1"].asString());
+        Index *indexTo = Index::fromString(edge["io2"].asString());
+
+        return new Edge(blockFrom, indexFrom, blockTo, indexTo);
     }
 };
