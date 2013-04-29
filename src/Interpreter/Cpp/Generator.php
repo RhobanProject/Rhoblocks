@@ -26,35 +26,36 @@ class Generator
         }
     }
 
-    /**
-     * Getting all blocks
-     */
-    protected function getBlocks()
-    {
-        $blocks = array(
+    public static $blockNames = array(
             'Signal.Constant', 'Signal.Pulse',
             'Time.Chrono',
             'IO.Print',
             'Math.Expression'
             /*
-            'Signal.Constant',
-            'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
-            'Time.Chrono', 'Time.Delay', 'Time.Debounce',
+            'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
+            'Time.Delay', 'Time.Debounce',
             'Signal.Sinus', 'Signal.Triangle', 'Signal.Gains', 'Signal.Hysteresis',
-            'IO.Output', 'IO.Print',
+            'IO.Output',
              'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 
             'Math.Discount', 'Math.Greater', 'Math.PID', 'Math.MinMax',
             'Math.DerivativeDriver', 'Math.Min', 'Math.Max', 'Math.Sum', 'Math.Equal', 'Math.Derivate',
             'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor',
             'Loop.Loop'
              */
-        );
+    );
+
+    /**
+     * Getting all blocks
+     */
+    protected function getBlocks()
+    {
+        $blocks = static::$blockNames;
 
         foreach ($blocks as &$block) {
             $parts = explode('.', $block);
 
             $className = 'Rhoban\\Blocks\\Blocks\\'.$parts[0].'\\'.$parts[1].'Block';
-            $block = $className::meta();
+            $block = new BlockGenerator($parts, $className::meta());
         }
     
         return $blocks;
@@ -69,9 +70,8 @@ class Generator
         $blocks = $this->getBlocks();
 
         foreach ($blocks as $block) {
-            $blockGenerator = new BlockGenerator($block);
-            $blockGenerator->generateHeader($this);
-            $blockGenerator->generateCode($this);
+            $block->generateHeader($this);
+            $block->generateCode($this);
         }
 
         $this->render('Loader.cpp', 'blocks/Loader.cpp', array('blocks' => $blocks));

@@ -11,7 +11,7 @@ include('../vendor/geshi/geshi.php');
 
 $form = @include('form.php');
 $options = $_SESSION['options'];
-$options['family'] = 'Arduino';
+$options['family'] = 'Interpreter';
 
 function getCompiler($jsonData = null, $options = array()) {
     return new Compiler(new Factory($options), $jsonData);

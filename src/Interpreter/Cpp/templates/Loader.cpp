@@ -3,7 +3,7 @@
 #include <sstream>
 #include "Loader.h"
 <?php foreach ($blocks as $block) { ?>
-#include "<?php echo $block['name']; ?>Block.h"
+#include "<?php echo $block->getFileName(); ?>.h"
 <?php } ?>
 
 using namespace std;
@@ -63,10 +63,10 @@ namespace Blocks
         string type = block["type"].asString();
 
         <?php foreach ($blocks as $block) { ?>
-            // <?php echo $block['name']; ?>
+            // <?php echo $block->getName(); ?>
             
-            if (newBlock == NULL && type == "<?php echo $block['name']; ?>") {
-                newBlock = new <?php echo $block['name']; ?>Block(block);
+            if (newBlock == NULL && type == "<?php echo $block->getName(); ?>") {
+                newBlock = new <?php echo $block->getName(); ?>Block(block);
             }
         <?php } ?>
 

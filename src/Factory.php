@@ -14,7 +14,7 @@ class Factory implements FactoryInterface
      * Binding associations between implementation
      * family and Blocks classes and Environment
      */
-    private static $families = array('C', 'Arduino');
+    private static $families = array('C', 'Arduino', 'Interpreter');
 
     /**
      * The implementation family of the factory

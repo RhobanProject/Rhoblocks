@@ -3,7 +3,7 @@
 
 #include <jsoncpp/json/json.h>
 #include <iostream>
-#include "Block.h"
+#include <blocks/Block.h>
 
 using namespace std;
 

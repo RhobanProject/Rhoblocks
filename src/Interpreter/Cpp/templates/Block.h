@@ -13,7 +13,6 @@ typedef double scalar;
 #include <map>
 #include <vector>
 #include "Scene.h"
-#include "Slot.h"
 #include "Edge.h"
 
 using namespace std;

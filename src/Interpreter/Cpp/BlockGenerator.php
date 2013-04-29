@@ -11,8 +11,26 @@ use Rhoban\Blocks\Template;
  */
 class BlockGenerator
 {
-    protected $block = array();
+    /**
+     * The meta
+     */
+    protected $meta = array();
 
+    /**
+     * The prefix and the name
+     */
+    protected $name = array();
+
+    /**
+     * Transforms a name to a fieldName, for instance "Some field"
+     * will become "someField", which is a valid C variable nam that
+     * can be used
+     *
+     * @param $originalName the name of the field
+     *
+     * @return the name of the field
+     *
+     */
     protected static function transformName($originalName)
     {
         $name = strtolower($originalName);
@@ -30,12 +48,19 @@ class BlockGenerator
         return $newName;
     }
 
-    public function __construct(array $block)
+    /**
+     * Constructs a block interpreter genrator
+     *
+     * @param $name an array containing the directory and the name of the block
+     * @param $meta, the block metas array
+     */
+    public function __construct(array $name, array $meta)
     {
         $sections = array('inputs', 'outputs', 'parameters');
 
+        // Populating meta sections
         foreach ($sections as $section) {
-            $entries = &$block[$section];
+            $entries = &$meta[$section];
             foreach ($entries as &$entry) {
                 if (isset($entry['card'])) {
                     $entry['card'] = Block::parseCard($entry['card']);
@@ -43,10 +68,12 @@ class BlockGenerator
                     $entry['card'] = Block::parseCard('0-1');
                 }
 
+                // Guessing the field name if it's not set
                 if (!isset($entry['fieldName'])) {
                     $entry['fieldName'] = self::transformName($entry['name']);
                 }
 
+                // Populating the "cType" of the entry
                 $entry['cType'] = 'scalar';
                 if (isset($entry['type'])) {
                     if ($entry['type'] == 'text' || $entry['type'] == 'textarea') {
@@ -60,6 +87,7 @@ class BlockGenerator
                     }
                 }
 
+                // If the entry is variadic, sets the type to a map<int, type>
                 if (isset($entry['length'])) {
                     $entry['cType'] = 'map<int, '.$entry['cType'].' >';
                     $entry['length'] = explode('.', $entry['length']);
@@ -67,26 +95,55 @@ class BlockGenerator
             }
         }
 
-        $this->block = $block;
+        $this->name = $name;
+        $this->meta = $meta;
     }
 
+    /**
+     * Gets the block name from its meta
+     *
+     * @return string the block name
+     */
+    public function getName()
+    {
+        return $this->name[1];
+    }
+
+    /**
+     * Gets the file name, without prefix or extension, e.g: Time/ChronoBlock
+     *
+     * @return string the filename
+     */
+    public function getFileName()
+    {
+        return $this->name[0].'/'.$this->name[1].'Block';
+    }
+
+    /**
+     * Gets the template variables
+     */
     protected function getVariables()
     {
-        $name = $this->block['name'];
+        $name = $this->getName();
 
         return array(
             'name' => $name,
             'upname' => strtoupper($name),
-            'meta' => $this->block
+            'meta' => $this->meta
         );
     }
 
+    /**
+     * Generates the header for the given block
+     *
+     * @param Generator $generator, the generator that is used
+     */
     public function generateHeader(Generator $generator)
     {
-        $name = $this->block['name'];
+        $name = $this->getName();
         $variables = $this->getVariables();
 
-        $hFile = __DIR__.'/templates/implementation/'.$name.'Block.h';
+        $hFile = __DIR__.'/'.$this->getFileName().'.h';
 
         if (file_exists($hFile)) {
             $template = new Template($hFile);
@@ -95,14 +152,19 @@ class BlockGenerator
             $variables['header'] = '';
         }
 
-        $generator->render('BlockImplementation.h', 'blocks/'.$name.'Block.h', $variables);
+        $generator->render('BlockImplementation.h', 'blocks/'.$this->getFileName().'.h', $variables);
     }
 
+    /**
+     * Generates the code file for the given block
+     *
+     * @param Generator $generator, the generator that is used
+     */
     public function generateCode(Generator $generator)
     {
-        $name = $this->block['name'];
+        $name = $this->meta['name'];
         $variables = $this->getVariables();
-        $codeFile = __DIR__.'/templates/implementation/'.$name.'Block.cpp';
+        $codeFile = __DIR__.'/'.$this->getFileName().'.cpp';
 
         if (!file_exists($codeFile)) {
             throw new \RuntimeException('No implementation for block '.$name);
@@ -112,6 +174,6 @@ class BlockGenerator
         $variables['code'] = $template->render($variables);
         $variables['sections'] = array('inputs', 'outputs', 'parameters');
 
-        $generator->render('BlockImplementation.cpp', 'blocks/'.$name.'Block.cpp', $variables);
+        $generator->render('BlockImplementation.cpp', 'blocks/'.$this->getFileName().'.cpp', $variables);
     }
 }

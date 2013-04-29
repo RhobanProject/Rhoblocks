@@ -9,7 +9,7 @@ set (SOURCES
     blocks/Index.cpp
     blocks/Scheduler.cpp
     <?php foreach ($blocks as $block) { ?>
-    blocks/<?php echo $block['name']; ?>Block.cpp
+    blocks/<?php echo $block->getFileName(); ?>.cpp
     <?php } ?>
     )
 
