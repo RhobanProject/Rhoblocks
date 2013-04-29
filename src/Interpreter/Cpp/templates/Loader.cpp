@@ -19,6 +19,10 @@ namespace Blocks
             throw string("Could not parse the given scene: "+reader.getFormattedErrorMessages());
         }
 
+        if (root.isArray()) {
+            root = root[1];
+        }
+
         if (root["blocks"].isNull() || root["edges"].isNull()) {
             throw string("The scene must contain blocks and edges nodes");
         }
