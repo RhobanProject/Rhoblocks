@@ -12,7 +12,7 @@ namespace Blocks
         if (node.isNumeric()) {
             value = node.asDouble();
         } else if (node.isString()) {
-            value = atoi(node.asString().c_str());
+            value = atof(node.asString().c_str());
         } else {
             throw string("Can't read such a double");
         }
