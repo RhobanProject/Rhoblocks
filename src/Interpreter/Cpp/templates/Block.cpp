@@ -11,7 +11,6 @@ namespace Blocks
 
     Block::~Block()
     {
-        destroy();
     }
 
     void Block::destroy()

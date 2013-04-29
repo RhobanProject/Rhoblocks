@@ -46,8 +46,6 @@ namespace Blocks
         }
 
         reverse(topological.begin(), topological.end());
-
-        vector<int>::iterator tit;
     }
 
     void Scheduler::tick()

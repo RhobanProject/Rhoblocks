@@ -14,6 +14,7 @@ namespace Blocks
         public:
             <?php echo $name; ?>Block(string jsonData);
             <?php echo $name; ?>Block(const Json::Value &block);
+            ~<?php echo $name; ?>Block();
 
             void initialize(Block *older);
             void tick();

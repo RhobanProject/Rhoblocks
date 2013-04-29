@@ -20,6 +20,11 @@ namespace Blocks
         load(block);
     }
             
+    <?php echo $name; ?>Block::~<?php echo $name; ?>Block()
+    {
+        destroy();
+    }
+            
     <?php echo $name; ?>Block::<?php echo $name; ?>Block(const Json::Value &block)
     {
         load(block);
