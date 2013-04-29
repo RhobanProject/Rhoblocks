@@ -1,9 +1,10 @@
 void ConstantBlock::initialize(Block *old)
 {
-    // Init!
+    for (int i=0; i<value.size(); i++) {
+        value[i] = values_value[i];
+    }
 }
 
 void ConstantBlock::tick()
 {
-    // Tick!
 }

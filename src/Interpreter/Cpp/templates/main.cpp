@@ -2,6 +2,7 @@
 #include <fstream>
 #include "blocks/Loader.h"
 #include "blocks/Scene.h"
+#include "blocks/Scheduler.h"
 
 using namespace std;
 
@@ -16,6 +17,9 @@ int main()
 
         Blocks::Loader loader;
         Blocks::Scene *scene = loader.loadScene(content);
+        Blocks::Scheduler scheduler(scene);
+
+        scheduler.run();
     } catch (string error) {
         cout << "Error: " << error << endl;
     }

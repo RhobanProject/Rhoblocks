@@ -17,6 +17,21 @@ namespace Blocks
         delete indexFrom;
         delete indexTo;
     }
+    
+    Block *Edge::getDestination()
+    {
+        return to;
+    }
+
+    Block *Edge::getSource()
+    {
+        return from;
+    }
+
+    scalar Edge::getValue()
+    {
+        return from->getOutput(indexFrom->getIndex(), indexFrom->getSubIndex());
+    }
 
     Index *Edge::getIndex(Block *block)
     {
@@ -25,5 +40,21 @@ namespace Blocks
         }
 
         return indexTo;
+    }
+
+    bool Edge::startsFrom(Block *block)
+    {
+        return (block == from);
+    }
+
+    void Edge::propagate()
+    {
+        if (indexTo->getName() == "input") {
+            to->setInput(indexTo->getIndex(), indexTo->getSubIndex(), getValue());
+        }
+
+        if (indexTo->getName() == "param") {
+            to->setParameter(indexTo->getIndex(), getValue());
+        }
     }
 };

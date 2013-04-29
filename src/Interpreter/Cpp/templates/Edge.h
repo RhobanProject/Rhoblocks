@@ -20,7 +20,15 @@ namespace Blocks
             Edge(Block *from, Index *indexFrom, Block *to, Index *indexTo);
             ~Edge();
 
+            void propagate();
+
+            Block *getDestination();
+            Block *getSource();
+
             Index *getIndex(Block *concerned);
+            bool startsFrom(Block *block);
+
+            scalar getValue();
 
         protected:
             Block *from;

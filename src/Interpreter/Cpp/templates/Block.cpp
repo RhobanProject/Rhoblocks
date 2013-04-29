@@ -12,7 +12,7 @@ namespace Blocks
     void Block::initialize(Block *old)
     {
     }
-            
+    
     void Block::setScene(Scene *scene_)
     {
         scene = scene_;
@@ -21,6 +21,20 @@ namespace Blocks
     int Block::getId()
     {
         return id;
+    }
+            
+    set<Block *> Block::allSuccessors()
+    {
+        set<Block *> succ;
+        vector<Edge *>::iterator it;
+
+        for (it=successors.begin(); it!=successors.end(); it++) {
+            Edge *edge = *it;
+            succ.insert(edge->getDestination());
+        }
+
+        return succ;
+    
     }
 
     void Block::load(const Json::Value &block)
@@ -37,6 +51,20 @@ namespace Blocks
 
     void Block::addEdge(Edge *edge)
     {
-        edges[edge->getIndex(this)->getName()].push_back(edge);
+        if (edge->startsFrom(this)) {
+            successors.push_back(edge);
+        } else {
+            predecessors.push_back(edge);
+        }
+    }
+
+    void Block::propagate()
+    {
+        vector<Edge *>::iterator it;
+
+        for (it=successors.begin(); it!=successors.end(); it++) {
+            Edge *edge = (*it);
+            edge->propagate();
+        }
     }
 };

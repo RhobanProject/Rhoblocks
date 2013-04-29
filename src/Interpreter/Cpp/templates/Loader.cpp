@@ -44,6 +44,8 @@ namespace Blocks
             delete scene;
             throw error;
         }
+
+        return scene;
     }
 
     Block *Loader::createBlock(const Json::Value &block)

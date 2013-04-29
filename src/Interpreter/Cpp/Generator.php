@@ -85,7 +85,10 @@ class Generator
         
         $this->copyFile('Index.h', 'blocks/');
         $this->copyFile('Index.cpp', 'blocks/');
-
+        
+        $this->copyFile('Scheduler.h', 'blocks/');
+        $this->copyFile('Scheduler.cpp', 'blocks/');
+        
         $this->copyFile('main.cpp', '/');
         $this->render('CMakeLists.txt', 'CMakeLists.txt', array('blocks' => $blocks));
     }

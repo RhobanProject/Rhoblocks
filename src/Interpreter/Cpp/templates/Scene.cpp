@@ -6,7 +6,7 @@ using namespace std;
 
 namespace Blocks
 {
-    Scene::Scene()
+    Scene::Scene() : frequency(50)
     {
     }
 
@@ -39,6 +39,7 @@ namespace Blocks
         int id = block->getId();
         Block *current = getBlock(id);
             
+        block->setScene(this);
         block->initialize(current);
 
         if (current != NULL) {
@@ -46,12 +47,23 @@ namespace Blocks
         }
 
         blocks[id] = block;
-        block->setScene(this);
     }
 
     void Scene::addEdge(Edge *edge)
     {
         edges.push_back(edge);
+    }
+    
+    vector<Block *> Scene::allBlocks()
+    {
+        vector<Block *> blocksVect;
+        map<int, Block *>::iterator it;
+        
+        for (it=blocks.begin(); it!=blocks.end(); it++) {
+            blocksVect.push_back((*it).second);
+        }
+
+        return blocksVect;
     }
             
     Block *Scene::getBlock(int id)
@@ -61,5 +73,15 @@ namespace Blocks
         }
 
         return NULL;
+    }
+
+    int Scene::getFrequency()
+    {
+        return frequency;
+    }
+
+    scalar Scene::getPeriod()
+    {
+        return 1.0/frequency;
     }
 };

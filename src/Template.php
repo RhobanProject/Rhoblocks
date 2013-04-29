@@ -19,7 +19,7 @@ class Template
     {
         extract($variables);
         ob_start();
-        @include($this->templateFile);
+        include($this->templateFile);
         return ob_get_clean();
     }
 }

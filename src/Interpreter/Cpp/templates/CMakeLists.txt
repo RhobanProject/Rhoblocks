@@ -7,6 +7,7 @@ set (SOURCES
     blocks/Loader.cpp
     blocks/Edge.cpp
     blocks/Index.cpp
+    blocks/Scheduler.cpp
     <?php foreach ($blocks as $block) { ?>
     blocks/<?php echo $block['name']; ?>Block.cpp
     <?php } ?>

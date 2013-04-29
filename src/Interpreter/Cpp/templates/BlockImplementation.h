@@ -15,14 +15,37 @@ namespace Blocks
             <?php echo $name; ?>Block(string jsonData);
             <?php echo $name; ?>Block(const Json::Value &block);
 
-            void addEdge(Edge *edge);
             void initialize(Block *older);
             void tick();
 
             string getName();
+            
+            virtual scalar getOutput(int index, int subIndex);
+            virtual void setInput(int index, int subIndex, scalar value);
+            virtual void setParameter(int index, scalar value);
 
+            // Parameters, inputs and outputs
+            <?php $sections = array('inputs', 'outputs', 'parameters');
+                foreach ($sections as $section) {
+                    foreach ($meta[$section] as $entry) {
+                        if (isset($entry['type']) && is_array($entry['type'])) {
+                            foreach ($entry['type'] as $subEntry) { 
+            ?>
+            map<int, <?php echo $entry['cType']; ?> > <?php echo $entry['fieldName']; ?>_<?php echo $subEntry['fieldName']; ?>;
+            <?php
+                            }
+                        } else {
+            ?>
+            <?php echo $entry['cType']; ?> <?php echo $entry['fieldName']; ?>;
+            <?php 
+                        }
+                    }
+                }
+            ?>
+
+            // Implementation headers
             <?php echo $header; ?>
-
+            
         protected:
             void load(const Json::Value &block);
     };
