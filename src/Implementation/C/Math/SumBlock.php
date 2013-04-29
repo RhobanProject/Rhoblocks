@@ -13,13 +13,13 @@ class SumBlock extends Base
      */
     public function implementTransitionCode()
     {
-        $identifiers = $this->getInputIdentifiers('Terms');
+        $size = $this->getInputSize('Term #');
         $output = $this->getOutputIdentifier('Sum');
 
         $code = "$output = 0;\n";
 
-        foreach ($identifiers as $identifier) {
-            $input = $identifier->get($output->getType());
+        for ($i=0; $i<$size; $i++) {
+            $input = $this->getInputIdentifier(array('Term #', $i));
             $code .= "$output += $input;\n";
         }
 

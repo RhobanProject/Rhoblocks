@@ -15,11 +15,21 @@ abstract class MaxBlock extends Block
             'name' => 'Max',
             'family' => 'Math',
             'description' => 'Output is the maximum of terms',
-            'parameters' => array(),
-            'inputs' => array(
+            'parameters' => array(
                 array(
                     'name' => 'Terms',
-                    'card' => '0-*'
+                    'type' => 'integer',
+                    'default' => 2,
+                    'card' => 0,
+                    'hide' => 0
+                )
+            ),
+            'inputs' => array(
+                array(
+                    'name' => 'Term #',
+                    'card' => '0-1',
+                    'default' => 0,
+                    'length' => 'Terms.value'
                 )
             ),
             'outputs' => array(

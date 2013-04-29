@@ -23,8 +23,10 @@ class OrBlock extends Base
         $or = $this->getOutputIdentifier('Or');
         $terms = array();
 
-        foreach ($this->getInputIdentifiers('Terms') as $term) {
-            $terms[] = $term->asInteger();
+        $size = $this->getInputSize('Term #');
+        for ($i=0; $i<$size; $i++) {
+            $input = $this->getInputIdentifier(array('Term #', $i));
+            $terms[] = $input->asInteger();
         }
 
         if (count($terms)) {

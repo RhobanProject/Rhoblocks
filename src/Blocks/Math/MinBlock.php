@@ -15,11 +15,21 @@ abstract class MinBlock extends Block
             'name' => 'Min',
             'family' => 'Math',
             'description' => 'Output is the minimum of terms',
-            'parameters' => array(),
-            'inputs' => array(
+            'parameters' => array(
                 array(
                     'name' => 'Terms',
-                    'card' => '0-*'
+                    'type' => 'integer',
+                    'default' => 2,
+                    'card' => 0,
+                    'hide' => 0
+                )
+            ),
+            'inputs' => array(
+                array(
+                    'name' => 'Term #',
+                    'card' => '0-1',
+                    'length' => 'Terms.value',
+                    'default' => 0
                 )
             ),
             'outputs' => array(

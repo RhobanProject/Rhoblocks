@@ -32,7 +32,9 @@ class Generator
     protected function getBlocks()
     {
         $blocks = array(
-            'Signal.Constant', 'Time.Chrono',
+            'Signal.Constant', 'Signal.Pulse',
+            'Time.Chrono',
+            'IO.Print',
             /*
             'Signal.Constant',
             'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',

@@ -13,16 +13,16 @@ class MaxBlock extends Base
      */
     public function implementTransitionCode()
     {
-        $identifiers = $this->getInputIdentifiers('Terms');
+        $size = $this->getInputSize('Term #');
         $output = $this->getOutputIdentifier('Max');
 
-        if (!count($identifiers)) {
+        if (!$size) {
             $code = "$output = 0;\n";
         } else {
             $first = true;
 
-            foreach ($identifiers as $identifier) {
-                $input = $identifier->get($output->getType());
+            for ($i=0; $i<$size; $i++) {
+                $input = $this->getInputIdentifier(array('Term #', $i));
 
                 if ($first) {
                     $first = false;
