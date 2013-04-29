@@ -20,7 +20,7 @@ set (MAIN
 include_directories ("${BlocksInterpreter_SOURCE_DIR}")
 
 add_library (BlocksInterpreter ${SOURCES})
-target_link_libraries (BlocksInterpreter jsoncpp)
+target_link_libraries (BlocksInterpreter jsoncpp matheval)
 
 add_executable (Interpreter ${MAIN})
 target_link_libraries (Interpreter BlocksInterpreter)

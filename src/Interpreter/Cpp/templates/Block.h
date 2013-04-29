@@ -24,6 +24,7 @@ namespace Blocks
     {
         public:
             Block();
+            ~Block();
 
             void setScene(Scene *scene);
 
@@ -32,6 +33,7 @@ namespace Blocks
             virtual void initialize(Block *old);
             virtual void tick()=0;
             virtual void addEdge(Edge *edge);
+            virtual void destroy();
             void propagate();
 
             virtual scalar getOutput(int index, int subIndex)=0;

@@ -1,3 +1,4 @@
+#include <sstream>
 #include <iostream>
 #include "Edge.h"
 
@@ -51,10 +52,12 @@ namespace Blocks
     {
         if (indexTo->getName() == "input") {
             to->setInput(indexTo->getIndex(), indexTo->getSubIndex(), getValue());
-        }
-
-        if (indexTo->getName() == "param") {
+        } else if (indexTo->getName() == "param") {
             to->setParameter(indexTo->getIndex(), getValue());
+        } else {
+            ostringstream oss;
+            oss << "Unknown section " << indexTo->getName();
+            throw oss.str();
         }
     }
 };

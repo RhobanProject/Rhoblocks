@@ -31,7 +31,7 @@ namespace Blocks
 
         // Initializing inputs
         <?php foreach ($meta['inputs'] as $input) {
-            if (isset($input['default'])) { ?>
+            if (isset($input['default']) && !isset($input['length'])) { ?>
         <?php echo $input['fieldName']; ?> = <?php echo $input['default']; ?>;
         <?php }
         }

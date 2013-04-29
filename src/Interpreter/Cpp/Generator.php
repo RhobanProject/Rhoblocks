@@ -35,6 +35,7 @@ class Generator
             'Signal.Constant', 'Signal.Pulse',
             'Time.Chrono',
             'IO.Print',
+            'Math.Expression'
             /*
             'Signal.Constant',
             'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
