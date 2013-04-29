@@ -75,24 +75,24 @@ class Generator
         }
 
         $this->render('Loader.cpp', 'blocks/Loader.cpp', array('blocks' => $blocks));
-        $this->copyFile('Loader.h', 'blocks/');
+        $this->copyFile('Loader.h', 'blocks/Loader.h');
 
-        $this->copyFile('Scene.h', 'blocks/');
-        $this->copyFile('Scene.cpp', 'blocks/');
+        $this->copyFile('Scene.h', 'blocks/Scene.h');
+        $this->copyFile('Scene.cpp', 'blocks/Scene.cpp');
 
-        $this->copyFile('Block.h', 'blocks/');
-        $this->copyFile('Block.cpp', 'blocks/');
+        $this->copyFile('Block.h', 'blocks/Block.h');
+        $this->copyFile('Block.cpp', 'blocks/Block.cpp');
         
-        $this->copyFile('Edge.h', 'blocks/');
-        $this->copyFile('Edge.cpp', 'blocks/');
+        $this->copyFile('Edge.h', 'blocks/Edge.h');
+        $this->copyFile('Edge.cpp', 'blocks/Edge.cpp');
         
-        $this->copyFile('Index.h', 'blocks/');
-        $this->copyFile('Index.cpp', 'blocks/');
+        $this->copyFile('Index.h', 'blocks/Index.h');
+        $this->copyFile('Index.cpp', 'blocks/Index.cpp');
         
-        $this->copyFile('Scheduler.h', 'blocks/');
-        $this->copyFile('Scheduler.cpp', 'blocks/');
+        $this->copyFile('Scheduler.h', 'blocks/Scheduler.h');
+        $this->copyFile('Scheduler.cpp', 'blocks/Scheduler.cpp');
         
-        $this->copyFile('main.cpp', '/');
+        $this->copyFile('main.cpp', 'main.cpp');
         $this->render('CMakeLists.txt', 'CMakeLists.txt', array('blocks' => $blocks));
     }
 
@@ -117,7 +117,10 @@ class Generator
         $source = __DIR__.'/templates/'.$source;
         $fullName = $this->targetDirectory . '/' . $destination;
         $this->checkFileDirectory($fullName);
-        shell_exec('cp -R '.$source.' '.$fullName);
+
+        if (!file_exists($fullName) || file_get_contents($source)!=file_get_contents($fullName)) {
+            shell_exec('cp -R '.$source.' '.$fullName);
+        }
     }
 
     /**
@@ -137,7 +140,10 @@ class Generator
     {
         $fullName = $this->targetDirectory . '/' . $name;
         $this->checkFileDirectory($fullName);
-        file_put_contents($fullName, $contents);
+
+        if (!file_exists($fullName) || file_get_contents($fullName) != $contents) {
+            file_put_contents($fullName, $contents);
+        }
     }
 
     /**
