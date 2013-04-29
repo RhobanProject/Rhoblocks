@@ -54,14 +54,18 @@ class Compiler
      */
     public function generateCode()
     {
-        $graph = new Graph($this->jsonData, $this->factory);
-        $initCode = $graph->generateInitCode();
-        $transitionCode = $graph->generateTransitionCode();
+        if ($this->factory->canBeGenerated()) {
+            $graph = new Graph($this->jsonData, $this->factory);
+            $initCode = $graph->generateInitCode();
+            $transitionCode = $graph->generateTransitionCode();
 
-        return $this->factory->getGenerator()->generateCode(
-            $this->factory->getEnvironment(),
-            $initCode, 
-            $transitionCode
-        );
+            return $this->factory->getGenerator()->generateCode(
+                $this->factory->getEnvironment(),
+                $initCode, 
+                $transitionCode
+            );
+        } else {
+            return array();
+        }
     }
 }

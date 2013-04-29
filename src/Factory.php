@@ -106,10 +106,8 @@ class Factory implements FactoryInterface
         $blocks = $this->family->getAllBlocks();
 
         foreach ($blocks as $type => $className) {
-            if ($type != 'ENVIRONMENT' && $type != 'GENERATOR') {
-                $className::checkMeta();
-                $jsonContainer[$type] = $className::generateJSON();
-            }
+            $className::checkMeta();
+            $jsonContainer[$type] = $className::generateJSON();
         }
 
         return $jsonContainer;
@@ -140,5 +138,13 @@ class Factory implements FactoryInterface
         } else {
             throw new \RuntimeException('Unknown '.$type.' for family '.$this->family->getName());
         }
+    }
+
+    /**
+     * Can this factory be used ?
+     */
+    public function canBeGenerated()
+    {
+        return $this->family->canBeGenerated();
     }
 }

@@ -60,4 +60,12 @@ abstract class Family
     {
         return $this->blocks;
     }
+
+    /**
+     * Car this family be generated
+     */
+    public function canBeGenerated()
+    {
+        return true;
+    }
 }

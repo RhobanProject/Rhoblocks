@@ -22,4 +22,9 @@ class Family extends Base
 
         return $blocks;
     }
+
+    public function canBeGenerated()
+    {
+        return false;
+    }
 }
