@@ -33,4 +33,8 @@ void ExpressionBlock::destroy()
     }
 
     delete[] names;
+
+    if (evaluator != NULL) {
+        evaluator_destroy(evaluator);
+    }
 }
