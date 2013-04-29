@@ -32,7 +32,7 @@ namespace Blocks
         // Initializing inputs
         <?php foreach ($meta['inputs'] as $input) {
             if (isset($input['default']) && !isset($input['length'])) { ?>
-        <?php echo $input['fieldName']; ?> = <?php echo $input['default']; ?>;
+            <?php echo $input['fieldName']; ?> = <?php echo $input['default']; ?>;
         <?php }
         }
         ?>
@@ -40,36 +40,41 @@ namespace Blocks
         // Reading parameters
         const Json::Value parameters = block["parameters"];
         <?php foreach ($meta['parameters'] as $entry) { ?>
-        <?php if (isset($entry['type']) && is_array($entry['type'])) { ?>
-        <?php foreach ($entry['type'] as $subEntry) { ?>
-        <?php $vname = $entry['name'].'.'.$subEntry['name']; ?> 
-        if (!parameters["<?php echo $vname; ?>"].isArray()) {
-            throw string("The parameter <?php echo $vname; ?> should be an array");
-        }
-        Json::Value node = parameters["<?php echo $vname; ?>"];
-        for (int i=0; i<node.size(); i++) {
-            <?php echo $entry['fieldName']; ?>_<?php echo $subEntry['fieldName']; ?>[i] = node[i].asDouble();
-        }
+                <?php if (isset($entry['type']) && is_array($entry['type'])) {
+                // Variadic parameter
+                ?>
+                <?php foreach ($entry['type'] as $subEntry) { ?>
+                    <?php // The name of the parameter is Name_SubName
+                          $vname = $entry['name'].'.'.$subEntry['name']; ?> 
+                    if (!parameters["<?php echo $vname; ?>"].isArray()) {
+                        throw string("The parameter <?php echo $vname; ?> should be an array");
+                    }
+                    Json::Value node = parameters["<?php echo $vname; ?>"];
+                    for (int i=0; i<node.size(); i++) {
+                        <?php echo $entry['fieldName']; ?>_<?php echo $subEntry['fieldName']; ?>[i] = node[i].asDouble();
+                    }
+                <?php } ?>
+            <?php } else { ?>
+                <?php
+                    // Reading string parameters from json
+                    if ($entry['cType'] == 'string') { ?>
+                    if (!parameters["<?php echo $entry['name']; ?>"].isString()) {
+                        throw string("The parameter <?php echo $entry['name']; ?> should be a string");
+                    }
+                    <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asString();
 
-        <?php } ?>
-        <?php } else { ?>
-        <?php if ($entry['cType'] == 'string') { ?>
-        if (!parameters["<?php echo $entry['name']; ?>"].isString()) {
-            throw string("The parameter <?php echo $entry['name']; ?> should be a string");
-        }
-        <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asString();
-
-        <?php } else { ?>
-        if (parameters["<?php echo $entry['name']; ?>"].isNumeric()) {
-            <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asDouble();
-        } else if (parameters["<?php echo $entry['name']; ?>"].isString()) {
-            <?php echo $entry['fieldName']; ?> = atoi(parameters["<?php echo $entry['name']; ?>"].asString().c_str());
-        } else {
-            throw string("The parameter <?php echo $entry['name']; ?> should be a float");
-        }
-
-        <?php } ?>
-        <?php } ?>
+                <?php } else {
+                    // Int parameter, it can be a string so we'll use atoi() or a numeric value
+                ?>
+                    if (parameters["<?php echo $entry['name']; ?>"].isNumeric()) {
+                        <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asDouble();
+                    } else if (parameters["<?php echo $entry['name']; ?>"].isString()) {
+                        <?php echo $entry['fieldName']; ?> = atoi(parameters["<?php echo $entry['name']; ?>"].asString().c_str());
+                    } else {
+                        throw string("The parameter <?php echo $entry['name']; ?> should be a float");
+                    }
+                <?php } ?>
+            <?php } ?>
         <?php } ?>
 
         // Initializing variadic I/O
@@ -82,24 +87,24 @@ namespace Blocks
                 if ($param['name'] == $entry['length'][0]) {
                     if ($entry['length'][1] == 'value') {
                     ?>
-                    size = (int)<?php echo $param['fieldName']; ?>;
+                        size = (int)<?php echo $param['fieldName']; ?>;
                     <?php
                     } 
                     if ($entry['length'][1] == 'length') {
                     ?>
-                    size = 0;
-                    <?php foreach ($param['type'] as $subEntry) { ?>
-                    <?php $vname = $param['fieldName'].'_'.$subEntry['fieldName']; ?>
-                    if (<?php echo $vname; ?>.size() > size) {
-                        size = <?php echo $vname; ?>.size();
-                    }
+                        size = 0;
+                        <?php foreach ($param['type'] as $subEntry) { ?>
+                            <?php $vname = $param['fieldName'].'_'.$subEntry['fieldName']; ?>
+                            if (<?php echo $vname; ?>.size() > size) {
+                                size = <?php echo $vname; ?>.size();
+                            }
                     <? } ?>
                     <?php
                     }
         ?>
-            for (int i=0; i<size; i++) {
-                <?php echo $entry['fieldName']; ?>[i] = <?php echo isset($entry['default']) ? $entry['default'] : '0'; ?>;
-            }
+                for (int i=0; i<size; i++) {
+                    <?php echo $entry['fieldName']; ?>[i] = <?php echo isset($entry['default']) ? $entry['default'] : '0'; ?>;
+                }
         <?php
                 }
               }

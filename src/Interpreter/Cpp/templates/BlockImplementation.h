@@ -28,11 +28,12 @@ namespace Blocks
             <?php $sections = array('inputs', 'outputs', 'parameters');
                 foreach ($sections as $section) {
                     foreach ($meta[$section] as $entry) {
+                        // Variadic parameter, adding all the sub entries types
                         if (isset($entry['type']) && is_array($entry['type'])) {
                             foreach ($entry['type'] as $subEntry) { 
-            ?>
-            map<int, <?php echo $entry['cType']; ?> > <?php echo $entry['fieldName']; ?>_<?php echo $subEntry['fieldName']; ?>;
-            <?php
+                                ?>
+                                map<int, <?php echo $entry['cType']; ?> > <?php echo $entry['fieldName']; ?>_<?php echo $subEntry['fieldName']; ?>;
+                                <?php
                             }
                         } else {
             ?>
