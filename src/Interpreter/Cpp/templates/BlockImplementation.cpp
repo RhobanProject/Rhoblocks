@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <sstream>
 #include <iostream>
 #include "<?php echo $name; ?>Block.h"
@@ -52,17 +53,20 @@ namespace Blocks
 
         <?php } ?>
         <?php } else { ?>
-        <?php if ($entry['type'] == 'text') { ?>
+        <?php if ($entry['cType'] == 'string') { ?>
         if (!parameters["<?php echo $entry['name']; ?>"].isString()) {
             throw string("The parameter <?php echo $entry['name']; ?> should be a string");
         }
         <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asString();
 
         <?php } else { ?>
-        if (!parameters["<?php echo $entry['name']; ?>"].isNumeric()) {
+        if (parameters["<?php echo $entry['name']; ?>"].isNumeric()) {
+            <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asDouble();
+        } else if (parameters["<?php echo $entry['name']; ?>"].isString()) {
+            <?php echo $entry['fieldName']; ?> = atoi(parameters["<?php echo $entry['name']; ?>"].asString().c_str());
+        } else {
             throw string("The parameter <?php echo $entry['name']; ?> should be a float");
         }
-        <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asDouble();
 
         <?php } ?>
         <?php } ?>
@@ -78,7 +82,7 @@ namespace Blocks
                 if ($param['name'] == $entry['length'][0]) {
                     if ($entry['length'][1] == 'value') {
                     ?>
-                    size = $entry['fieldName'];
+                    size = (int)<?php echo $param['fieldName']; ?>;
                     <?php
                     } 
                     if ($entry['length'][1] == 'length') {
@@ -112,13 +116,13 @@ namespace Blocks
         return oss.str();
     }
 
-    scalar <?php echo $name; ?>Block::getOutput(int index, int subIndex)
+    scalar <?php echo $name; ?>Block::getOutput(int index_, int subIndex_)
     {
-        switch (index) {
+        switch (index_) {
             <?php foreach ($meta['outputs'] as $index => $entry) { ?>
             case <?php echo $index; ?>:
                 <?php if (isset($entry['length'])) { ?>
-                return <?php echo $entry['fieldName']; ?>[subIndex];
+                return <?php echo $entry['fieldName']; ?>[subIndex_];
                 <?php } else { ?>
                 return <?php echo $entry['fieldName']; ?>;
                 <?php } ?>
@@ -129,29 +133,29 @@ namespace Blocks
         return 0.0;
     }
 
-    void <?php echo $name; ?>Block::setInput(int index, int subIndex, scalar value)
+    void <?php echo $name; ?>Block::setInput(int index_, int subIndex_, scalar value_)
     {
-        switch (index) {
+        switch (index_) {
             <?php foreach ($meta['inputs'] as $index => $entry) { ?>
             case <?php echo $index; ?>:
                 <?php if (isset($entry['length'])) { ?>
-                <?php echo $entry['fieldName']; ?>[subIndex] = value;
+                <?php echo $entry['fieldName']; ?>[subIndex_] = value_;
                 <?php } else { ?>
-                <?php echo $entry['fieldName']; ?> = value;
+                <?php echo $entry['fieldName']; ?> = value_;
                 <?php } ?>
                 break;
             <?php } ?>
         }
     }
 
-    void <?php echo $name; ?>Block::setParameter(int index, scalar value)
+    void <?php echo $name; ?>Block::setParameter(int index_, scalar value_)
     {
-        switch (index) {
+        switch (index_) {
             <?php foreach ($meta['parameters'] as $index => $entry) { ?>
             <?php if (!isset($entry['type']) || $entry['type'] == 'number' || $entry['type'] == 'integer') { ?>
             <?php if ($entry['card'][1]) { ?>
             case <?php echo $index; ?>:
-                <?php echo $entry['fieldName']; ?> = value;
+                <?php echo $entry['fieldName']; ?> = value_;
                 break;
             <?php } ?>
             <?php } ?>

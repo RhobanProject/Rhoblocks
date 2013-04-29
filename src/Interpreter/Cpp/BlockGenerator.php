@@ -49,7 +49,7 @@ class BlockGenerator
 
                 $entry['cType'] = 'scalar';
                 if (isset($entry['type'])) {
-                    if ($entry['type'] == 'text' || $entry['type'] == 'string') {
+                    if ($entry['type'] == 'text' || $entry['type'] == 'textarea') {
                         $entry['cType'] = 'string';
                     }
 
@@ -86,8 +86,14 @@ class BlockGenerator
         $name = $this->block['name'];
         $variables = $this->getVariables();
 
-        $template = new Template(__DIR__.'/templates/implementation/'.$name.'Block.h');
-        $variables['header'] = $template->render($variables);
+        $hFile = __DIR__.'/templates/implementation/'.$name.'Block.h';
+
+        if (file_exists($hFile)) {
+            $template = new Template($hFile);
+            $variables['header'] = $template->render($variables);
+        } else {
+            $variables['header'] = '';
+        }
 
         $generator->render('BlockImplementation.h', 'blocks/'.$name.'Block.h', $variables);
     }

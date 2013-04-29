@@ -1,15 +1,15 @@
 void ChronoBlock::initialize(Block *old)
 {
-    value = defaultValue-scene->getPeriod();;
+    T = defaultValue-scene->getPeriod();
 }
 
 void ChronoBlock::tick()
 {
     if (reset) {
-        value = 0;
+        T = 0;
     } else {
         if (!pause) {
-            value += factor*scene->getPeriod();
+            T += factor*scene->getPeriod();
         }
     }
 }
