@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <sstream>
 #include <iostream>
+#include <blocks/JsonUtil.h>
 #include "<?php echo $name; ?>Block.h"
 
 using namespace std;
@@ -26,7 +27,6 @@ namespace Blocks
 
     void <?php echo $name; ?>Block::load(const Json::Value &block)
     {
-        cout << "Loading block data for block <?php echo $name; ?>" << endl;
         Block::load(block);
 
         // Initializing inputs
@@ -44,35 +44,21 @@ namespace Blocks
                 // Variadic parameter
                 ?>
                 <?php foreach ($entry['type'] as $subEntry) { ?>
-                    <?php // The name of the parameter is Name_SubName
+                    <?php // The name of the parameter is Name.SubName
                           $vname = $entry['name'].'.'.$subEntry['name']; ?> 
-                    if (!parameters["<?php echo $vname; ?>"].isArray()) {
-                        throw string("The parameter <?php echo $vname; ?> should be an array");
-                    }
-                    Json::Value node = parameters["<?php echo $vname; ?>"];
-                    for (int i=0; i<node.size(); i++) {
-                        <?php echo $entry['fieldName']; ?>_<?php echo $subEntry['fieldName']; ?>[i] = node[i].asDouble();
-                    }
+                    JsonUtil::readDoubles(parameters, "<?php echo $vname; ?>", <?php echo $entry['fieldName']; ?>_<?php echo $subEntry['fieldName']; ?>);
                 <?php } ?>
             <?php } else { ?>
                 <?php
+                    if ($entry['cType'] == 'string') {
                     // Reading string parameters from json
-                    if ($entry['cType'] == 'string') { ?>
-                    if (!parameters["<?php echo $entry['name']; ?>"].isString()) {
-                        throw string("The parameter <?php echo $entry['name']; ?> should be a string");
-                    }
-                    <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asString();
+                    ?>
+                    JsonUtil::readString(parameters, "<?php echo $entry['name']; ?>", <?php echo $entry['fieldName']; ?>);
 
                 <?php } else {
                     // Int parameter, it can be a string so we'll use atoi() or a numeric value
                 ?>
-                    if (parameters["<?php echo $entry['name']; ?>"].isNumeric()) {
-                        <?php echo $entry['fieldName']; ?> = parameters["<?php echo $entry['name']; ?>"].asDouble();
-                    } else if (parameters["<?php echo $entry['name']; ?>"].isString()) {
-                        <?php echo $entry['fieldName']; ?> = atoi(parameters["<?php echo $entry['name']; ?>"].asString().c_str());
-                    } else {
-                        throw string("The parameter <?php echo $entry['name']; ?> should be a float");
-                    }
+                    JsonUtil::readDouble(parameters, "<?php echo $entry['name']; ?>", <?php echo $entry['fieldName']; ?>);
                 <?php } ?>
             <?php } ?>
         <?php } ?>
@@ -86,11 +72,13 @@ namespace Blocks
             <?php foreach ($meta['parameters'] as $param) { 
                 if ($param['name'] == $entry['length'][0]) {
                     if ($entry['length'][1] == 'value') {
+                        // The size is the value of a parameter
                     ?>
                         size = (int)<?php echo $param['fieldName']; ?>;
                     <?php
                     } 
                     if ($entry['length'][1] == 'length') {
+                        // The size is the length of a variadic parameter
                     ?>
                         size = 0;
                         <?php foreach ($param['type'] as $subEntry) { ?>
@@ -101,11 +89,12 @@ namespace Blocks
                     <? } ?>
                     <?php
                     }
-        ?>
-                for (int i=0; i<size; i++) {
-                    <?php echo $entry['fieldName']; ?>[i] = <?php echo isset($entry['default']) ? $entry['default'] : '0'; ?>;
-                }
-        <?php
+                        // Initializing the values of the variadic I/O to 0
+                        ?>
+                        for (int i=0; i<size; i++) {
+                            <?php echo $entry['fieldName']; ?>[i] = <?php echo isset($entry['default']) ? $entry['default'] : '0'; ?>;
+                        }
+                        <?php
                 }
               }
             }

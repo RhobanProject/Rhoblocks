@@ -2,12 +2,10 @@ cmake_minimum_required (VERSION 2.6)
 project (BlocksInterpreter)
 
 set (SOURCES
-    blocks/Block.cpp
-    blocks/Scene.cpp
     blocks/Loader.cpp
-    blocks/Edge.cpp
-    blocks/Index.cpp
-    blocks/Scheduler.cpp
+    <?php foreach ($files as $file) { ?>
+    blocks/<?php echo $file; ?>.cpp
+    <?php } ?>
     <?php foreach ($blocks as $block) { ?>
     blocks/<?php echo $block->getFileName(); ?>.cpp
     <?php } ?>

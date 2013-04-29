@@ -77,23 +77,14 @@ class Generator
         $this->render('Loader.cpp', 'blocks/Loader.cpp', array('blocks' => $blocks));
         $this->copyFile('Loader.h', 'blocks/Loader.h');
 
-        $this->copyFile('Scene.h', 'blocks/Scene.h');
-        $this->copyFile('Scene.cpp', 'blocks/Scene.cpp');
-
-        $this->copyFile('Block.h', 'blocks/Block.h');
-        $this->copyFile('Block.cpp', 'blocks/Block.cpp');
-        
-        $this->copyFile('Edge.h', 'blocks/Edge.h');
-        $this->copyFile('Edge.cpp', 'blocks/Edge.cpp');
-        
-        $this->copyFile('Index.h', 'blocks/Index.h');
-        $this->copyFile('Index.cpp', 'blocks/Index.cpp');
-        
-        $this->copyFile('Scheduler.h', 'blocks/Scheduler.h');
-        $this->copyFile('Scheduler.cpp', 'blocks/Scheduler.cpp');
+        $files = array('Scene', 'Block', 'Edge', 'Index', 'Scheduler' ,'JsonUtil');
+        foreach ($files as $file) {
+            $this->copyFile($file.'.h', 'blocks/'.$file.'.h');
+            $this->copyFile($file.'.cpp', 'blocks/'.$file.'.cpp');
+        }
         
         $this->copyFile('main.cpp', 'main.cpp');
-        $this->render('CMakeLists.txt', 'CMakeLists.txt', array('blocks' => $blocks));
+        $this->render('CMakeLists.txt', 'CMakeLists.txt', array('blocks' => $blocks, 'files' => $files));
     }
 
     /**
