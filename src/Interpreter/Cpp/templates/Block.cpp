@@ -20,6 +20,10 @@ namespace Blocks
     void Block::initialize(Block *old)
     {
     }
+
+    void Block::tick()
+    {
+    }
     
     void Block::setScene(Scene *scene_)
     {

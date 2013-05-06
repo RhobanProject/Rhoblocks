@@ -31,7 +31,7 @@ namespace Blocks
             virtual void load(const Json::Value &block);
             virtual string getName()=0;
             virtual void initialize(Block *old);
-            virtual void tick()=0;
+            virtual void tick();
             virtual void addEdge(Edge *edge);
             void propagate();
 

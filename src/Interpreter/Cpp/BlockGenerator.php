@@ -152,6 +152,7 @@ class BlockGenerator
             $variables['header'] = '';
         }
 
+        $generator->render('BlockBase.h', 'blocks/'.$this->getFileName().'Base.h', $variables);
         $generator->render('BlockImplementation.h', 'blocks/'.$this->getFileName().'.h', $variables);
     }
 
@@ -174,6 +175,7 @@ class BlockGenerator
         $variables['code'] = $template->render($variables);
         $variables['sections'] = array('inputs', 'outputs', 'parameters');
 
+        $generator->render('BlockBase.cpp', 'blocks/'.$this->getFileName().'Base.cpp', $variables);
         $generator->render('BlockImplementation.cpp', 'blocks/'.$this->getFileName().'.cpp', $variables);
     }
 }

@@ -7,6 +7,7 @@ set (SOURCES
     blocks/<?php echo $file; ?>.cpp
     <?php } ?>
     <?php foreach ($blocks as $block) { ?>
+    blocks/<?php echo $block->getFileName(); ?>Base.cpp
     blocks/<?php echo $block->getFileName(); ?>.cpp
     <?php } ?>
     )

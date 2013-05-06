@@ -66,7 +66,8 @@ namespace Blocks
             // <?php echo $block->getName(); ?>
             
             if (newBlock == NULL && type == "<?php echo $block->getName(); ?>") {
-                newBlock = new <?php echo $block->getName(); ?>Block(block);
+                newBlock = new <?php echo $block->getName(); ?>Block();
+                newBlock->load(block);
             }
         <?php } ?>
 
