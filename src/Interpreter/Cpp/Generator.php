@@ -36,7 +36,7 @@ class Generator
             'Time.Delay', 'Time.Debounce',
             'Signal.Sinus', 'Signal.Triangle', 'Signal.Gains', 'Signal.Hysteresis',
             'IO.Output',
-             'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 
+             'Math.Smaller', 'Math.Expression', 'Math.VariationBound',
             'Math.Discount', 'Math.Greater', 'Math.PID', 'Math.MinMax',
             'Math.DerivativeDriver', 'Math.Min', 'Math.Max', 'Math.Sum', 'Math.Equal', 'Math.Derivate',
             'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor',
@@ -57,7 +57,7 @@ class Generator
             $className = 'Rhoban\\Blocks\\Blocks\\'.$parts[0].'\\'.$parts[1].'Block';
             $block = new BlockGenerator($parts, $className::meta());
         }
-    
+
         return $blocks;
     }
 
@@ -82,7 +82,7 @@ class Generator
             $this->copyFile($file.'.h', 'blocks/'.$file.'.h');
             $this->copyFile($file.'.cpp', 'blocks/'.$file.'.cpp');
         }
-        
+
         $this->copyFile('main.cpp', 'main.cpp');
         $this->render('CMakeLists.txt', 'CMakeLists.txt', array('blocks' => $blocks, 'files' => $files));
     }

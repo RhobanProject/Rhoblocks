@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Time;
 
 use Rhoban\Blocks\Blocks\Time\DelayBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class DelayBlock extends Base
@@ -24,7 +23,7 @@ class DelayBlock extends Base
     {
         $delay = $this->getParameterIdentifier('Delay')->getValue();
         $frequency = $this->environment->getFrequency();
-        $this->size = (int)($delay*$frequency);
+        $this->size = (int) ($delay*$frequency);
 
         $output = $this->getOutputIdentifier('Output');
         $default = $this->getParameterIdentifier('Default');

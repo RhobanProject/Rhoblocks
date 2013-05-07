@@ -59,6 +59,7 @@ abstract class Block implements BlockInterface
     public function getName()
     {
         $meta = $this->getMeta();
+
         return $meta['name'];
     }
 
@@ -195,13 +196,14 @@ abstract class Block implements BlockInterface
                 if (isset($meta[$section][$name])) {
                     $entry = $meta[$section][$name];
                     $entry['id'] = $id;
+
                     return $this->addType($entry);
                 }
             } else {
                 foreach ($meta[$section] as $id => $entry) {
                     if (isset($entry['name']) && $entry['name'] == $name) {
                         $entry['id'] = $id;
-                        
+
                         return $this->addType($entry);
                     }
                 }
@@ -268,7 +270,7 @@ abstract class Block implements BlockInterface
 
                     for ($i=0; $i<$size; $i++) {
                         $parameterId = $this->getParameterVariadicIdentifier($parameter['name'], $subType['name'], $i);
-                        
+
                         if (VariableType::isNumeric($parameterId->getType())) {
                            $type = max($parameterId->getType(), $type);
                         }
@@ -341,7 +343,7 @@ abstract class Block implements BlockInterface
         } else {
             $length = $entry['length'];
             if (is_numeric($length)) {
-                return (int)$length;
+                return (int) $length;
             }
 
             $parts = explode('.', $length);
@@ -360,7 +362,7 @@ abstract class Block implements BlockInterface
                 }
 
                 if ($operation == 'value') {
-                    return (int)$this->parameterValues[$key];
+                    return (int) $this->parameterValues[$key];
                 }
             }
 
@@ -391,7 +393,7 @@ abstract class Block implements BlockInterface
     {
         return $this->getOutputIdentifier($name)->lValue();
     }
-    
+
     public function getIdentifier($section, $prefix, $name, $multiple = false, $default = null)
     {
         $index = null;
@@ -406,7 +408,7 @@ abstract class Block implements BlockInterface
         if ($index !== null) {
             $ioName .= '_' . $index;
         }
-        
+
         $card = $this->getCardinality($ioName);
 
         if ($card || $multiple) {
@@ -442,9 +444,10 @@ abstract class Block implements BlockInterface
     public function valueToIdentifier($entry, $value)
     {
         list($value, $type) = Identifier::guessType($value, $entry['variableType']);
+
         return new Identifier($this->environment, $value, $type);
     }
-    
+
     public function getInputIdentifier($name)
     {
         return $this->getIdentifier('inputs', 'input', $name, false);
@@ -464,18 +467,18 @@ abstract class Block implements BlockInterface
 
         return $this->getCardinality($ioName);
     }
-    
+
     public function getInputIdentifiers($name)
     {
         return $this->getIdentifier('inputs', 'input', $name, true);
     }
-    
+
     public function getParameterVariadicSize($key, $name)
     {
         if (!isset($this->parameterValues[$key][$name])) {
             throw new \RuntimeException('The variadic parameter "'.$name.'.'.$key.'" does not exists');
         }
- 
+
         return count($this->parameterValues[$key][$name]);
     }
 
@@ -499,13 +502,14 @@ abstract class Block implements BlockInterface
         if (!$entry) {
             throw new \RuntimeException('The variadic parameter entry for "'.$key.'.'.$name.'"');
         }
- 
+
         if (!isset($this->parameterValues[$key][$name][$index])) {
             throw new \RuntimeException('The variadic parameter "'.$name.'.'.$key.'['.$index.']" does not exists');
         }
+
         return $this->valueToIdentifier($entry, $this->parameterValues[$key][$name][$index]);
     }
-    
+
     public function getParameterIdentifier($name)
     {
         if (!isset($this->parameterValues[$name])) {
@@ -538,7 +542,7 @@ abstract class Block implements BlockInterface
     {
         return $this->id;
     }
-    
+
     /**
      * Parses the cardinality
      *
@@ -558,9 +562,9 @@ abstract class Block implements BlockInterface
             throw new \RuntimeException('Misformed cardilanity "'.$cardString.'"');
         }
 
-        $card[0] = (int)$card[0];
+        $card[0] = (int) $card[0];
         if ($card[1] != '*') {
-            $card[1] = (int)$card[1];
+            $card[1] = (int) $card[1];
 
             if ($card[0] > $card[1]) {
                 throw new \RuntimeException

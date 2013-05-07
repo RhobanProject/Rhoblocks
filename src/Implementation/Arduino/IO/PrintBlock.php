@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\Arduino\IO;
 
 use Rhoban\Blocks\Implementation\C\IO\PrintBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class PrintBlock extends Base
 {
@@ -14,6 +12,7 @@ class PrintBlock extends Base
     public function implementInitCode()
     {
         $this->environment->setOption('supportPrintf', true);
+
         return parent::implementInitCode();
     }
 
@@ -33,7 +32,7 @@ class PrintBlock extends Base
         foreach ($parts as $part) {
             if ($part == '%d') {
                 $code .= "Serial.print(".$this->getInputIdentifier(array('Value #', $pos++))->asInteger().");\n";
-            } else if ($part == '%f' || $part == '%g') {
+            } elseif ($part == '%f' || $part == '%g') {
                 $code .= "Serial.print(".$this->getInputIdentifier(array('Value #', $pos++))->asScalar().");\n";
             } else {
                 if ($part != '') {

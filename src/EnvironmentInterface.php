@@ -2,7 +2,6 @@
 
 namespace Rhoban\Blocks;
 
-
 /**
  * EnvironmentInterface
  */

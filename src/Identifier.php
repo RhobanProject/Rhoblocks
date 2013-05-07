@@ -24,7 +24,7 @@ class Identifier
      * The dimension of the variable
      */
     protected $dimension;
-    
+
     /**
      * Is the identifier in the strut ?
      */
@@ -34,10 +34,10 @@ class Identifier
     {
         if ($type == VariableType::Unknown) {
             if (preg_match('#^([0-9]+)$#uSi', $variable)) {
-                $variable = (int)$variable;
+                $variable = (int) $variable;
                 $type = VariableType::Integer;
             } else {
-                $variable = (double)$variable;
+                $variable = (double) $variable;
                 $type = VariableType::Scalar;
             }
         }
@@ -68,7 +68,6 @@ class Identifier
         }
     }
 
-
     /**
      * Get the value of the identifier
      */
@@ -86,7 +85,7 @@ class Identifier
         if ($this->dimension) {
             $suffix = '['.$this->dimension.']';
         }
-        
+
         return $this->value.$suffix;
     }
 

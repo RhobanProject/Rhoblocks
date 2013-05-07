@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\BlockInterface;
-use Rhoban\Blocks\EnvironmentInterface;
 
 /**
  * An edge links a block io t/o another block i/o
@@ -39,10 +38,10 @@ class Edge
             if (in_array($io[0], $patterns)) {
                 if (strpos($io[1], '_') !== false) {
                     $io[1] = explode('_', $io[1], 2);
-                    $io[1][0] = (int)$io[1][0];
-                    $io[1][1] = (int)$io[1][1];
+                    $io[1][0] = (int) $io[1][0];
+                    $io[1][1] = (int) $io[1][1];
                 } else {
-                    $io[1] = array((int)$io[1]);
+                    $io[1] = array((int) $io[1]);
                 }
 
                 if ($io[1][0] >= 0) {
@@ -96,11 +95,11 @@ class Edge
      */
     public function fromId()
     {
-        return (int)$this->blockFrom->getId();
+        return (int) $this->blockFrom->getId();
     }
     public function toId()
     {
-        return (int)$this->blockTo->getId();
+        return (int) $this->blockTo->getId();
     }
 
     /**

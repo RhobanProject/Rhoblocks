@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Time;
 
 use Rhoban\Blocks\Blocks\Time\DebounceBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class DebounceBlock extends Base

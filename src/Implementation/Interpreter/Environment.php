@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\Interpreter;
 
 use Rhoban\Blocks\Environment as Base;
-use Rhoban\Blocks\VariableType;
-use Rhoban\Blocks\Identifier;
 
 /**
  * Environment
@@ -12,4 +10,3 @@ use Rhoban\Blocks\Identifier;
 class Environment extends Base
 {
 }
-

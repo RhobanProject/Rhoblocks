@@ -1,6 +1,6 @@
 <?php
 
-$arduino = include('arduino.php');
+$arduino = include 'arduino.php';
 
 $arduino->compileAndSend('
     void setup() {

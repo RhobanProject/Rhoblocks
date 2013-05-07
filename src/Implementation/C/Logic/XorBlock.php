@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Logic;
 
 use Rhoban\Blocks\Blocks\Logic\XorBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class XorBlock extends Base
 {

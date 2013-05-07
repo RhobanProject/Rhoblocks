@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Logic;
 
 use Rhoban\Blocks\Blocks\Logic\NotBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class NotBlock extends Base
 {
@@ -24,6 +22,7 @@ class NotBlock extends Base
         $not = $this->getOutputIdentifier('Not A');
 
         $code = "$not = !($input);\n";
+
         return $code;
     }
 }

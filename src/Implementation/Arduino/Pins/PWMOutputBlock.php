@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\Arduino\Pins;
 
 use Rhoban\Blocks\Blocks\Pins\PWMOutputBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class PWMOutputBlock extends Base
 {

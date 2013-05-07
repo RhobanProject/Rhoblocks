@@ -20,6 +20,7 @@ class Template
         extract($variables);
         ob_start();
         include($this->templateFile);
+
         return ob_get_clean();
     }
 }

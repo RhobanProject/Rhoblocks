@@ -70,7 +70,7 @@ class Generator extends Base
             'structName' => $environment->getStructName($prefix),
             'frequency' => $environment->getFrequency()
         ));
-        
+
         return $code;
     }
 }

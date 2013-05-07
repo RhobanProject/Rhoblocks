@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Signal;
 
 use Rhoban\Blocks\Blocks\Signal\ConstantBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class ConstantBlock extends Base
 {

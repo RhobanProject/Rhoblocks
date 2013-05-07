@@ -1,6 +1,6 @@
 <?php
 
-require('Arduino.php');
+require 'Arduino.php';
 
 $configFile = __DIR__.'/config.php';
 

@@ -20,7 +20,7 @@ class Environment extends Base
      * Identifier to count the ticks of the machine
      */
     protected $ticksIdentifier = null;
-    
+
     /**
      * Creates an identifier
      */
@@ -76,7 +76,7 @@ class Environment extends Base
     {
         if ($type == VariableType::Integer) {
             return 'integer';
-        } else if ($type == VariableType::Scalar) {
+        } elseif ($type == VariableType::Scalar) {
             return 'scalar';
         } else {
             throw new \RuntimeException('Unsupported type '.$type);
@@ -103,6 +103,7 @@ class Environment extends Base
     public function getStructName()
     {
         $prefix = $this->getPrefix();
+
         return $prefix . '_data';
     }
 
@@ -127,4 +128,3 @@ class Environment extends Base
         return '('.$this->typeToName($toType).')('.$value.')';
     }
 }
-

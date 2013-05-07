@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Math;
 
 use Rhoban\Blocks\Blocks\Math\ExpressionBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class ExpressionBlock extends Base

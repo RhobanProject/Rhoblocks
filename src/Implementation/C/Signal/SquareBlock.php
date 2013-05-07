@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Signal;
 
 use Rhoban\Blocks\Blocks\Signal\SquareBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class SquareBlock extends Base

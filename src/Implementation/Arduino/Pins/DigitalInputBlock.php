@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\Arduino\Pins;
 
 use Rhoban\Blocks\Blocks\Pins\DigitalInputBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class DigitalInputBlock extends Base
 {

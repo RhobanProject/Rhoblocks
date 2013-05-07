@@ -6,14 +6,15 @@ use Rhoban\Blocks\Factory;
 use Rhoban\Blocks\Tools\ArchiveWriter;
 use Rhoban\Blocks\Tools\JsonIndent;
 
-include('../src/autoload.php');
-include('../vendor/geshi/geshi.php');
+include '../src/autoload.php';
+include '../vendor/geshi/geshi.php';
 
 $form = @include('form.php');
 $options = $_SESSION['options'];
 $options['family'] = 'Interpreter';
 
-function getCompiler($jsonData = null, $options = array()) {
+function getCompiler($jsonData = null, $options = array())
+{
     return new Compiler(new Factory($options), $jsonData);
 }
 
@@ -77,7 +78,7 @@ if (isset($_GET['action'])) {
 
                 $contents = '<div class="highlight">'.$geshi->parse_code().'</div>';
             }
-            
+
             $response = array('status' => 'ok', 'files' => $files);
         } catch (\Exception $exception) {
             $response = array('status' => 'error', 'message' => $exception->getMessage());

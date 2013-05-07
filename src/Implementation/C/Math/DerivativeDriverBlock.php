@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Math;
 
 use Rhoban\Blocks\Blocks\Math\DerivativeDriverBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class DerivativeDriverBlock extends Base
 {

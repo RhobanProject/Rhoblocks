@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\IO;
 
 use Rhoban\Blocks\Blocks\IO\OutputBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class OutputBlock extends Base

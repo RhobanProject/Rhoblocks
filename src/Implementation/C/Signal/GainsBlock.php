@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Signal;
 
 use Rhoban\Blocks\Blocks\Signal\GainsBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class GainsBlock extends Base
 {
@@ -18,7 +16,7 @@ class GainsBlock extends Base
         if ($size != $this->getInputSize('X#')) {
             throw new \RuntimeException('Input size should equals output');
         }
-        
+
         if ($size != $this->getParameterVariadicSize('Gains', 'Gain')) {
             throw new \RuntimeException('Input size should equals variadic parameters');
         }

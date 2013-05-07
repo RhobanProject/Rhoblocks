@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Logic;
 
 use Rhoban\Blocks\Blocks\Logic\CounterBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class CounterBlock extends Base

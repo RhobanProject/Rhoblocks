@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Signal;
 
 use Rhoban\Blocks\Blocks\Signal\TriangleBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
 use Rhoban\Blocks\VariableType;
 
 class TriangleBlock extends Base
@@ -37,7 +36,7 @@ class TriangleBlock extends Base
 
         // Putting X between 0 and 1
         $code .= "$x = $T*$frequency+$phase;\n";
-        $code .= "$x -= (integer)($x);\n";
+        $code .= "$x -= (integer) ($x);\n";
         $code .= "if ($x < 0) {\n";
         $code .= "$x += 1;\n";
         $code .= "}\n";

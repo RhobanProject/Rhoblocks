@@ -7,12 +7,12 @@ namespace Rhoban\Blocks;
  * blocks
  */
 abstract class Family
-{   
+{
     // The family name
     protected $name;
 
     // Block definitions
-    protected $blocks; 
+    protected $blocks;
 
     /**
      * Return all blocks of the family

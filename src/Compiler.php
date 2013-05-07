@@ -42,7 +42,7 @@ class Compiler
      *
      * @return array of json blocks definition
      */
-    public  function generateJSON()
+    public function generateJSON()
     {
         return $this->factory->generateBlocksJSON();
     }
@@ -61,7 +61,7 @@ class Compiler
 
             return $this->factory->getGenerator()->generateCode(
                 $this->factory->getEnvironment(),
-                $initCode, 
+                $initCode,
                 $transitionCode
             );
         } else {

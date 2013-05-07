@@ -16,7 +16,7 @@ interface FactoryInterface
 
     /**
      * Get the container for variables
-     * 
+     *
      * @return Rhoban\Blocks\EnvironmentInterface
      */
     public function getEnvironment();

@@ -16,7 +16,7 @@ class Family extends Base
             'Signal.Constant', 'Signal.Pulse', 'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
             'Signal.Sinus', 'Signal.Triangle', 'Signal.Gains', 'Signal.Hysteresis',
             'IO.Output', 'IO.Print',
-             'Math.Smaller', 'Math.Expression', 'Math.VariationBound', 
+             'Math.Smaller', 'Math.Expression', 'Math.VariationBound',
             'Math.Discount', 'Math.Greater', 'Math.PID', 'Math.MinMax',
             'Math.DerivativeDriver', 'Math.Min', 'Math.Max', 'Math.Sum', 'Math.Equal', 'Math.Derivate',
             'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor',

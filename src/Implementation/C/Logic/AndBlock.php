@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Logic;
 
 use Rhoban\Blocks\Blocks\Logic\AndBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class AndBlock extends Base
 {

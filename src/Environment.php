@@ -111,7 +111,7 @@ abstract class Environment implements EnvironmentInterface
     {
         if ($index) {
             return $name.'_'.$varName.'_'.$index;
-        } else if ($varName) {
+        } elseif ($varName) {
             return $name.'_'.$varName;
         } else {
             return $name;
@@ -125,10 +125,10 @@ abstract class Environment implements EnvironmentInterface
     {
         return new Identifier($this, $identifier, $type, $dimension);
     }
-    
+
     /**
      * Register a variable
-     * @param $array : the container array 
+     * @param $array : the container array
      * @param $name : the variable type name
      * @param $type : Rhoban\Blocks\VariableType
      * @param $name

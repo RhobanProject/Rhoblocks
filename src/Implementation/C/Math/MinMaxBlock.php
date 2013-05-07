@@ -3,8 +3,6 @@
 namespace Rhoban\Blocks\Implementation\C\Math;
 
 use Rhoban\Blocks\Blocks\Math\MinMaxBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class MinMaxBlock extends Base
 {

@@ -63,7 +63,7 @@ class Factory implements FactoryInterface
         if (!$this->family instanceof Family) {
             throw new \RuntimeException('The family for '.$family.' should extends Family');
         }
-        
+
         $generator = $class = $this->getClassName($family, 'Generator');
         $this->generatorInstance = new $generator;
 
@@ -112,7 +112,7 @@ class Factory implements FactoryInterface
 
         return $jsonContainer;
     }
-    
+
     /**
      * Create a new instance of the given class according with
      * family binding configuration
@@ -130,7 +130,7 @@ class Factory implements FactoryInterface
 
             if ($arg1 !== null && $arg2 !== null) {
                 return new $className($arg1, $arg2);
-            } else if ($arg1 !== null) {
+            } elseif ($arg1 !== null) {
                 return new $className($arg1);
             } else {
                 return new $className();

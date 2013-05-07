@@ -45,6 +45,7 @@ class BlockGenerator
         foreach ($words as $word) {
             $newName .= ucfirst($word);
         }
+
         return $newName;
     }
 
@@ -81,7 +82,7 @@ class BlockGenerator
                     }
 
                     if (is_array($entry['type'])) {
-                        foreach($entry['type'] as &$subEntry) {
+                        foreach ($entry['type'] as &$subEntry) {
                             $subEntry['fieldName'] = self::transformName($subEntry['name']);
                         }
                     }
@@ -170,7 +171,7 @@ class BlockGenerator
         if (!file_exists($codeFile)) {
             throw new \RuntimeException('No implementation for block '.$name);
         }
-        
+
         $template = new Template($codeFile);
         $variables['code'] = $template->render($variables);
         $variables['sections'] = array('inputs', 'outputs', 'parameters');

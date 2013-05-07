@@ -20,11 +20,12 @@ class Family extends Base
         );
 
         $blocks = parent::getBlocks();
-        
+
         foreach ($types as $type) {
             list($family, $name) = explode('.', $type);
             $blocks[$name] = 'Rhoban\\Blocks\\Implementation\\Arduino\\' . $family . '\\' . $name . 'Block';
         }
+
         return $blocks;
     }
 }

@@ -54,7 +54,7 @@ class Graph implements GraphInterface
      */
     public function getBlock($id)
     {
-        $id = (int)$id;
+        $id = (int) $id;
         if (isset($this->blocks[$id])) {
             return $this->blocks[$id];
         }
@@ -119,7 +119,7 @@ class Graph implements GraphInterface
 
         //Format check
         if (
-            !$data || !is_array($data) || 
+            !$data || !is_array($data) ||
             !is_array($data['edges']) || !is_array($data['blocks'])
         ) {
             throw new LoadingException('Invalid JSON format');
@@ -130,7 +130,7 @@ class Graph implements GraphInterface
             try {
                 if (
                     !array_key_exists('id', $block) ||
-                    !is_integer($block['id']) || 
+                    !is_integer($block['id']) ||
                     !array_key_exists('type', $block) ||
                     !array_key_exists('parameters', $block) ||
                     !is_array($block['parameters'])
@@ -145,7 +145,7 @@ class Graph implements GraphInterface
                 throw new LoadingException('Error while loading block '.$block['type'].'#'.$block['id'].': '.$e->getMessage(), 0, $e);
             }
         }
-    
+
         //Edges extracting
         foreach ($data['edges'] as $edge) {
             if (!(isset($edge['block1']) && isset($edge['io1']) &&

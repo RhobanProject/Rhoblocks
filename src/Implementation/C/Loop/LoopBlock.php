@@ -3,14 +3,13 @@
 namespace Rhoban\Blocks\Implementation\C\Loop;
 
 use Rhoban\Blocks\Blocks\Loop\LoopBlock as Base;
-use Rhoban\Blocks\EnvironmentInterface;
-use Rhoban\Blocks\VariableType;
 
 class LoopBlock extends Base
 {
     public function getOutputIdentifier($nameOrId, $id = false)
     {
         $type = $this->getWeakestType();
+
         return $this->getVariableIdentifier('loop', $type, true);
     }
 
