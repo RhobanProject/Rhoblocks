@@ -16,22 +16,16 @@ class Kernel extends Base
         return false;
     }
 
+    /**
+     * A block will be supported if its module provides a Cpp/XYZBlock.cpp that 
+     * implements it
+     */
     public function supportsBlock($block)
     {
-        $supportedBlocks = array(
-            // Signal
-            'Pulse', 'Constant',
+        $module = $this->getBlockModule($block);
 
-            // IO
-            'Print',
+        $file = $module->getDirectory().'/Cpp/'.$block.'Block.cpp';
 
-            // Math
-            'Expression',
-
-            // Time
-            'Chrono',
-        );
-
-        return in_array($block, $supportedBlocks);
+        return file_exists($file);
     }
 }
