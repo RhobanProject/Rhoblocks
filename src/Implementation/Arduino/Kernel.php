@@ -35,12 +35,12 @@ class Kernel extends Base
         return true;
     }
 
-    public function classForBlock($type)
+    public function classForBlock($type, $module)
     {
-        $className = $this->classForBlockTarget('Arduino', $type);
+        $className = $this->classForBlockTarget('Arduino', $type, $module);
 
         if (!$className) {
-            $className = $this->classForBlockTarget('C', $type);
+            $className = $this->classForBlockTarget('C', $type, $module);
         }
 
         return $className;

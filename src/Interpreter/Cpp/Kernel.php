@@ -20,7 +20,7 @@ class Kernel extends Base
      * A block will be supported if its module provides a Cpp/XYZBlock.cpp that 
      * implements it
      */
-    public function supportsBlock($block)
+    public function supportsBlock($block, $module)
     {
         $module = $this->getBlockModule($block);
 

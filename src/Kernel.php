@@ -55,7 +55,8 @@ abstract class Kernel
             $blocks = $module->getAllMetas();
 
             foreach ($blocks as $name => $meta) {
-                if ($this->supportsBlock($name)) {
+                if ($this->supportsBlock($name, $module->getName())) {
+                    $meta['module'] = $module->getName();
                     $metas[$name] = $meta;
                 }
             }
@@ -96,7 +97,7 @@ abstract class Kernel
      */
     public function addModule(Module $module)
     {
-        $this->modules[] = $module;
+        $this->modules[$module->getName()] = $module;
     }
 
     /**
@@ -176,15 +177,19 @@ abstract class Kernel
     /**
      * Gets the class for a block on a certain target
      */
-    protected function classForBlockTarget($target, $block)
+    protected function classForBlockTarget($target, $block, $module)
     {
-        foreach ($this->modules as $module) {
-            if ($module->hasBlock($block)) {
-                $className = $module->getImplementation($block, $target);
+        if (!isset($this->modules[$module])) {
+            throw new \RuntimeException('The module "'.$module.'" is not loaded');
+        }
 
-                if (class_exists($className)) {
-                    return $className;
-                }
+        $module = $this->modules[$module];
+
+        if ($module->hasBlock($block)) {
+            $className = $module->getImplementation($block, $target);
+
+            if (class_exists($className)) {
+                return $className;
             }
         }
 
@@ -194,9 +199,9 @@ abstract class Kernel
     /**
      * Returns the class name for the given block
      */
-    protected function classForBlock($block)
+    protected function classForBlock($block, $module)
     {
-        return $this->classForBlockTarget($this->getName(), $block);
+        return $this->classForBlockTarget($this->getName(), $block, $module);
     }
 
     /**
@@ -204,7 +209,13 @@ abstract class Kernel
      */
     public function createBlock($block, array $data)
     {
-        $className = $this->classForBlock($block);
+        if (!isset($data['module'])) {
+            throw new \RuntimeException('Block '.$block.' without module');
+        }
+
+        $module = $data['module'];
+
+        $className = $this->classForBlock($block, $module);
 
         if ($className) {
             return new $className($data, $this->getEnvironment());
@@ -218,8 +229,8 @@ abstract class Kernel
      *
      * @return bool true if the block is supported
      */
-    public function supportsBlock($block)
+    public function supportsBlock($block, $module)
     {
-        return $this->classForBlock($block) != null;
+        return $this->classForBlock($block, $module) != null;
     }
 }
