@@ -15,7 +15,8 @@ class Environment extends Base
     public function getDefaultOptions()
     {
         return array_merge(parent::getDefaultOptions(), array(
-            'supportPrintf' => false
+            'supportPrintf' => false,
+            'baudrate' => 115200
         ));
     }
 }

@@ -22,6 +22,11 @@ class BlockGenerator
     protected $name = array();
 
     /**
+     * The block module
+     */
+    protected $module = null;
+
+    /**
      * Transforms a name to a fieldName, for instance "Some field"
      * will become "someField", which is a valid C variable nam that
      * can be used
@@ -55,7 +60,7 @@ class BlockGenerator
      * @param $name an array containing the directory and the name of the block
      * @param $meta, the block metas array
      */
-    public function __construct(array $name, array $meta)
+    public function __construct($name, array $meta, $module)
     {
         $sections = array('inputs', 'outputs', 'parameters');
 
@@ -96,6 +101,7 @@ class BlockGenerator
             }
         }
 
+        $this->module = $module;
         $this->name = $name;
         $this->meta = $meta;
     }
@@ -107,7 +113,7 @@ class BlockGenerator
      */
     public function getName()
     {
-        return $this->name[1];
+        return $this->name;
     }
 
     /**
@@ -117,7 +123,17 @@ class BlockGenerator
      */
     public function getFileName()
     {
-        return $this->name[0].'/'.$this->name[1].'Block';
+        return $this->module->getName().'/'.$this->name.'Block';
+    }
+
+    /**
+     * Gets the original file name, without suffix
+     *
+     * @return string the original file name
+     */
+    public function getOriginalFileName()
+    {
+        return $this->module->getDirectory().'/Cpp/'.$this->name.'Block';
     }
 
     /**
@@ -144,7 +160,7 @@ class BlockGenerator
         $name = $this->getName();
         $variables = $this->getVariables();
 
-        $hFile = __DIR__.'/'.$this->getFileName().'.h';
+        $hFile = $this->getOriginalFileName().'.h';
 
         if (file_exists($hFile)) {
             $template = new Template($hFile);
@@ -166,10 +182,10 @@ class BlockGenerator
     {
         $name = $this->meta['name'];
         $variables = $this->getVariables();
-        $codeFile = __DIR__.'/'.$this->getFileName().'.cpp';
+        $codeFile = $this->getOriginalFileName().'.cpp';
 
         if (!file_exists($codeFile)) {
-            throw new \RuntimeException('No implementation for block '.$name);
+            throw new \RuntimeException('No implementation for block '.$name.' ('.$codeFile.' not found)');
         }
 
         $template = new Template($codeFile);

@@ -3,7 +3,6 @@
 namespace Rhoban\Blocks;
 
 use Rhoban\Blocks\GraphInterface;
-use Rhoban\Blocks\FactoryInterface;
 use Rhoban\Blocks\Exceptions\GenerateException;
 use Rhoban\Blocks\Exceptions\LoadingException;
 
@@ -28,19 +27,19 @@ class Graph implements GraphInterface
     private $topologicalSort = array();
 
     /**
-     * Compiler factory (Rhoban\Blocks\FactoryInterface)
+     * Compiler kernel (Rhoban\Blocks\Kernel)
      */
-    private $factory;
+    private $kernel;
 
     /**
      * Initialize the block graph
      * @param $json : json string representation
      * of the scene from blocks.js
-     * @param $factory : Rhoban\Blocks\FactoryInterface
+     * @param $kernel : Rhoban\Blocks\Kernel
      */
-    public function __construct($json, FactoryInterface $factory)
+    public function __construct($json, Kernel $kernel)
     {
-        $this->factory = $factory;
+        $this->kernel = $kernel;
         $this->loadJSON($json);
         $this->checkCardinalities();
         $this->buildTopologicalSort();
@@ -59,7 +58,7 @@ class Graph implements GraphInterface
             return $this->blocks[$id];
         }
 
-        throw new \InvalidArgumentException('Unknown block Id '.$id);
+        throw new \InvalidArgumentException('Unknown block id '.$id);
     }
 
     /**
@@ -140,7 +139,11 @@ class Graph implements GraphInterface
                 }
                 $id = $block['id'];
                 $type = $block['type'];
-                $this->blocks[$id] = $this->factory->createBlock($type, $block);
+                $this->blocks[$id] = $this->kernel->createBlock($type, $block);
+
+                if ($this->blocks[$id] == null) {
+                    throw new LoadingException('Unable to create a block of type '.$type);
+                }
             } catch (\Exception $e) {
                 throw new LoadingException('Error while loading block '.$block['type'].'#'.$block['id'].': '.$e->getMessage(), 0, $e);
             }

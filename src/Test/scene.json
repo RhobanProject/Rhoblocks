@@ -1,0 +1,31 @@
+{
+    "edges":[
+    {
+        "block1":2,
+        "io1":"output_0_0",
+        "block2":1,
+        "io2":"input_0"
+    }],
+    "blocks":[
+    {
+        "id":1,
+        "x":51.7336589030802,
+        "y":-19.509391435011338,
+        "type":"Sinus",
+        "parameters":{
+            "Amplitude":1,
+            "Frequency":1,
+            "Phase":0
+        }
+    },
+    {
+        "id":2,
+        "x":-321.06799398948147,
+        "y":-71.47107438016528,
+        "type":"Constant",
+        "parameters":{
+            "Values.Value":[
+            1]
+        }
+    }]
+}

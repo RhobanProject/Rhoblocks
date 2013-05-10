@@ -2,9 +2,10 @@
 session_start();
 
 use Rhoban\Blocks\Compiler;
-use Rhoban\Blocks\Factory;
 use Rhoban\Blocks\Tools\ArchiveWriter;
 use Rhoban\Blocks\Tools\JsonIndent;
+
+use Rhoban\Blocks\Implementation\Arduino\Kernel;
 
 include '../src/autoload.php';
 include '../vendor/geshi/geshi.php';
@@ -15,7 +16,7 @@ $options['family'] = 'Interpreter';
 
 function getCompiler($jsonData = null, $options = array())
 {
-    return new Compiler(new Factory($options), $jsonData);
+    return new Compiler(new Kernel($options), $jsonData);
 }
 
 header('Content-type: text/plain');

@@ -10,11 +10,13 @@ use Rhoban\Blocks\Tools\CIndent;
  */
 class Generator
 {
+    protected $kernel;
     protected $targetDirectory;
     public $files;
 
     public function __construct($targetDirectory)
     {
+        $this->kernel = new Kernel;
         $this->targetDirectory = $targetDirectory;
 
         if (!$targetDirectory) {
@@ -26,36 +28,15 @@ class Generator
         }
     }
 
-    public static $blockNames = array(
-            'Signal.Constant', 'Signal.Pulse',
-            'Time.Chrono',
-            'IO.Print',
-            'Math.Expression'
-            /*
-            'Signal.EdgeDetector', 'Signal.Square', 'Signal.Gain', 'Signal.Multiplexer', 'Signal.Demultiplexer',
-            'Time.Delay', 'Time.Debounce',
-            'Signal.Sinus', 'Signal.Triangle', 'Signal.Gains', 'Signal.Hysteresis',
-            'IO.Output',
-             'Math.Smaller', 'Math.Expression', 'Math.VariationBound',
-            'Math.Discount', 'Math.Greater', 'Math.PID', 'Math.MinMax',
-            'Math.DerivativeDriver', 'Math.Min', 'Math.Max', 'Math.Sum', 'Math.Equal', 'Math.Derivate',
-            'Logic.Counter', 'Logic.Memory', 'Logic.And', 'Logic.Or', 'Logic.Not', 'Logic.Xor',
-            'Loop.Loop'
-             */
-    );
-
     /**
      * Getting all blocks
      */
     protected function getBlocks()
     {
-        $blocks = static::$blockNames;
-
-        foreach ($blocks as &$block) {
-            $parts = explode('.', $block);
-
-            $className = 'Rhoban\\Blocks\\Blocks\\'.$parts[0].'\\'.$parts[1].'Block';
-            $block = new BlockGenerator($parts, $className::meta());
+        $blocks = array();
+        
+        foreach ($this->kernel->getBlocks() as $name => $meta) {
+            $blocks[] = new BlockGenerator($name, $meta, $this->kernel->getBlockModule($name));
         }
 
         return $blocks;

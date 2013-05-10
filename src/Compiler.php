@@ -11,9 +11,9 @@ use Rhoban\Blocks\Graph;
 class Compiler
 {
     /**
-     * @var FactoryInterface
+     * @var Kernel
      */
-    protected $factory;
+    protected $kernel;
 
     /**
      *@var string
@@ -23,9 +23,9 @@ class Compiler
     /**
      * Instanciates a compiler
      */
-    public function __construct(FactoryInterface $factory, $jsonData = null)
+    public function __construct(Kernel $kernel, $jsonData = null)
     {
-        $this->factory = $factory;
+        $this->kernel = $kernel;
         $this->jsonData = $jsonData;
     }
 
@@ -44,7 +44,7 @@ class Compiler
      */
     public function generateJSON()
     {
-        return $this->factory->generateBlocksJSON();
+        return $this->kernel->generateBlocksJSON();
     }
 
     /**
@@ -54,13 +54,15 @@ class Compiler
      */
     public function generateCode()
     {
-        if ($this->factory->canBeGenerated()) {
-            $graph = new Graph($this->jsonData, $this->factory);
+        if ($this->kernel->canBeCompiled()) {
+            $graph = new Graph($this->jsonData, $this->kernel);
             $initCode = $graph->generateInitCode();
             $transitionCode = $graph->generateTransitionCode();
 
-            return $this->factory->getGenerator()->generateCode(
-                $this->factory->getEnvironment(),
+            $generator = $this->kernel->getGenerator();
+
+            return $generator->generateCode(
+                $this->kernel->getEnvironment(),
                 $initCode,
                 $transitionCode
             );
