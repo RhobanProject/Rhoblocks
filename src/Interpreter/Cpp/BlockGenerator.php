@@ -55,6 +55,16 @@ class BlockGenerator
     }
 
     /**
+     * Gets the module name
+     *
+     * @êeturn string the name of the module
+     */
+    public function getModule()
+    {
+        return $this->module->getName();
+    }
+
+    /**
      * Constructs a block interpreter genrator
      *
      * @param $name an array containing the directory and the name of the block

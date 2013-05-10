@@ -59,20 +59,28 @@ namespace Blocks
         if (block["type"].isNull() || !block["type"].isString()) {
             throw string("A block doesn't have any type");
         }
-
+        
         string type = block["type"].asString();
+        
+        if (block["module"].isNull() || !block["module"].isString()) {
+            ostringstream error;
+            error << "A block of type " << type << " doesn't have module";
+            throw error.str();
+        }
+
+        string module = block["module"].asString();
 
         <?php foreach ($blocks as $block) { ?>
             // <?php echo $block->getName(); ?>
             
-            if (newBlock == NULL && type == "<?php echo $block->getName(); ?>") {
+            if (newBlock == NULL && module == "<?php echo $block->getModule(); ?>" && type == "<?php echo $block->getName(); ?>") {
                 newBlock = new <?php echo $block->getName(); ?>Block();
                 newBlock->load(block);
             }
         <?php } ?>
 
         if (newBlock == NULL) {
-            throw string("Unknown block type " + type);
+            throw string("Unknown block type " + module + "." + type);
         }
 
         return newBlock;
