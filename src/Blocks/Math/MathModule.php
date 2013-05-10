@@ -9,8 +9,4 @@ use Rhoban\Blocks\Module;
  */
 class MathModule extends Module
 {
-    public function getName()
-    {
-        return 'Math';
-    }
 }

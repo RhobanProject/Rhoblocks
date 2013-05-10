@@ -9,8 +9,4 @@ use Rhoban\Blocks\Module;
  */
 class LogicModule extends Module
 {
-    public function getName()
-    {
-        return 'Logic';
-    }
 }

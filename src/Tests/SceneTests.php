@@ -2,27 +2,21 @@
 
 namespace Rhoban\Blocks\Tests;
 
+use Rhoban\Blocks\Implementation\C\Kernel as CKernel;
+
 use Rhoban\Blocks\Factory;
 use Rhoban\Blocks\Compiler;
 
 class SceneTests extends \PHPUnit_Framework_TestCase
 {
-    protected $families = array('C');
-
-    protected function getCompiler($family, $data = null)
-    {
-        return new Compiler(new Factory(array('family' => $family)), $data);
-    }
-
     protected function doTest($sceneFile)
     {
         $scene = file_get_contents(__DIR__.'/'.$sceneFile);
 
-        foreach ($this->families as $family) {
-            $compiler = $this->getCompiler($family, $scene);
-            $files = $compiler->generateCode();
-            $this->assertTrue(count($files) > 0);
-        }
+        $kernel = new CKernel;
+        $compiler = new Compiler($kernel, $scene);
+        $files = $compiler->generateCode();
+        $this->assertTrue(count($files) > 0);
     }
 
     public function testWorkingScenes()

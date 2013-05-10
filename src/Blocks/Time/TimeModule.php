@@ -9,8 +9,4 @@ use Rhoban\Blocks\Module;
  */
 class TimeModule extends Module
 {
-    public function getName()
-    {
-        return 'Time';
-    }
 }

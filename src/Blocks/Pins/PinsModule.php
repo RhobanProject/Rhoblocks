@@ -9,8 +9,4 @@ use Rhoban\Blocks\Module;
  */
 class PinsModule extends Module
 {
-    public function getName()
-    {
-        return 'Pins';
-    }
 }

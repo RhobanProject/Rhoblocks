@@ -9,8 +9,4 @@ use Rhoban\Blocks\Module;
  */
 class SignalModule extends Module
 {
-    public function getName()
-    {
-        return 'Signal';
-    }
 }

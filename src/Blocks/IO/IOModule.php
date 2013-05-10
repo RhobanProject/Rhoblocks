@@ -9,8 +9,4 @@ use Rhoban\Blocks\Module;
  */
 class IOModule extends Module
 {
-    public function getName()
-    {
-        return 'IO';
-    }
 }

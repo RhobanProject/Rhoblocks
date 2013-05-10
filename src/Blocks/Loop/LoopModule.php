@@ -9,8 +9,4 @@ use Rhoban\Blocks\Module;
  */
 class LoopModule extends Module
 {
-    public function getName()
-    {
-        return 'Loop';
-    }
 }

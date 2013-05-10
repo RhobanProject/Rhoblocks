@@ -11,7 +11,17 @@ abstract class Module
     /**
      * Gets the module namie
      */
-    abstract function getName();
+    public function getName()
+    {
+        $parts = explode('\\', get_class($this));
+        $last = $parts[count($parts)-1];
+
+        if (preg_match('#^(.+)Module$#', $last, $matches)) {
+            return $matches[1];
+        }
+
+        throw new \RuntimeException('No name for the module ('.get_class($this).')');
+    }
 
     /**
      * Get all the blocks supported by the module
