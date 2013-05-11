@@ -55,15 +55,23 @@ class Generator
             $block->generateCode($this);
         }
 
+        // Adding blocks.json
+        $jsonBlocks = $this->kernel->generateBlocksJSON();
+        $json = '[' . implode(",\n", $jsonBlocks) . ']';
+        $this->writeFile('blocks.json', $json);
+
+        // Adding blocks loader
         $this->render('Loader.cpp', 'blocks/Loader.cpp', array('blocks' => $blocks));
         $this->copyFile('Loader.h', 'blocks/Loader.h');
 
+        // Adding static C++ files
         $files = array('Scene', 'Block', 'Edge', 'Index', 'Scheduler' ,'JsonUtil');
         foreach ($files as $file) {
             $this->copyFile($file.'.h', 'blocks/'.$file.'.h');
             $this->copyFile($file.'.cpp', 'blocks/'.$file.'.cpp');
         }
 
+        // Adding main & cmake
         $this->copyFile('main.cpp', 'main.cpp');
         $this->render('CMakeLists.txt', 'CMakeLists.txt', array('blocks' => $blocks, 'files' => $files));
     }
