@@ -15,7 +15,6 @@ namespace Blocks
             <?php echo $name; ?>BlockBase();
             <?php echo $name; ?>BlockBase(string jsonData);
             <?php echo $name; ?>BlockBase(const Json::Value &block);
-            virtual ~<?php echo $name; ?>BlockBase();
 
             string getName();
             

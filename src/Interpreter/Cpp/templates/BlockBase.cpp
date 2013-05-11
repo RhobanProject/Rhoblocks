@@ -24,11 +24,6 @@ namespace Blocks
         load(block);
     }
             
-    <?php echo $name; ?>BlockBase::~<?php echo $name; ?>BlockBase()
-    {
-        destroy();
-    }
-            
     <?php echo $name; ?>BlockBase::<?php echo $name; ?>BlockBase(const Json::Value &block)
     {
         load(block);
@@ -115,7 +110,7 @@ namespace Blocks
     string <?php echo $name; ?>BlockBase::getName()
     {
         ostringstream oss;
-        oss << "<?php echo $name; ?>#" << getId();
+        oss << "<?php echo $module->getName(); ?>.<?php echo $name; ?>#" << getId();
         return oss.str();
     }
 

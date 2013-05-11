@@ -156,7 +156,8 @@ class BlockGenerator
         return array(
             'name' => $name,
             'upname' => strtoupper($name),
-            'meta' => $this->meta
+            'meta' => $this->meta,
+            'module' => $this->module
         );
     }
 
