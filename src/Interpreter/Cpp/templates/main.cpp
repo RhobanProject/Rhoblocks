@@ -9,16 +9,16 @@ using namespace std;
 int main()
 {
     cout << "Demo program, trying to load scene.json ..." << endl;
+
     try {
-        ifstream sceneFile("scene.json");
-        string jsonData;
-        std::string content((std::istreambuf_iterator<char>(sceneFile) ),
-                (std::istreambuf_iterator<char>()));
-
+        // Instanciate the loader
         Blocks::Loader loader;
-        Blocks::Scene *scene = loader.loadScene(content);
-        Blocks::SceneScheduler scheduler(scene);
 
+        // Loads the scene
+        Blocks::Scene *scene = loader.loadSceneFromFile("scene.json");
+
+        // Schedule it
+        Blocks::SceneScheduler scheduler(scene);
         scheduler.run();
     } catch (string error) {
         cout << "Error: " << error << endl;

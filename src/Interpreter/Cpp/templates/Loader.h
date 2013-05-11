@@ -3,6 +3,7 @@
 
 #include <jsoncpp/json/json.h>
 #include <iostream>
+#include <fstream>
 #include "Scene.h"
 #include "Block.h"
 #include "Edge.h"
@@ -16,6 +17,7 @@ namespace Blocks
     {
         public:
             Scene *loadScene(string json);
+            Scene *loadSceneFromFile(string filename);
 
             Block *createBlock(const Json::Value &block);
             

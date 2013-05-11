@@ -10,6 +10,16 @@ using namespace std;
 
 namespace Blocks
 {
+    Scene *Loader::loadSceneFromFile(string fileName)
+    {
+        ifstream sceneFile(fileName.c_str());
+        string jsonData;
+        std::string content((std::istreambuf_iterator<char>(sceneFile) ),
+                (std::istreambuf_iterator<char>()));
+
+        return loadScene(content);
+    }
+
     Scene *Loader::loadScene(string json)
     {
         Json::Value root;
