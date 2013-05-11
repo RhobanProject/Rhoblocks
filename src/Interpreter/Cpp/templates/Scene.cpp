@@ -25,6 +25,15 @@ namespace Blocks
         }
     }
 
+    void Scene::initialize()
+    {
+        map<int, Block*>::iterator it;
+
+        for (it=blocks.begin(); it!=blocks.end(); it++) {
+            (*it).second->initialize(NULL);
+        }
+    }
+
     bool Scene::hasBlock(int id)
     {
         return (blocks.find(id) != blocks.end());

@@ -57,9 +57,15 @@ namespace Blocks
         }
     }
 
+    void Scheduler::initialize()
+    {
+        scene->initialize();
+        topologicalSort();
+    }
+
     void Scheduler::run()
     {
-        topologicalSort();
+        initialize();
 
         while (1) {
             tick();

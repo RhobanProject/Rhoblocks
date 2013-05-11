@@ -11,6 +11,7 @@ namespace Blocks
             Scheduler(Scene *scene);
             ~Scheduler();
 
+            void initialize();
             void topologicalSort();
             void run();
             void tick();

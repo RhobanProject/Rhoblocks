@@ -20,6 +20,8 @@ namespace Blocks
             Scene();
             ~Scene();
 
+            void initialize();
+
             bool hasBlock(int id);
             void addBlock(Block *block);
             Block *getBlock(int id);
