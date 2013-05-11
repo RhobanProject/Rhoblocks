@@ -1,15 +1,15 @@
-#ifndef _BLOCKS_SCHEDULER_H
-#define _BLOCKS_SCHEDULER_H
+#ifndef _BLOCKS_SCENE_SCHEDULER_H
+#define _BLOCKS_SCENE_SCHEDULER_H
 
 #include "Scene.h"
 
 namespace Blocks
 {
-    class Scheduler
+    class SceneScheduler
     {
         public:
-            Scheduler(Scene *scene);
-            ~Scheduler();
+            SceneScheduler(Scene *scene);
+            ~SceneScheduler();
 
             void initialize();
             void topologicalSort();

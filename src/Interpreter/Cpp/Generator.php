@@ -65,7 +65,7 @@ class Generator
         $this->copyFile('Loader.h', 'blocks/Loader.h');
 
         // Adding static C++ files
-        $files = array('Scene', 'Block', 'Edge', 'Index', 'Scheduler' ,'JsonUtil');
+        $files = array('Scene', 'Block', 'Edge', 'Index', 'SceneScheduler' ,'JsonUtil');
         foreach ($files as $file) {
             $this->copyFile($file.'.h', 'blocks/'.$file.'.h');
             $this->copyFile($file.'.cpp', 'blocks/'.$file.'.cpp');

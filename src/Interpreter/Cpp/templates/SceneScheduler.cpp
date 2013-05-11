@@ -1,25 +1,25 @@
 #include <set>
 #include <algorithm>
 #include <iostream>
-#include "Scheduler.h"
+#include "SceneScheduler.h"
 
 using namespace std;
 
 namespace Blocks
 {
-    Scheduler::Scheduler(Scene *scene_)
+    SceneScheduler::SceneScheduler(Scene *scene_)
     {
         scene = scene_;
     }
 
-    Scheduler::~Scheduler()
+    SceneScheduler::~SceneScheduler()
     {
         if (scene != NULL) {
             delete scene;
         }
     }
 
-    void Scheduler::visit(Block *block)
+    void SceneScheduler::visit(Block *block)
     {
         if (visitedBlocks.find(block) == visitedBlocks.end()) {
             visitedBlocks.insert(block);
@@ -34,7 +34,7 @@ namespace Blocks
         }
     }
 
-    void Scheduler::topologicalSort()
+    void SceneScheduler::topologicalSort()
     {
         topological.clear();
         visitedBlocks.clear();
@@ -48,7 +48,7 @@ namespace Blocks
         reverse(topological.begin(), topological.end());
     }
 
-    void Scheduler::tick()
+    void SceneScheduler::tick()
     {
         for (int i=0; i<topological.size(); i++) {
             Block *block = scene->getBlock(topological[i]);
@@ -57,13 +57,13 @@ namespace Blocks
         }
     }
 
-    void Scheduler::initialize()
+    void SceneScheduler::initialize()
     {
         scene->initialize();
         topologicalSort();
     }
 
-    void Scheduler::run()
+    void SceneScheduler::run()
     {
         initialize();
 
