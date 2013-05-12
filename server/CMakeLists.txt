@@ -7,6 +7,14 @@ set (MONGOOSE_CPP_DIR "${PROJECT_SOURCE_DIR}/mongoose-cpp/"
 set (BLOCKS_INTERPRETER_DIR "${PROJECT_SOURCE_DIR}/blocks/"
     CACHE STRING "Blocks Interpreter directory")
 
+# Web static files
+add_custom_command(
+    OUTPUT "${PROJECT_BINARY_DIR}/www"
+    COMMAND cp -R "${PROJECT_SOURCE_DIR}/www" "${PROJECT_BINARY_DIR}/"
+    DEPENDS "${PROJECT_SOURCE_DIR}/www"
+    )
+add_custom_target (wwwFile ALL DEPENDS "${PROJECT_BINARY_DIR}/www")
+
 # Adding mongoose & blocks interpreter
 add_subdirectory("${MONGOOSE_CPP_DIR}")
 add_subdirectory("${BLOCKS_INTERPRETER_DIR}")
