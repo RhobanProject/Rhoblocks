@@ -25,12 +25,16 @@ $(document).ready(function() {
         }, 'clear');
 
 	blocks.menu.addAction('Export', function(blocks) {
-            data = $.toJSON(blocks.exportData());
+            blocksData = blocks.exportData();
+            blocksData.name = "Rhoblocks";
+            data = $.toJSON(blocksData);
             $('#output').html('<pre>'+data+'</pre>');
         }, 'export');
 
         function runCompile(blocks, send) {
-            data = $.toJSON(blocks.exportData());
+            blocksData = blocks.exportData();
+            blocksData.name = "Rhoblocks";
+            data = $.toJSON(blocksData);
             var action = 'compile';
             if (typeof(send) != 'undefined' && send) {
                 action = 'compileAndSend';

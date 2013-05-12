@@ -93,4 +93,14 @@ namespace Blocks
     {
         return 1.0/frequency;
     }
+
+    string Scene::getName()
+    {
+        return name;
+    }
+
+    void Scene::setName(string name_)
+    {
+        name = name_;
+    }
 };

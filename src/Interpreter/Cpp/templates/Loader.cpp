@@ -38,11 +38,16 @@ namespace Blocks
             root = root[1];
         }
 
+        if (root["name"].isNull() || !root["name"].isString()) {
+            throw string("The scene must contain a name string node");
+        }
+
         if (root["blocks"].isNull() || root["edges"].isNull()) {
             throw string("The scene must contain blocks and edges nodes");
         }
 
         Scene *scene = new Scene;
+        scene->setName(root["name"].asString());
 
         try {
             // Handling all the blocks
@@ -60,8 +65,10 @@ namespace Blocks
             }
             
         } catch (string error) {
+            ostringstream oss;
+            oss << "Can't load " << scene->getName() << " scene: " << error;
             delete scene;
-            throw error;
+            throw oss.str();
         }
 
         return scene;

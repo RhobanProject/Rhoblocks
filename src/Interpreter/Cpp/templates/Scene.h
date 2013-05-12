@@ -31,7 +31,11 @@ namespace Blocks
             int getFrequency();
             scalar getPeriod();
 
+            string getName();
+            void setName(string name);
+
         protected:
+            string name;
             map<int, Block*> blocks;
             vector<Edge *> edges;
             int frequency;
