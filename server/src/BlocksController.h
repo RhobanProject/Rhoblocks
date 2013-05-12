@@ -4,12 +4,22 @@
 #include <mongoose/JsonController.h>
 #include <mongoose/Request.h>
 
+#include <blocks/Scheduler.h>
+
 using namespace Mongoose;
+using namespace Blocks;
 
 class BlocksController : public JsonController
 {
     public:
-        Response *process(Request &request);
+        BlocksController(Scheduler *scheduler);
+
+        void getScenes(Request &request, JsonResponse &response);
+
+        void setup();
+
+    protected:
+        Scheduler *scheduler;
 };
 
 #endif

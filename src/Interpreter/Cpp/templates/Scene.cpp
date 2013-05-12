@@ -6,7 +6,13 @@ using namespace std;
 
 namespace Blocks
 {
-    Scene::Scene() : frequency(50)
+    Scene::Scene() 
+        : frequency(50), name("Unnamed")
+    {
+    }
+
+    Scene::Scene(string name_)
+        : frequency(50), name(name_)
     {
     }
 

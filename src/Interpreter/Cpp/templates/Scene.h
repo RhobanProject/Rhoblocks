@@ -18,6 +18,7 @@ namespace Blocks
     {
         public:
             Scene();
+            Scene(string name);
             ~Scene();
 
             void initialize();
