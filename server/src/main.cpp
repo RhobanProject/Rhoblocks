@@ -1,26 +1,23 @@
 #include <iostream>
 #include <fstream>
+
+#include <mongoose/Server.h>
+
 #include <blocks/Loader.h>
 #include <blocks/Scene.h>
 #include <blocks/SceneScheduler.h>
 
 using namespace std;
+using namespace Mongoose;
 
 int main()
 {
-    cout << "Demo program, trying to load scene.json ..." << endl;
+    Server server(8080, "www");
 
-    try {
-        // Instanciate the loader
-        Blocks::Loader loader;
+    cout << "Running the Rhoblocks Server..." << endl;
+    server.start();
 
-        // Loads the scene
-        Blocks::Scene *scene = loader.loadSceneFromFile("scene.json");
-
-        // Schedule it
-        Blocks::SceneScheduler scheduler(scene);
-        scheduler.run();
-    } catch (string error) {
-        cout << "Error: " << error << endl;
+    while (1) {
+        sleep(1);
     }
 }
