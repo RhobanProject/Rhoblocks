@@ -13,6 +13,11 @@ namespace Blocks
     Scene *Loader::loadSceneFromFile(string fileName)
     {
         ifstream sceneFile(fileName.c_str());
+
+        if (!sceneFile.is_open()) {
+            throw string("Could not open the file "+fileName);
+        }
+
         string jsonData;
         std::string content((std::istreambuf_iterator<char>(sceneFile) ),
                 (std::istreambuf_iterator<char>()));
