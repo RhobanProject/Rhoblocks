@@ -13,7 +13,12 @@ add_custom_command(
     COMMAND cp -R "${PROJECT_SOURCE_DIR}/www" "${PROJECT_BINARY_DIR}/"
     DEPENDS "${PROJECT_SOURCE_DIR}/www"
     )
-add_custom_target (wwwFile ALL DEPENDS "${PROJECT_BINARY_DIR}/www")
+add_custom_command(
+    OUTPUT "${PROJECT_BINARY_DIR}/www/blocks.json"
+    COMMAND cp -R "${BLOCKS_INTERPRETER_DIR}/blocks.json" "${PROJECT_BINARY_DIR}/www/blocks.json"
+    DEPENDS "${BLOCKS_INTERPRETER_DIR}/blocks.json"
+    )
+add_custom_target (wwwFile ALL DEPENDS "${PROJECT_BINARY_DIR}/www" "${PROJECT_BINARY_DIR}/www/blocks.json")
 
 # Adding mongoose & blocks interpreter
 add_subdirectory("${MONGOOSE_CPP_DIR}")
@@ -24,11 +29,22 @@ include_directories ("${MONGOOSE_CPP_DIR}")
 include_directories ("${BLOCKS_INTERPRETER_DIR}")
 
 # Setting sources
-set (SOURCES
-    src/main.cpp
+set (ALL_SOURCES
     )
+set (DIRECTORIES
+    "${PROJECT_SOURCE_DIR}/src/"
+    )
+
+foreach (DIRECTORY ${DIRECTORIES})
+    message ("-- Adding ${DIRECTORY}")
+    include ("${DIRECTORY}/Sources.cmake")
+
+    foreach (SOURCE ${SOURCES})
+        set (ALL_SOURCES ${ALL_SOURCES} "${DIRECTORY}/${SOURCE}")
+    endforeach (SOURCE)
+endforeach (DIRECTORY)
 
 # Adding the Server executable, linked with mongoose and the 
 # blocks interpreter
-add_executable (Server ${SOURCES})
+add_executable (Server ${ALL_SOURCES})
 target_link_libraries (Server _mongoose BlocksInterpreter)
