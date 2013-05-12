@@ -1,9 +1,0 @@
-[submodule "web/blocks"]
-	path = web/blocks
-	url = https://github.com/Gregwar/blocks.js.git
-[submodule "vendor/geshi"]
-	path = vendor/geshi
-	url = https://github.com/javiereguiluz/geshi
-[submodule "vendor/dsd"]
-	path = vendor/dsd
-	url = https://github.com/Gregwar/DSD.git
