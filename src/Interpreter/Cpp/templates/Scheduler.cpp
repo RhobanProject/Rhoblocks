@@ -21,6 +21,8 @@ namespace Blocks
         for (it=scenes.begin(); it!=scenes.end(); it++) {
             delete (*it).second;
         }
+
+        scenes.clear();
     }
 
     void Scheduler::addScene(Scene *scene)
