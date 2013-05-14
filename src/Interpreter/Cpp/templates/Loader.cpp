@@ -123,6 +123,10 @@ namespace Blocks
 
     Edge *Loader::createEdge(const Json::Value &edge, Scene *scene)
     {
+        if (!edge["id"].isInt()) {
+            throw string("An edge doesn't have an id");
+        }
+
         if (!edge["block1"].isInt() || !edge["block2"].isInt()) {
             throw string("Invalid edge, block1 or block2 is not an integer");
         }
@@ -131,12 +135,14 @@ namespace Blocks
             throw string("Invalid edge, input/output should be strings identifiers");
         }
 
+        int id = edge["id"].asInt();
+
         Block *blockFrom = findEdgeBlock(scene, edge["block1"].asInt());
         Block *blockTo = findEdgeBlock(scene, edge["block2"].asInt());
 
         Index *indexFrom = Index::fromString(edge["io1"].asString());
         Index *indexTo = Index::fromString(edge["io2"].asString());
 
-        return new Edge(blockFrom, indexFrom, blockTo, indexTo);
+        return new Edge(id, blockFrom, indexFrom, blockTo, indexTo);
     }
 };

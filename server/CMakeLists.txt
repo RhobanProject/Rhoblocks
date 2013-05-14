@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 2.6)
 project (RhoblocksServer)
 
+option (HAS_JSONCPP
+    "Has JsonCpp" ON)
+
 set (MONGOOSE_CPP_DIR "${PROJECT_SOURCE_DIR}/mongoose-cpp/"
     CACHE STRING "Mongoose-cpp directory")
 
@@ -13,12 +16,25 @@ add_custom_command(
     COMMAND cp -R "${PROJECT_SOURCE_DIR}/www" "${PROJECT_BINARY_DIR}/"
     DEPENDS "${PROJECT_SOURCE_DIR}/www"
     )
+
+# Interpreter's blocks.json
 add_custom_command(
     OUTPUT "${PROJECT_BINARY_DIR}/www/blocks.json"
     COMMAND cp -R "${BLOCKS_INTERPRETER_DIR}/blocks.json" "${PROJECT_BINARY_DIR}/www/blocks.json"
     DEPENDS "${BLOCKS_INTERPRETER_DIR}/blocks.json"
     )
-add_custom_target (wwwFile ALL DEPENDS "${PROJECT_BINARY_DIR}/www" "${PROJECT_BINARY_DIR}/www/blocks.json")
+
+# blocks.js
+add_custom_command(
+    OUTPUT "${PROJECT_BINARY_DIR}/www/blocks/"
+    COMMAND git clone --depth=1 "https://github.com/Gregwar/blocks.js.git" "${PROJECT_BINARY_DIR}/www/blocks/" && make -C "${PROJECT_BINARY_DIR}/www/blocks/js/"
+    )
+
+add_custom_target (wwwFile ALL DEPENDS
+    "${PROJECT_BINARY_DIR}/www"
+    "${PROJECT_BINARY_DIR}/www/blocks.json"
+    "${PROJECT_BINARY_DIR}/www/blocks/"
+    )
 
 # Adding mongoose & blocks interpreter
 add_subdirectory("${MONGOOSE_CPP_DIR}")

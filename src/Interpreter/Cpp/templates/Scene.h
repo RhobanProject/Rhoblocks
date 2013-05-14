@@ -38,7 +38,7 @@ namespace Blocks
         protected:
             string name;
             map<int, Block*> blocks;
-            vector<Edge *> edges;
+            map<int, Edge*> edges;
             int frequency;
     };
 };

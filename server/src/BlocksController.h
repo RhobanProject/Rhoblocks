@@ -15,7 +15,6 @@ class BlocksController : public JsonController
         BlocksController(Scheduler *scheduler);
 
         void getScenes(Request &request, JsonResponse &response);
-
         void setup();
 
     protected:

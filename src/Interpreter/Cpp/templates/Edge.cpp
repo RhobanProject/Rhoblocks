@@ -6,11 +6,16 @@ using namespace std;
 
 namespace Blocks
 {
-    Edge::Edge(Block *from_, Index *indexFrom_, Block *to_, Index *indexTo_)
-        : from(from_), indexFrom(indexFrom_), to(to_), indexTo(indexTo_)
+    Edge::Edge(int id_, Block *from_, Index *indexFrom_, Block *to_, Index *indexTo_)
+        : id(id_), from(from_), indexFrom(indexFrom_), to(to_), indexTo(indexTo_)
     {
         from->addEdge(this);
         to->addEdge(this);
+    }
+            
+    int Edge::getId()
+    {
+        return id;
     }
 
     Edge::~Edge()

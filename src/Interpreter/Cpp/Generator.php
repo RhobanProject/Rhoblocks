@@ -14,9 +14,13 @@ class Generator
     protected $targetDirectory;
     public $files;
 
-    public function __construct($targetDirectory)
+    public function __construct($targetDirectory, Kernel $kernel = null)
     {
-        $this->kernel = new Kernel;
+        if ($kernel == null) {
+            $this->kernel = new Kernel;
+        } else {
+            $this->kernel = $kernel;
+        }
         $this->targetDirectory = $targetDirectory;
 
         if (!$targetDirectory) {

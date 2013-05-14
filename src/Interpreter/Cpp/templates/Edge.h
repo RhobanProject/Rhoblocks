@@ -17,7 +17,7 @@ namespace Blocks
     class Edge
     {
         public:
-            Edge(Block *from, Index *indexFrom, Block *to, Index *indexTo);
+            Edge(int id, Block *from, Index *indexFrom, Block *to, Index *indexTo);
             ~Edge();
 
             void propagate();
@@ -25,12 +25,16 @@ namespace Blocks
             Block *getDestination();
             Block *getSource();
 
+            int getId();
+
             Index *getIndex(Block *concerned);
             bool startsFrom(Block *block);
 
             scalar getValue();
 
         protected:
+            int id;
+
             Block *from;
             Index *indexFrom;
 

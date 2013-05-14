@@ -24,10 +24,10 @@ namespace Blocks
             delete (*it).second;
         }
 
-        vector<Edge *>::iterator eit;
+        map<int, Edge*>::iterator eit;
 
         for (eit=edges.begin(); eit!=edges.end(); eit++) {
-            delete *eit;
+            delete (*eit).second;
         }
     }
 
@@ -66,7 +66,7 @@ namespace Blocks
 
     void Scene::addEdge(Edge *edge)
     {
-        edges.push_back(edge);
+        edges[edge->getId()] = edge;
     }
     
     vector<Block *> Scene::allBlocks()
