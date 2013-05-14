@@ -11,6 +11,11 @@ namespace Blocks
 
     Scheduler::~Scheduler()
     {
+        clear();
+    }
+
+    void Scheduler::clear()
+    {
         map<string, SceneScheduler*>::iterator it;
 
         for (it=scenes.begin(); it!=scenes.end(); it++) {

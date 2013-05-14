@@ -37,6 +37,11 @@ namespace Blocks
              */
             vector<string> getScenes();
 
+            /**
+             * Deletes all the scenes
+             */
+            void clear();
+
         protected:
             map<string, SceneScheduler*> scenes;
     };
