@@ -1,7 +1,7 @@
 #ifndef _BLOCKS_LOADER_H
 #define _BLOCKS_LOADER_H
 
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <iostream>
 #include <fstream>
 #include "Scene.h"

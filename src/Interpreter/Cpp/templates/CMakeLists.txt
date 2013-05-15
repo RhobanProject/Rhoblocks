@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 2.6)
 project (BlocksInterpreter)
 
+set (JSONCPP_DIR "../jsoncpp/"
+    CACHE STRING "Json C++ directory")
+
 set (SOURCES
     blocks/Loader.cpp
     <?php foreach ($files as $file) { ?>
@@ -16,10 +19,11 @@ set (MAIN
     main.cpp
     )
 
+include_directories ("${JSONCPP_DIR}/include/")
 include_directories ("${BlocksInterpreter_SOURCE_DIR}")
 
 add_library (BlocksInterpreter ${SOURCES})
-target_link_libraries (BlocksInterpreter jsoncpp matheval)
+target_link_libraries (BlocksInterpreter json matheval)
 
 add_executable (Interpreter ${MAIN})
 target_link_libraries (Interpreter BlocksInterpreter)

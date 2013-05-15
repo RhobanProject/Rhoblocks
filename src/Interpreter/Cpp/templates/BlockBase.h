@@ -1,7 +1,7 @@
 #ifndef _BLOCKS_<?php echo $upname; ?>_BASE_H
 #define _BLOCKS_<?php echo $upname; ?>_BASE_H
 
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <iostream>
 #include <blocks/Block.h>
 

@@ -2,7 +2,7 @@
 #define _BLOCKS_JSON_UTIL_H
 
 #include <iostream>
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 
 using namespace std;
 

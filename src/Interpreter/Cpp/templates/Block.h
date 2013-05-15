@@ -7,7 +7,7 @@ namespace Blocks {
 typedef double scalar;
 #define CARD_STAR 0xffff
  
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <iostream>
 #include <set>
 #include <map>

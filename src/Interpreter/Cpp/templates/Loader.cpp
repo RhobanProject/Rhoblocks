@@ -1,5 +1,5 @@
 // You need to install JsonCpp to get this working
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <sstream>
 #include "Loader.h"
 <?php foreach ($blocks as $block) { ?>

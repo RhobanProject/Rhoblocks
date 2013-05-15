@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 2.6)
 project (RhoblocksServer)
 
+set (JSONCPP_DIR "${PROJECT_SOURCE_DIR}/jsoncpp"
+    CACHE STRING "Json C++ directory")
+
 option (HAS_JSONCPP
     "Has JsonCpp" ON)
 
@@ -37,10 +40,12 @@ add_custom_target (wwwFile ALL DEPENDS
     )
 
 # Adding mongoose & blocks interpreter
+add_subdirectory("${JSONCPP_DIR}")
 add_subdirectory("${MONGOOSE_CPP_DIR}")
 add_subdirectory("${BLOCKS_INTERPRETER_DIR}")
 
 # Adding includes
+include_directories("${JSONCPP_DIR}/include/")
 include_directories ("${MONGOOSE_CPP_DIR}")
 include_directories ("${BLOCKS_INTERPRETER_DIR}")
 
