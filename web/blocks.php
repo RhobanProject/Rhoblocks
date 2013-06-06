@@ -5,7 +5,7 @@ use Rhoban\Blocks\Compiler;
 use Rhoban\Blocks\Tools\ArchiveWriter;
 use Rhoban\Blocks\Tools\JsonIndent;
 
-use Rhoban\Blocks\Implementation\C\Kernel;
+use Rhoban\Blocks\Implementation\Arduino\Kernel;
 
 include '../src/autoload.php';
 include '../vendor/geshi/geshi.php';
