@@ -21,9 +21,7 @@ class XorBlock extends Base
         $xor = $this->getOutputIdentifier('Xor');
         $terms = array();
 
-        $size = $this->getInputSize('Terms');
-        for ($i=0; $i<$size; $i++) {
-            $input = $this->getInputIdentifier(array('Terms', $i));
+        foreach ($this->getInputIdentifiers('Terms') as $input) {
             $terms[] = $input->asInteger();
         }
 

@@ -21,9 +21,7 @@ class AndBlock extends Base
         $and = $this->getOutputIdentifier('And');
         $terms = array();
 
-        $size = $this->getInputSize('Terms');
-        for ($i=0; $i<$size; $i++) {
-            $input = $this->getInputIdentifier(array('Terms', $i));
+        foreach ($this->getInputIdentifiers('Terms') as $input) {
             $terms[] = $input->asInteger();
         }
 

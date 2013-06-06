@@ -21,9 +21,7 @@ class OrBlock extends Base
         $or = $this->getOutputIdentifier('Or');
         $terms = array();
 
-        $size = $this->getInputSize('Terms');
-        for ($i=0; $i<$size; $i++) {
-            $input = $this->getInputIdentifier(array('Terms', $i));
+        foreach ($this->getInputIdentifiers('Terms') as $input) {
             $terms[] = $input->asInteger();
         }
 
