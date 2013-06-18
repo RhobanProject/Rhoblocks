@@ -20,11 +20,13 @@ abstract class SmallerBlock extends Block
             'inputs' => array(
                 array(
                     'name' => 'A',
-                    'card' => '1'
+                    'card' => '0-1',
+                    'default' => 0
                 ),
                 array(
                     'name' => 'B',
-                    'card' => '1'
+                    'card' => '0-1',
+                    'default' => 0
                 )
             ),
             'outputs' => array(
