@@ -65,7 +65,7 @@ foreach (DIRECTORY ${DIRECTORIES})
     endforeach (SOURCE)
 endforeach (DIRECTORY)
 
-# Adding the Server executable, linked with mongoose and the 
+# Adding the rhobloks executable, linked with mongoose and the 
 # blocks interpreter
-add_executable (Server ${ALL_SOURCES})
-target_link_libraries (Server _mongoose BlocksInterpreter)
+add_executable (rhoblocks ${ALL_SOURCES})
+target_link_libraries (rhoblocks _mongoose BlocksInterpreter)
