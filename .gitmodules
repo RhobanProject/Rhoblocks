@@ -10,3 +10,6 @@
 [submodule "server/mongoose-cpp"]
 	path = server/mongoose-cpp
 	url = https://github.com/Gregwar/mongoose-cpp.git
+[submodule "server/jsoncpp"]
+	path = server/jsoncpp
+	url = https://github.com/Gregwar/jsoncpp-cmake.git
